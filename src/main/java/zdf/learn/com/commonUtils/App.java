@@ -20,6 +20,7 @@ public class App
 			DefangFileHandle file = (DefangFileHandle) application.getBean("dfTools");
 //			List<String> rsList = file.readToLine("D:\\home\\apuser\\toyata-hcr-devOpsTool\\dbmanager\\querySql.json");
 			file.testCut("123","asd","qz");
+			
 		} catch (Exception e) {
 //			e.printStackTrace();
 		}
