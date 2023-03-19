@@ -20,14 +20,14 @@ import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.types.StructType;
 
 import redis.clients.jedis.Jedis;
-import zdf.learn.com.spark_project.Schema.can300.Can300_19nev;
-import zdf.learn.com.spark_project.Schema.can300.CommonHeader;
-import zdf.learn.com.spark_project.Schema.can300.DataCapacity;
-import zdf.learn.com.spark_project.Schema.can300.Dcm19Message;
-import zdf.learn.com.spark_project.Schema.can300.UpdCondition;
-import zdf.learn.com.spark_project.Schema.can300.VehicleInformationHeader;
-import zdf.learn.com.spark_project.Schema.can300_19nev.DecodeWarningStatus;
-import zdf.learn.com.spark_project.Schema.can300_19nev.DecoderWarningList;
+import zdf.learn.com.commonUtils.data.Schema.can300.Can300_19nev;
+import zdf.learn.com.commonUtils.data.Schema.can300.CommonHeader;
+import zdf.learn.com.commonUtils.data.Schema.can300.DataCapacity;
+import zdf.learn.com.commonUtils.data.Schema.can300.Dcm19Message;
+import zdf.learn.com.commonUtils.data.Schema.can300.UpdCondition;
+import zdf.learn.com.commonUtils.data.Schema.can300.VehicleInformationHeader;
+import zdf.learn.com.commonUtils.data.Schema.can300_19nev.DecodeWarningStatus;
+import zdf.learn.com.commonUtils.data.Schema.can300_19nev.DecoderWarningList;
 import zdf.learn.com.commonUtils.tools.ComputeTools;
 public class MakeAvroData {
 //	private static Broadcast<String> broadcastSchema;
