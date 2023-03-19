@@ -1,7 +1,7 @@
 {
     "type": "record",
     "name": "Can300_19nev",
-    "namespace": "src.main.java.zdf.learn.com.commonUtils.data.avro.schema.can300",
+    "namespace": "zdf.learn.com.commonUtils.data.avro.schema.can300",
     "fields": [
         {
             "name": "headers",
@@ -464,7 +464,7 @@
                 "items": {
                     "type": "record",
                     "name": "DecoderWarningList",
-                    "namespace": "src.main.java.zdf.learn.com.commonUtils.data.avro.schema.can300_19nev",
+                    "namespace": "zdf.learn.com.commonUtils.data.avro.schema.can300_19nev",
                     "fields": [
                         {
                             "name": "message",
