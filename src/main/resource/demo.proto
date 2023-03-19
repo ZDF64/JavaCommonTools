@@ -1,0 +1,19 @@
+//协议版本
+syntax = "proto3";
+//生成的类所处的层级
+option java_package = "zdf.learn.com.commonUtils.data.protobuf";
+//是否需要將生成的类拆分为多个
+option java_multiple_files = true;
+//第一个类名称为FileBean，乃是实体bean。
+message FileBean {
+    bytes file = 1;
+    string fileName = 2;
+    int32 opt = 6;
+    bytes fileLength = 15;
+}
+//第二个类的名称为FileDeal，我将它用作操作FileBean类。但是在这里不需要对两个类做关联性操作。属性包含如下所示
+message FileDeal {
+    bytes dealType = 1;
+    string dealResult = 5;
+    FileBean bean = 9;
+}
