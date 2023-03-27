@@ -4,3 +4,4 @@
 /.classpath/*
 /libs/*.jar
 /libs/src/*
+/target/
