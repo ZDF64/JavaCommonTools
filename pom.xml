@@ -21,13 +21,13 @@
 			<version>2.7.9</version>
 			<exclusions>
 				<exclusion>
-				  <groupId>org.slf4j</groupId>
-				  <artifactId>slf4j-log4j12</artifactId>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
 				</exclusion>
 				<exclusion>
 					<groupId>org.slf4j</groupId>
 					<artifactId>slf4j-api</artifactId>
-				  </exclusion>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
@@ -116,6 +116,13 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+		<dependency>
+		    <groupId>mysql</groupId>
+		    <artifactId>mysql-connector-java</artifactId>
+		    <version>8.0.33</version>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.codehaus.janino/janino -->
 		<dependency>
 			<groupId>org.codehaus.janino</groupId>
@@ -128,5 +135,24 @@
 			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.huaweicloud</groupId>
+			<artifactId>esdk-obs-java</artifactId>
+			<version>[3.21.8,)</version>
+		</dependency>
 	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+				<configuration>
+					<!-- 指定maven编译的jdk版本,如果不指定,maven3默认用jdk 1.5 maven2默认用jdk1.3 -->
+					<source>1.8</source> <!-- 源代码使用的JDK版本 -->
+					<target>1.8</target> <!-- 需要生成的目标class文件的编译版本 -->
+					<encoding>UTF-8</encoding> <!-- 字符集编码 -->
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -180,6 +182,38 @@ public class DefangFileHandle {
 			System.out.println("error");
 			throw new Exception("失败了");
 		}
+		
+	}
+	public String toWrite(String outPutStr,String url,boolean isContinue) {
+		BufferedWriter out = null;
+		try {
+			if (url == null || url.isEmpty()) {
+				url = "/home/apuser/defults.log";
+			}
+			File fs = new File(url);
+			if(fs.isDirectory()) {
+				url = url + "defult.log";
+				fs = new File(url);
+			}else if(!fs.exists()) {
+				fs.createNewFile();
+			}
+			out = new BufferedWriter(new FileWriter(url, isContinue));
+			out.write(outPutStr);
+			out.newLine();
+			out.close();
+		} catch (IOException e) {
+			log.error("dfTool-error-1010, toWrite异常,{}" , e.getMessage());
+			e.printStackTrace();
+		} finally {
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {
+					log.error("dfTool-error-1011, stream close error,{}", e.getMessage());
+				}
+			}
+		}
+		return outPutStr;
 		
 	}
 	/**
@@ -394,8 +428,13 @@ public class DefangFileHandle {
 		try {
 			AnnotationConfigApplicationContext  application = new AnnotationConfigApplicationContext(AppConfig.class);
 			DefangFileHandle file = (DefangFileHandle) application.getBean("dfTools");
-			List<String> rsList = file.readToLine("D:\\home\\apuser\\toyata-hcr-devOpsTool\\dbmanager\\querySql.json");
+			List<String> rsList = file.readToLine("E:\\console\\HCR\\TMCI-QA\\gtmc_vinlist_20230506.csv");
 			System.out.println(rsList.size());
+			rsList.parallelStream().map(str->{
+				return str.split(",")[1];
+				}).forEach(s->{
+				file.toWrite(s, "E:\\console\\HCR\\TMCI-QA\\gtmc_vinlist_after.csv", true);
+			});
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
