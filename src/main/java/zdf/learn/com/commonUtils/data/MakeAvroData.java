@@ -366,7 +366,8 @@ public class MakeAvroData {
 		 * 普通模式
 		 */
 		MakeAvroData md = new MakeAvroData();
-		List<MaTripPojo> seed = md.makeVinByObsCsv(null).stream().limit(100000).collect(Collectors.toList());
+		ObsClient obs = MakeAvroData.build("obs.cn-north-4.myhuaweicloud.com");
+		List<MaTripPojo> seed = md.makeVinByObsCsv(obs).stream().limit(100000).collect(Collectors.toList());
 //		md.makeAvroData(36L);
 		//md.makeFewEntity(0, 10).forEach(System.out::println);
 		/**
@@ -427,7 +428,7 @@ public class MakeAvroData {
                     } 
                 });
                 upoadFile.forEach(fsAvro->{
-                	obsPartition.putObject("b-tbdccm-gtmc", "procdata/CN/real/can_External/00/2023/06/01/16/"+fsAvro.getName(), fsAvro);
+                	obsPartition.putObject("g-tbdccm-gtmc", "procdata/CN/real/can_External/00/2023/06/01/16/"+fsAvro.getName(), fsAvro);
                 });
                 obsPartition.close();
                 upoadFile.forEach(fsAvro->{
