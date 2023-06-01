@@ -10,6 +10,9 @@ public class DataMakeUtils {
 	/**
 	 * 当前时间串
 	 */
+	public Function<String,String> createDateStringByFormat = (format)->{
+		return DateTimeFormatter.ofPattern(format).format(LocalDateTime.now(ZoneId.of("Asia/Shanghai")));
+	};
 	public Supplier<String> createDateString = ()->{
 		return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now(ZoneId.of("Asia/Shanghai")));
 	};
@@ -60,5 +63,24 @@ public class DataMakeUtils {
 			return "BTET";
 		}
 	};
-	
+	public Supplier<String> makeSettingId = ()->{
+		switch (((int)Math.random()*10)%5) {
+		case 0:
+			return "301";
+		case 1:
+		case 2:
+			return "108";
+		case 3:
+		case 4:
+			return "200";
+		default:
+			return "100";
+		}
+	};
+	public Supplier<String> makeSettingValue = ()->{
+		return String.format("%.2f", Math.random()*90);
+	};
+	public static void main(String[] args) {
+		DataMakeUtils us = new DataMakeUtils();
+	}
 }

@@ -3,15 +3,15 @@ package zdf.learn.com.commonUtils.data;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import zdf.learn.com.commonUtils.MultiTask.inf.BatchComputer;
 import zdf.learn.com.commonUtils.MultiTask.inf.TaskBeanFetchDbToCSV;
 
+@Service
 public class TransferDataFromProdQuery {
-	public static void main(String[] args) {
-//		String sql = "select vehicle_id,aggregate_year_month,total_milage,latest_odo_inf,regist_date,update_date from rmt_srv_milage_per_month_inf";
-//		
-//		List<String> rs = Arrays.asList(sql.substring(sql.indexOf("select")+6, sql.indexOf("from")).split(",")) ;
-//		System.out.println(rs.size());
+	
+	public void fetchToLocal() {
 		String sql_rmt = "SELECT rmt_srv_milage_per_month_inf_id, vehicle_id,aggregate_year_month,total_milage,latest_odo_inf,regist_date,update_date FROM rmt_srv_milage_per_month_inf where aggregate_year_month = 202304";
 		String sql_air = "SELECT air_conditioning_use_time_inf_id, vehicle_id, aggregate_year_month, air_conditioning_use_time, air_conditioning_use_time_destribution, regist_date, update_date FROM air_conditioning_use_time_inf where aggregate_year_month = 202304";
 		String sql_avg_vel = "SELECT avg_velocity_destribution_inf_id, vehicle_id, aggregate_year_month, data_ratio, regist_date, update_date, data_velocity_time FROM avg_velocity_destribution_inf where aggregate_year_month = 202304";
@@ -32,16 +32,17 @@ public class TransferDataFromProdQuery {
 		BatchComputer batchCom = new BatchComputer(12,6);
 		
 		String[] sqls = new String[] {sql_air,sql_avg_vel,sql_cir_des,sql_cust_app,sql_drv_fre,sql_drv_day,sql_max_thr,sql_mil_day,sql_power,sql_sudden,sql_trip_mil,sql_v_type,sql_vel_des,sql_weekly,sql_wiper};
-		for(String sql : sqls) {
-			sql = sql.toLowerCase();
-			
-			String name = sql.substring(sql.indexOf("from")+4,sql.indexOf("where"));
-			System.out.println(name);
-			TaskBeanFetchDbToCSV fetchEle = new TaskBeanFetchDbToCSV(sql,"/home/apuser/data/"+name+".csv");
-			batchCom.addTask(fetchEle);
+		int maxBlock = 10000;
+		for(int i = 0 ; i < 25 ; i ++) {
+			for(String sql : sqls) {
+				sql = sql.toLowerCase();
+				String name = sql.substring(sql.indexOf("from")+4,sql.indexOf("where"));
+				System.out.println(name);
+				TaskBeanFetchDbToCSV fetchEle = new TaskBeanFetchDbToCSV(sql,"/home/apuser/data/"+name+".csv",i*maxBlock,maxBlock);
+				batchCom.addTask(fetchEle);
+			}
 		}
+		
 		batchCom.startCompute();
-		
-		
 	}
 }

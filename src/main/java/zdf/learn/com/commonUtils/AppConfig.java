@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Configuration;
 
 import zdf.learn.com.commonUtils.Files.DefangFileHandle;
 import zdf.learn.com.commonUtils.tags.TimerCutAop;
-@ComponentScan("zdf.learn.com.commonUtils")
-@Configuration
+//@ComponentScan("zdf.learn.com.commonUtils")
+//@Configuration
 public class AppConfig {
 	@Bean(name="timeCutAop")
 	public TimerCutAop aop() {

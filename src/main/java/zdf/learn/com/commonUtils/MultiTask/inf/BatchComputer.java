@@ -69,43 +69,50 @@ public class BatchComputer implements BatchComputeImpl{
 	@Override
 	public void startCompute() {
 		cancelled = false;
-		int k =0;
+		new Thread(()->{
+			this.exec();
+		}).start();
+		
+	}
+	
+	public void exec() {
 		List<TaskBean> innerTask = new ArrayList<TaskBean>();
+		int emptyRunning = 0;
 		while(!cancelled) {
 			if(waitingForComputeQuere.peek()!=null) {
+				
 				TaskBean task =  waitingForComputeQuere.poll();
 				innerTask.add(task);
 				if(innerTask.size()>=PartitionSize) {
-					TaskMultiSlot slot = new TaskMultiSlot(innerTask,PartitionSize);
-					multiPool.invoke(slot);
-					innerTask = new ArrayList<TaskBean>();
+					batchMultiRunner(innerTask);
+					emptyRunning = 0;
 				}
-			}
-			try {
-				Thread.sleep(1000);
-				if(waitingForComputeQuere.peek() ==null) {
-					k++;
-					System.out.println("waiting:"+k);
-				}else {
-					k=0;
+				emptyRunning ++;
+				if(emptyRunning>100) {
+					batchMultiRunner(innerTask);
+					emptyRunning = 0;
 				}
-				
-				
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			if(k>waitMax) {
-				cancelled = true;
 			}
 		}
 		if(innerTask.size()>0) {
 			TaskMultiSlot slot = new TaskMultiSlot(innerTask,PartitionSize);
 			multiPool.invoke(slot);
-			innerTask = new ArrayList<TaskBean>();
+			innerTask.clear();
 		}
 		System.out.println("Finished");
-		
 	}
+	
+	private void batchMultiRunner(List<TaskBean> innerTask) {
+		TaskMultiSlot slot = new TaskMultiSlot(innerTask,PartitionSize);
+		multiPool.invoke(slot);
+		//innerTask = new ArrayList<TaskBean>(); // 这里不能用 new的方式清空，会导致父方法的数据依旧存在
+		innerTask.clear();
+		System.out.println("Running.....");
+		System.out.println("活跃线程数："+multiPool.getActiveThreadCount());
+		System.out.println("并行数："+multiPool.getParallelism());
+		System.out.println("窃取任务数："+multiPool.getStealCount());
+	}
+	
 	@Override
 	public void stopCompute() {
 		// TODO Auto-generated method stub

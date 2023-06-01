@@ -1,7 +1,12 @@
 package zdf.learn.com.commonUtils.data;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -20,16 +25,24 @@ import org.apache.avro.Schema;
 import org.apache.avro.file.DataFileWriter;
 import org.apache.avro.io.DatumWriter;
 import org.apache.avro.specific.SpecificDatumWriter;
+import org.apache.catalina.filters.ExpiresFilter.XServletOutputStream;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.FlatMapFunction;
+import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Row;
+import org.apache.spark.sql.SaveMode;
 import org.apache.spark.sql.SparkSession;
+import org.apache.spark.sql.types.StructType;
 
+import com.obs.services.OBSCredentialsProviderChain;
 import com.obs.services.ObsClient;
+import com.obs.services.ObsConfiguration;
 import com.obs.services.model.ObsObject;
 
 import redis.clients.jedis.Jedis;
 import zdf.learn.com.commonUtils.Files.DefangFileHandle;
+import zdf.learn.com.commonUtils.data.avro.schema.MaTripPojo;
 import zdf.learn.com.commonUtils.data.avro.schema.can300.Can300_19nev;
 import zdf.learn.com.commonUtils.data.avro.schema.can300.CanFrameNumber;
 import zdf.learn.com.commonUtils.data.avro.schema.can300.CanInformationList;
@@ -46,6 +59,7 @@ import zdf.learn.com.commonUtils.data.avro.schema.can300.VehicleInformationHeade
 import zdf.learn.com.commonUtils.data.avro.schema.can300_19nev.DecodeWarningStatus;
 import zdf.learn.com.commonUtils.data.avro.schema.can300_19nev.DecoderWarningList;
 import zdf.learn.com.commonUtils.tools.ComputeTools;
+import zdf.learn.com.commonUtils.tools.DataMakeUtils;
 public class MakeAvroData {
 //	private static Broadcast<String> broadcastSchema;
 //	public StructType structType ;
@@ -159,8 +173,8 @@ public class MakeAvroData {
 	Supplier<Map<CharSequence, Map<CharSequence, CharSequence>>> makeOutSideMap = () ->{
 		DefangFileHandle dfTools = new DefangFileHandle();
 		Map<CharSequence, Map<CharSequence, CharSequence>> returnMap = new HashMap<CharSequence, Map<CharSequence, CharSequence>>();
-		
-		dfTools.readToLine("/GitStore/self-project/CommonUtils/src/main/resource/can_label_gtmc.csv")
+		InputStream ins = MakeAvroData.class.getResourceAsStream("/can_label_gtmc.csv");
+		dfTools.readToLine(ins)
 		.stream()
 		.map(strCsv->{
  			String[] parts = strCsv.split(",");
@@ -193,7 +207,8 @@ public class MakeAvroData {
 	};
 	Function<Integer,List<Type3OutsideUseData>> makeType3OutsideUseDataList = size ->{
 		DefangFileHandle dfTools = new DefangFileHandle();
-		return dfTools.readToLine("/GitStore/self-project/CommonUtils/src/main/resource/can_label_gtmc.csv")
+		InputStream ins = MakeAvroData.class.getResourceAsStream("/can_label_gtmc.csv");
+		return dfTools.readToLine(ins)
 		.stream()
 		.map(strCsv->{
  			String[] parts = strCsv.split(",");
@@ -267,6 +282,7 @@ public class MakeAvroData {
 	};
 	
 	Function<String,Map<CharSequence, CharSequence>> makeHeaderMap =  vin -> {
+		DataMakeUtils dmu = new DataMakeUtils();
 		HashMap<CharSequence, CharSequence> map = new HashMap<CharSequence, CharSequence>();
 		map.put("Company", "FTMS");
 		map.put("Dest", "BJ");
@@ -275,7 +291,7 @@ public class MakeAvroData {
 		map.put("ServiceDeviceId", "354301119051690");
 		map.put("Maker", "FTMS");
 		map.put("TBDC-APIM-UserName", "TSCPPcn-north-1");
-		map.put("RequestDateTime", "20220912085702247");
+		map.put("RequestDateTime", dmu.createDateStringByFormat.apply("yyyyMMddHHmmssSSS"));
 		map.put("CarDataVersion", "STEP001");
 		map.put("DispatchModelType", "KMA10L-AWDBSC");
 		map.put("CarType", "2");
@@ -284,8 +300,35 @@ public class MakeAvroData {
 		return map;
 		};
 	
-	public List<String> makeVinByRandom() {
-		return null;
+	public List<MaTripPojo> makeVinByObsCsv(ObsClient obsClient) {
+		ObsObject obsJ = obsClient.getObject("g-tbdccm-gtmc-r", "dataApp/vinlistforAvroAll.csv");
+		InputStream ins = obsJ.getObjectContent();
+		List<MaTripPojo> returnList = new ArrayList<MaTripPojo>();
+		try {
+//			FileInputStream fis = new FileInputStream(new File("D:\\home\\apuser\\datamake\\vinlistforAvroAll.csv"));
+			byte[] b = new byte[4];
+			BufferedReader reader = new BufferedReader(new InputStreamReader(ins));
+			String tempStr;
+			while ((tempStr = reader.readLine()) != null) {
+				try {
+					returnList.add(MaTripPojo.builder()
+							.vehicle_id(tempStr.split(",")[0])
+							.target_date(tempStr.split(",")[1])
+							.igOff(tempStr.split(",")[2])
+							.igOn(tempStr.split(",")[3])
+							.build());
+				} catch (Exception e) {
+					System.out.println("error line:"+tempStr);
+				}
+				if(returnList.size() >10000) {
+					return returnList;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return returnList;
 	}
 	/**
 	 * 
@@ -323,44 +366,74 @@ public class MakeAvroData {
 		 * 普通模式
 		 */
 		MakeAvroData md = new MakeAvroData();
-		md.makeAvroData(36L);
+		List<MaTripPojo> seed = md.makeVinByObsCsv(null).stream().limit(100000).collect(Collectors.toList());
+//		md.makeAvroData(36L);
 		//md.makeFewEntity(0, 10).forEach(System.out::println);
 		/**
 		 * Spark集群模式
 		 */
-
+		List<List<MaTripPojo>> vinMatrix = ComputeTools.SplitList(64, seed);
+//		
 		try(SparkSession spark = SparkSession.builder()
 				.appName(MakeAvroData.class.getSimpleName() + " - " + new Date())
-				.master("local[4]")
 				.getOrCreate(); 
+			
 			JavaSparkContext jsc = JavaSparkContext
 					.fromSparkContext(spark.sparkContext());
-			ObsClient obsClient = new ObsClient("JH5P7FMV6YLBIAAZWDZY", "LrcacFcK5NhEL1b00YCUwetOMgJ66WIr0qOf5WYi", "obs.cn-north-4.myhuaweicloud.com")){
-			
-			List<String> maVinList = md.makeVinByRedis(0, 2000000);
-			List<List<String>> vinMatrix = ComputeTools.SplitList(64, maVinList);
-			JavaRDD<List<String>> rdd = jsc.parallelize(vinMatrix);
+			/**
+			 * 日立环境
+			 */
+//			ObsClient obsClient = new ObsClient("JH5P7FMV6YLBIAAZWDZY", "LrcacFcK5NhEL1b00YCUwetOMgJ66WIr0qOf5WYi", "obs.cn-north-4.myhuaweicloud.com")
+				)
+		{
+			JavaRDD<List<MaTripPojo>> rdd = jsc.parallelize(vinMatrix);
 			rdd.mapPartitions(m->{
-				List<Can300_19nev> listRs = new ArrayList<>();
-				if(m.hasNext()) {
-					listRs = m.next().stream().map(vin->{
-						Can300_19nev can300 = new Can300_19nev();
-						can300.setBody(md.makeDcm19.apply(vin));
+				List<Can300_19nev> listRsAll = new ArrayList<Can300_19nev>();
+                MakeAvroData mds = new MakeAvroData();
+                while(m.hasNext()) {
+                	
+                	List<Can300_19nev> listRs = m.next().stream().map(vin->{
+                        Can300_19nev can300 = new Can300_19nev();
+                        can300.setBody(mds.makeDcm19.apply(vin.getVehicle_id()));
 //						can300.setBody(new Dcm19Message());
-						can300.setCorrelationId("Core001");		
-						can300.setDecoderWarningList(md.makeDecoderWarningList(10));
-						can300.setDispatchModelType("TEST-HEV001");
-						can300.setGroupNumber("TEST00001");
-						can300.setVehicleName("UX");
-						can300.setHeaders(md.makeHeaderMap.apply(vin));
-						return can300;}
-					).collect(Collectors.toList());
-				}
-				return listRs.iterator();
-			});
-			ObsObject objs = obsClient.getObject("spark-can-data", "Avro/modal.avro");
-			System.out.println("objs"+objs.getObjectKey());
-			md.readAvro(spark, "E:\\DataStorage\\S3Avro\\newFile\\data.avro");
+                        can300.setCorrelationId("Core001");		
+                        can300.setDecoderWarningList(mds.makeDecoderWarningList(10));
+                        can300.setDispatchModelType("TEST-HEV001");
+                        can300.setGroupNumber(String.format("TEST%05d", (int)Math.random()*10000));
+                        can300.setVehicleName("UX");
+                        can300.setHeaders(mds.makeHeaderMap.apply(vin.getVehicle_id()));
+                        return can300;
+                        }
+                    ).collect(Collectors.toList());
+                	listRsAll.addAll(listRs);
+                }
+                return listRsAll.iterator();
+            }).foreachPartition(fs->{
+            	ObsClient obsPartition = MakeAvroData.build("obs.cn-north-4.myhuaweicloud.com");
+//                ObsClient obsPartition = new ObsClient("KHTCNRDCRQGCAQGGMLQX", "wN9ePh0A3JayYMQSXE3xNRWnga5A19FS3Kpwen5q", "obs.cn-north-4.myhuaweicloud.com");
+                DatumWriter<Can300_19nev> userDatumWriter = new SpecificDatumWriter<Can300_19nev>(Can300_19nev.class);
+                List<File> upoadFile = new ArrayList<>();
+                DataFileWriter<Can300_19nev> dataFileWriter = new DataFileWriter<Can300_19nev>(userDatumWriter);
+            	fs.forEachRemaining(can300->{
+                    try {
+                    	File TempFile = File.createTempFile(can300.getHeaders().get("VIN")+"_"+can300.getHeaders().get("RequestDateTime")+"_"+Math.random()*1000000, ".avro");
+                        
+                        dataFileWriter.create(Can300_19nev.getClassSchema(),TempFile);
+                        dataFileWriter.append(can300);
+                        upoadFile.add(TempFile);
+                        dataFileWriter.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } 
+                });
+                upoadFile.forEach(fsAvro->{
+                	obsPartition.putObject("b-tbdccm-gtmc", "procdata/CN/real/can_External/00/2023/06/01/16/"+fsAvro.getName(), fsAvro);
+                });
+                obsPartition.close();
+                upoadFile.forEach(fsAvro->{
+                	fsAvro.delete();
+                });
+            });
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -368,6 +441,18 @@ public class MakeAvroData {
 	/**
 	 * 
 	 */
+	public static ObsClient build(String endPoint) {
+    	OBSCredentialsProviderChain obsChain = new OBSCredentialsProviderChain();
+    	ObsConfiguration conf = new ObsConfiguration();
+    	conf.setEndPoint(endPoint);
+    	conf.setConnectionTimeout(30000);
+    	conf.setMaxErrorRetry(3);
+    	conf.setMaxConnections(30000);
+    	conf.setMaxIdleConnections(30);
+    	conf.setKeepAlive(true);
+     	ObsClient returnObs = new ObsClient(obsChain, conf);
+    	return returnObs;
+    }
 }
 
 /**

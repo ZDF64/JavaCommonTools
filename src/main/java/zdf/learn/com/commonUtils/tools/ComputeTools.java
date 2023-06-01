@@ -27,8 +27,8 @@ public class ComputeTools {
 		for(int i = 0 ; i <partisionSize ; i ++ ) {
 			int end = startIndex;
 			List<T> child = new ArrayList<>();
-			child = inputList.subList(startIndex, batchSize + (i<remainder?1:0));
-			startIndex = end;
+			child = new ArrayList<>(inputList.subList(startIndex,startIndex+ batchSize + (i<remainder?1:0)));
+			startIndex = end +child.size() ;
 			returnList.add(child);
 		}
 		return returnList;

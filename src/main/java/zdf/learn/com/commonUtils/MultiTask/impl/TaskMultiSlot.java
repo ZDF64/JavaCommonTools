@@ -21,20 +21,28 @@ public class TaskMultiSlot extends RecursiveTask<TaskBean> {
 	protected TaskBean compute() {
 		// TODO Auto-generated method stub
 		int blockSize = taskPool.size()/partitionSize;
-		if(blockSize>=1) {
-			List<TaskBean> taskInner = new ArrayList<>();
-			for(TaskBean taskIn : taskPool) {
-				taskInner.add(taskIn);
-				if(taskInner.size()>=blockSize) {
-					new TaskMultiSlot(taskInner,partitionSize).fork();
-					taskInner = new ArrayList<>();
+		if(blockSize>1) {
+			List<TaskBean> taskLeftInner = new ArrayList<>();
+			List<TaskBean> taskRightInner = new ArrayList<>();
+			for(int i = 0 ;i < taskPool.size() ; i ++) {
+				TaskBean taskIn = taskPool.get(i);
+				if(i%2==0) {
+					taskLeftInner.add(taskIn);
+				}else {
+					taskRightInner.add(taskIn);
 				}
 			}
+			TaskMultiSlot left = new TaskMultiSlot(taskLeftInner,partitionSize);
+			TaskMultiSlot right = new TaskMultiSlot(taskRightInner,partitionSize);
+			left.fork();
+			right.fork();
 		}else{
 			for(TaskBean task : taskPool ) {
 				TaskMultiInvocationHandler taskProxyHandler = new TaskMultiInvocationHandler(task);
 				TaskBean taskProxy = (TaskBean) taskProxyHandler.getProxyInstance();
-				taskProxy.compute(null);
+				taskProxy.compute(con->{
+					
+				});
 			}
 		}
 		return null;

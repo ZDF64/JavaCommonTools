@@ -28,6 +28,17 @@ public class JdbcEnegine {
 
 	}
 
+	public int execInsert(String sql) {
+		try {
+			PreparedStatement ps = con.prepareStatement(sql);
+			int rsInt = ps.executeUpdate(sql);
+			ps.close();
+			return rsInt;
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return 0;
+		} 
+	}
 	public ResultSet exec(String sql) {
 		try {
 			System.out.println(sql);

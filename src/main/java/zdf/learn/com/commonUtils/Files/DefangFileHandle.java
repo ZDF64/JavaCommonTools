@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Consumer;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
@@ -89,6 +90,59 @@ public class DefangFileHandle {
 			}
 		}
 		return returnList;
+	}
+	public List<String> readToLine(InputStream fis) {
+		List<String> returnList = new ArrayList<String>();
+		BufferedReader reader = null;
+		try {
+			// 一次读一行
+			reader = new BufferedReader(new InputStreamReader(fis));
+			String tempStr;
+			while ((tempStr = reader.readLine()) != null) {
+				returnList.add(tempStr);
+			}
+		} catch (IOException e) {
+			log.error(" dfTool-error-001,read error,{}", e.getMessage());
+			return null;
+		} finally {
+			try {
+				if (reader != null) {
+					reader.close();
+				}
+				if (fis != null) {
+					fis.close();
+				}
+			} catch (IOException e) {
+				log.error(" dfTool-error-002,read stream close error,{}", e.getMessage());
+			}
+		}
+		return returnList;
+	}
+	public void readToLine(File file,Consumer<String> consumer) {
+		FileInputStream in = null;
+		BufferedReader reader = null;
+		try {
+			// 一次读一个字节
+			in = new FileInputStream(file);
+			reader = new BufferedReader(new InputStreamReader(in));
+			String tempStr;
+			while ((tempStr = reader.readLine()) != null) {
+				consumer.accept(tempStr);
+			}
+		} catch (IOException e) {
+			log.error(" dfTool-error-001,read error,{}", e.getMessage());
+		} finally {
+			try {
+				if (reader != null) {
+					reader.close();
+				}
+				if (in != null) {
+					in.close();
+				}
+			} catch (IOException e) {
+				log.error(" dfTool-error-002,read stream close error,{}", e.getMessage());
+			}
+		}
 	}
 
 	@TimerCut(name="readJsonToMap",type = MonitorType.TIMER)
