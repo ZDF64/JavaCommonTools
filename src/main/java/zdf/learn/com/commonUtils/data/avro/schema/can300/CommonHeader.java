@@ -5,40 +5,28 @@
  */
 package zdf.learn.com.commonUtils.data.avro.schema.can300;
 
-import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
-import org.apache.avro.util.Utf8;
 import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.SchemaStore;
 
+@SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = 964724047079396816L;
-
-
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"CommonHeader\",\"namespace\":\"zdf.learn.com.commonUtils.data.avro.schema.can300\",\"fields\":[{\"name\":\"dataVersion\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"commandType\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"destinationInformation\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"formatInformation\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"dcuOrDcuMeuClassification\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"dcu\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"meu\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"communicationModeFlag\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"electricPfInformation\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"geodeticSystemInformation\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"mapBasedVersion\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"size\",\"type\":[\"null\",\"long\"],\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
-  private static final SpecificData MODEL$ = new SpecificData();
+  private static SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<CommonHeader> ENCODER =
-      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<CommonHeader>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<CommonHeader> DECODER =
-      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
-
-  /**
-   * Return the BinaryMessageEncoder instance used by this class.
-   * @return the message encoder used by this class
-   */
-  public static BinaryMessageEncoder<CommonHeader> getEncoder() {
-    return ENCODER;
-  }
+      new BinaryMessageDecoder<CommonHeader>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageDecoder instance used by this class.
-   * @return the message decoder used by this class
    */
   public static BinaryMessageDecoder<CommonHeader> getDecoder() {
     return DECODER;
@@ -47,44 +35,34 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
   /**
    * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
    * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
-   * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<CommonHeader> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<CommonHeader>(MODEL$, SCHEMA$, resolver);
   }
 
-  /**
-   * Serializes this CommonHeader to a ByteBuffer.
-   * @return a buffer holding the serialized data for this instance
-   * @throws java.io.IOException if this instance could not be serialized
-   */
+  /** Serializes this CommonHeader to a ByteBuffer. */
   public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
     return ENCODER.encode(this);
   }
 
-  /**
-   * Deserializes a CommonHeader from a ByteBuffer.
-   * @param b a byte buffer holding serialized data for an instance of this class
-   * @return a CommonHeader instance decoded from the given buffer
-   * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
-   */
+  /** Deserializes a CommonHeader from a ByteBuffer. */
   public static CommonHeader fromByteBuffer(
       java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
   }
 
-  private java.lang.CharSequence dataVersion;
-  private java.lang.Long commandType;
-  private java.lang.Long destinationInformation;
-  private java.lang.Long formatInformation;
-  private java.lang.Long dcuOrDcuMeuClassification;
-  private java.lang.Long dcu;
-  private java.lang.Long meu;
-  private java.lang.Long communicationModeFlag;
-  private java.lang.Long electricPfInformation;
-  private java.lang.Long geodeticSystemInformation;
-  private java.lang.Long mapBasedVersion;
-  private java.lang.Long size;
+  @Deprecated public java.lang.CharSequence dataVersion;
+  @Deprecated public java.lang.Long commandType;
+  @Deprecated public java.lang.Long destinationInformation;
+  @Deprecated public java.lang.Long formatInformation;
+  @Deprecated public java.lang.Long dcuOrDcuMeuClassification;
+  @Deprecated public java.lang.Long dcu;
+  @Deprecated public java.lang.Long meu;
+  @Deprecated public java.lang.Long communicationModeFlag;
+  @Deprecated public java.lang.Long electricPfInformation;
+  @Deprecated public java.lang.Long geodeticSystemInformation;
+  @Deprecated public java.lang.Long mapBasedVersion;
+  @Deprecated public java.lang.Long size;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -123,14 +101,8 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
     this.size = size;
   }
 
-  @Override
-  public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
-
-  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
-
   // Used by DatumWriter.  Applications should not call.
-  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return dataVersion;
@@ -145,12 +117,11 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
     case 9: return geodeticSystemInformation;
     case 10: return mapBasedVersion;
     case 11: return size;
-    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
 
   // Used by DatumReader.  Applications should not call.
-  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
@@ -166,7 +137,7 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
     case 9: geodeticSystemInformation = (java.lang.Long)value$; break;
     case 10: mapBasedVersion = (java.lang.Long)value$; break;
     case 11: size = (java.lang.Long)value$; break;
-    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
 
@@ -177,7 +148,6 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
   public java.lang.CharSequence getDataVersion() {
     return dataVersion;
   }
-
 
   /**
    * Sets the value of the 'dataVersion' field.
@@ -195,7 +165,6 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
     return commandType;
   }
 
-
   /**
    * Sets the value of the 'commandType' field.
    * @param value the value to set.
@@ -211,7 +180,6 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
   public java.lang.Long getDestinationInformation() {
     return destinationInformation;
   }
-
 
   /**
    * Sets the value of the 'destinationInformation' field.
@@ -229,7 +197,6 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
     return formatInformation;
   }
 
-
   /**
    * Sets the value of the 'formatInformation' field.
    * @param value the value to set.
@@ -245,7 +212,6 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
   public java.lang.Long getDcuOrDcuMeuClassification() {
     return dcuOrDcuMeuClassification;
   }
-
 
   /**
    * Sets the value of the 'dcuOrDcuMeuClassification' field.
@@ -263,7 +229,6 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
     return dcu;
   }
 
-
   /**
    * Sets the value of the 'dcu' field.
    * @param value the value to set.
@@ -279,7 +244,6 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
   public java.lang.Long getMeu() {
     return meu;
   }
-
 
   /**
    * Sets the value of the 'meu' field.
@@ -297,7 +261,6 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
     return communicationModeFlag;
   }
 
-
   /**
    * Sets the value of the 'communicationModeFlag' field.
    * @param value the value to set.
@@ -313,7 +276,6 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
   public java.lang.Long getElectricPfInformation() {
     return electricPfInformation;
   }
-
 
   /**
    * Sets the value of the 'electricPfInformation' field.
@@ -331,7 +293,6 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
     return geodeticSystemInformation;
   }
 
-
   /**
    * Sets the value of the 'geodeticSystemInformation' field.
    * @param value the value to set.
@@ -348,7 +309,6 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
     return mapBasedVersion;
   }
 
-
   /**
    * Sets the value of the 'mapBasedVersion' field.
    * @param value the value to set.
@@ -364,7 +324,6 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
   public java.lang.Long getSize() {
     return size;
   }
-
 
   /**
    * Sets the value of the 'size' field.
@@ -388,11 +347,7 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
    * @return A new CommonHeader RecordBuilder
    */
   public static zdf.learn.com.commonUtils.data.avro.schema.can300.CommonHeader.Builder newBuilder(zdf.learn.com.commonUtils.data.avro.schema.can300.CommonHeader.Builder other) {
-    if (other == null) {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.CommonHeader.Builder();
-    } else {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.CommonHeader.Builder(other);
-    }
+    return new zdf.learn.com.commonUtils.data.avro.schema.can300.CommonHeader.Builder(other);
   }
 
   /**
@@ -401,17 +356,12 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
    * @return A new CommonHeader RecordBuilder
    */
   public static zdf.learn.com.commonUtils.data.avro.schema.can300.CommonHeader.Builder newBuilder(zdf.learn.com.commonUtils.data.avro.schema.can300.CommonHeader other) {
-    if (other == null) {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.CommonHeader.Builder();
-    } else {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.CommonHeader.Builder(other);
-    }
+    return new zdf.learn.com.commonUtils.data.avro.schema.can300.CommonHeader.Builder(other);
   }
 
   /**
    * RecordBuilder for CommonHeader instances.
    */
-  @org.apache.avro.specific.AvroGenerated
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<CommonHeader>
     implements org.apache.avro.data.RecordBuilder<CommonHeader> {
 
@@ -430,7 +380,7 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$, MODEL$);
+      super(SCHEMA$);
     }
 
     /**
@@ -441,51 +391,51 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
       super(other);
       if (isValidValue(fields()[0], other.dataVersion)) {
         this.dataVersion = data().deepCopy(fields()[0].schema(), other.dataVersion);
-        fieldSetFlags()[0] = other.fieldSetFlags()[0];
+        fieldSetFlags()[0] = true;
       }
       if (isValidValue(fields()[1], other.commandType)) {
         this.commandType = data().deepCopy(fields()[1].schema(), other.commandType);
-        fieldSetFlags()[1] = other.fieldSetFlags()[1];
+        fieldSetFlags()[1] = true;
       }
       if (isValidValue(fields()[2], other.destinationInformation)) {
         this.destinationInformation = data().deepCopy(fields()[2].schema(), other.destinationInformation);
-        fieldSetFlags()[2] = other.fieldSetFlags()[2];
+        fieldSetFlags()[2] = true;
       }
       if (isValidValue(fields()[3], other.formatInformation)) {
         this.formatInformation = data().deepCopy(fields()[3].schema(), other.formatInformation);
-        fieldSetFlags()[3] = other.fieldSetFlags()[3];
+        fieldSetFlags()[3] = true;
       }
       if (isValidValue(fields()[4], other.dcuOrDcuMeuClassification)) {
         this.dcuOrDcuMeuClassification = data().deepCopy(fields()[4].schema(), other.dcuOrDcuMeuClassification);
-        fieldSetFlags()[4] = other.fieldSetFlags()[4];
+        fieldSetFlags()[4] = true;
       }
       if (isValidValue(fields()[5], other.dcu)) {
         this.dcu = data().deepCopy(fields()[5].schema(), other.dcu);
-        fieldSetFlags()[5] = other.fieldSetFlags()[5];
+        fieldSetFlags()[5] = true;
       }
       if (isValidValue(fields()[6], other.meu)) {
         this.meu = data().deepCopy(fields()[6].schema(), other.meu);
-        fieldSetFlags()[6] = other.fieldSetFlags()[6];
+        fieldSetFlags()[6] = true;
       }
       if (isValidValue(fields()[7], other.communicationModeFlag)) {
         this.communicationModeFlag = data().deepCopy(fields()[7].schema(), other.communicationModeFlag);
-        fieldSetFlags()[7] = other.fieldSetFlags()[7];
+        fieldSetFlags()[7] = true;
       }
       if (isValidValue(fields()[8], other.electricPfInformation)) {
         this.electricPfInformation = data().deepCopy(fields()[8].schema(), other.electricPfInformation);
-        fieldSetFlags()[8] = other.fieldSetFlags()[8];
+        fieldSetFlags()[8] = true;
       }
       if (isValidValue(fields()[9], other.geodeticSystemInformation)) {
         this.geodeticSystemInformation = data().deepCopy(fields()[9].schema(), other.geodeticSystemInformation);
-        fieldSetFlags()[9] = other.fieldSetFlags()[9];
+        fieldSetFlags()[9] = true;
       }
       if (isValidValue(fields()[10], other.mapBasedVersion)) {
         this.mapBasedVersion = data().deepCopy(fields()[10].schema(), other.mapBasedVersion);
-        fieldSetFlags()[10] = other.fieldSetFlags()[10];
+        fieldSetFlags()[10] = true;
       }
       if (isValidValue(fields()[11], other.size)) {
         this.size = data().deepCopy(fields()[11].schema(), other.size);
-        fieldSetFlags()[11] = other.fieldSetFlags()[11];
+        fieldSetFlags()[11] = true;
       }
     }
 
@@ -494,7 +444,7 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
      * @param other The existing instance to copy.
      */
     private Builder(zdf.learn.com.commonUtils.data.avro.schema.can300.CommonHeader other) {
-      super(SCHEMA$, MODEL$);
+            super(SCHEMA$);
       if (isValidValue(fields()[0], other.dataVersion)) {
         this.dataVersion = data().deepCopy(fields()[0].schema(), other.dataVersion);
         fieldSetFlags()[0] = true;
@@ -553,7 +503,6 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
       return dataVersion;
     }
 
-
     /**
       * Sets the value of the 'dataVersion' field.
       * @param value The value of 'dataVersion'.
@@ -592,7 +541,6 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
     public java.lang.Long getCommandType() {
       return commandType;
     }
-
 
     /**
       * Sets the value of the 'commandType' field.
@@ -633,7 +581,6 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
       return destinationInformation;
     }
 
-
     /**
       * Sets the value of the 'destinationInformation' field.
       * @param value The value of 'destinationInformation'.
@@ -672,7 +619,6 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
     public java.lang.Long getFormatInformation() {
       return formatInformation;
     }
-
 
     /**
       * Sets the value of the 'formatInformation' field.
@@ -713,7 +659,6 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
       return dcuOrDcuMeuClassification;
     }
 
-
     /**
       * Sets the value of the 'dcuOrDcuMeuClassification' field.
       * @param value The value of 'dcuOrDcuMeuClassification'.
@@ -752,7 +697,6 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
     public java.lang.Long getDcu() {
       return dcu;
     }
-
 
     /**
       * Sets the value of the 'dcu' field.
@@ -793,7 +737,6 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
       return meu;
     }
 
-
     /**
       * Sets the value of the 'meu' field.
       * @param value The value of 'meu'.
@@ -832,7 +775,6 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
     public java.lang.Long getCommunicationModeFlag() {
       return communicationModeFlag;
     }
-
 
     /**
       * Sets the value of the 'communicationModeFlag' field.
@@ -873,7 +815,6 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
       return electricPfInformation;
     }
 
-
     /**
       * Sets the value of the 'electricPfInformation' field.
       * @param value The value of 'electricPfInformation'.
@@ -912,7 +853,6 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
     public java.lang.Long getGeodeticSystemInformation() {
       return geodeticSystemInformation;
     }
-
 
     /**
       * Sets the value of the 'geodeticSystemInformation' field.
@@ -953,7 +893,6 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
       return mapBasedVersion;
     }
 
-
     /**
       * Sets the value of the 'mapBasedVersion' field.
       * @param value The value of 'mapBasedVersion'.
@@ -992,7 +931,6 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
     public java.lang.Long getSize() {
       return size;
     }
-
 
     /**
       * Sets the value of the 'size' field.
@@ -1043,8 +981,6 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
         record.mapBasedVersion = fieldSetFlags()[10] ? this.mapBasedVersion : (java.lang.Long) defaultValue(fields()[10]);
         record.size = fieldSetFlags()[11] ? this.size : (java.lang.Long) defaultValue(fields()[11]);
         return record;
-      } catch (org.apache.avro.AvroMissingFieldException e) {
-        throw e;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
@@ -1069,323 +1005,4 @@ public class CommonHeader extends org.apache.avro.specific.SpecificRecordBase im
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
-  @Override protected boolean hasCustomCoders() { return true; }
-
-  @Override public void customEncode(org.apache.avro.io.Encoder out)
-    throws java.io.IOException
-  {
-    if (this.dataVersion == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeString(this.dataVersion);
-    }
-
-    if (this.commandType == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeLong(this.commandType);
-    }
-
-    if (this.destinationInformation == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeLong(this.destinationInformation);
-    }
-
-    if (this.formatInformation == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeLong(this.formatInformation);
-    }
-
-    if (this.dcuOrDcuMeuClassification == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeLong(this.dcuOrDcuMeuClassification);
-    }
-
-    if (this.dcu == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeLong(this.dcu);
-    }
-
-    if (this.meu == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeLong(this.meu);
-    }
-
-    if (this.communicationModeFlag == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeLong(this.communicationModeFlag);
-    }
-
-    if (this.electricPfInformation == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeLong(this.electricPfInformation);
-    }
-
-    if (this.geodeticSystemInformation == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeLong(this.geodeticSystemInformation);
-    }
-
-    if (this.mapBasedVersion == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeLong(this.mapBasedVersion);
-    }
-
-    if (this.size == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeLong(this.size);
-    }
-
-  }
-
-  @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
-    throws java.io.IOException
-  {
-    org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
-    if (fieldOrder == null) {
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.dataVersion = null;
-      } else {
-        this.dataVersion = in.readString(this.dataVersion instanceof Utf8 ? (Utf8)this.dataVersion : null);
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.commandType = null;
-      } else {
-        this.commandType = in.readLong();
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.destinationInformation = null;
-      } else {
-        this.destinationInformation = in.readLong();
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.formatInformation = null;
-      } else {
-        this.formatInformation = in.readLong();
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.dcuOrDcuMeuClassification = null;
-      } else {
-        this.dcuOrDcuMeuClassification = in.readLong();
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.dcu = null;
-      } else {
-        this.dcu = in.readLong();
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.meu = null;
-      } else {
-        this.meu = in.readLong();
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.communicationModeFlag = null;
-      } else {
-        this.communicationModeFlag = in.readLong();
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.electricPfInformation = null;
-      } else {
-        this.electricPfInformation = in.readLong();
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.geodeticSystemInformation = null;
-      } else {
-        this.geodeticSystemInformation = in.readLong();
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.mapBasedVersion = null;
-      } else {
-        this.mapBasedVersion = in.readLong();
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.size = null;
-      } else {
-        this.size = in.readLong();
-      }
-
-    } else {
-      for (int i = 0; i < 12; i++) {
-        switch (fieldOrder[i].pos()) {
-        case 0:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.dataVersion = null;
-          } else {
-            this.dataVersion = in.readString(this.dataVersion instanceof Utf8 ? (Utf8)this.dataVersion : null);
-          }
-          break;
-
-        case 1:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.commandType = null;
-          } else {
-            this.commandType = in.readLong();
-          }
-          break;
-
-        case 2:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.destinationInformation = null;
-          } else {
-            this.destinationInformation = in.readLong();
-          }
-          break;
-
-        case 3:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.formatInformation = null;
-          } else {
-            this.formatInformation = in.readLong();
-          }
-          break;
-
-        case 4:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.dcuOrDcuMeuClassification = null;
-          } else {
-            this.dcuOrDcuMeuClassification = in.readLong();
-          }
-          break;
-
-        case 5:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.dcu = null;
-          } else {
-            this.dcu = in.readLong();
-          }
-          break;
-
-        case 6:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.meu = null;
-          } else {
-            this.meu = in.readLong();
-          }
-          break;
-
-        case 7:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.communicationModeFlag = null;
-          } else {
-            this.communicationModeFlag = in.readLong();
-          }
-          break;
-
-        case 8:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.electricPfInformation = null;
-          } else {
-            this.electricPfInformation = in.readLong();
-          }
-          break;
-
-        case 9:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.geodeticSystemInformation = null;
-          } else {
-            this.geodeticSystemInformation = in.readLong();
-          }
-          break;
-
-        case 10:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.mapBasedVersion = null;
-          } else {
-            this.mapBasedVersion = in.readLong();
-          }
-          break;
-
-        case 11:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.size = null;
-          } else {
-            this.size = in.readLong();
-          }
-          break;
-
-        default:
-          throw new java.io.IOException("Corrupt ResolvingDecoder.");
-        }
-      }
-    }
-  }
 }
-
-
-
-
-
-
-
-
-
-

@@ -59,7 +59,7 @@
             <onMismatch>DENY</onMismatch>
         </filter>
     </appender>
-    <root level="INFO">
+    <root level="error">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="error"/>
         <appender-ref ref="info"/>

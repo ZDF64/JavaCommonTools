@@ -2,9 +2,11 @@ package zdf.learn.com.commonUtils.tools;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.LongStream;
 
 public class DataMakeUtils {
 	/**
@@ -12,6 +14,9 @@ public class DataMakeUtils {
 	 */
 	public Function<String,String> createDateStringByFormat = (format)->{
 		return DateTimeFormatter.ofPattern(format).format(LocalDateTime.now(ZoneId.of("Asia/Shanghai")));
+	};
+	public Function<String,Long> localDateTimeStrToTimeStamp = (ldtStr)->{
+		return LocalDateTime.parse(ldtStr.replace(" ", "T")).toInstant(ZoneOffset.of("+8")).toEpochMilli();
 	};
 	public Supplier<String> createDateString = ()->{
 		return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now(ZoneId.of("Asia/Shanghai")));
@@ -42,6 +47,21 @@ public class DataMakeUtils {
 		StringBuilder sb = new StringBuilder(8);
         String a;
         char []b = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+        while(n != 0){
+            sb = sb.append(b[n%16]);
+            n = n/16;            
+        }
+        a = sb.reverse().toString();
+		return a;
+	};
+	public Function<Integer,String> makeHexStrByMax = (max)->{
+		int n = (int)(Math.random()*max);
+		StringBuilder sb = new StringBuilder(8);
+        String a;
+        char []b = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+        if(n==0) {
+        	sb = sb.append("0");
+        }
         while(n != 0){
             sb = sb.append(b[n%16]);
             n = n/16;            
@@ -81,6 +101,10 @@ public class DataMakeUtils {
 		return String.format("%.2f", Math.random()*90);
 	};
 	public static void main(String[] args) {
-		DataMakeUtils us = new DataMakeUtils();
+		DataMakeUtils dmu = new DataMakeUtils();
+		LongStream.iterate(0, x->x+1).limit(10000).forEach(cos->{
+			System.out.println(dmu.makeHexStrByMax.apply(255)+",");
+		});
+		
 	}
 }

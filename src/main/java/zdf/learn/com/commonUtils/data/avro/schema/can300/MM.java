@@ -5,40 +5,28 @@
  */
 package zdf.learn.com.commonUtils.data.avro.schema.can300;
 
-import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
-import org.apache.avro.util.Utf8;
 import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.SchemaStore;
 
+@SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class MM extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = 8145674662262340080L;
-
-
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"MM\",\"namespace\":\"zdf.learn.com.commonUtils.data.avro.schema.can300\",\"fields\":[{\"name\":\"point\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"Point\",\"fields\":[{\"name\":\"latitude\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"longitude\",\"type\":[\"null\",\"double\"],\"default\":null}]}],\"default\":null},{\"name\":\"rticLinkId\",\"type\":[\"null\",\"long\"],\"default\":null}],\"default\":null}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
-  private static final SpecificData MODEL$ = new SpecificData();
+  private static SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<MM> ENCODER =
-      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<MM>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<MM> DECODER =
-      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
-
-  /**
-   * Return the BinaryMessageEncoder instance used by this class.
-   * @return the message encoder used by this class
-   */
-  public static BinaryMessageEncoder<MM> getEncoder() {
-    return ENCODER;
-  }
+      new BinaryMessageDecoder<MM>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageDecoder instance used by this class.
-   * @return the message decoder used by this class
    */
   public static BinaryMessageDecoder<MM> getDecoder() {
     return DECODER;
@@ -47,34 +35,24 @@ public class MM extends org.apache.avro.specific.SpecificRecordBase implements o
   /**
    * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
    * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
-   * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<MM> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<MM>(MODEL$, SCHEMA$, resolver);
   }
 
-  /**
-   * Serializes this MM to a ByteBuffer.
-   * @return a buffer holding the serialized data for this instance
-   * @throws java.io.IOException if this instance could not be serialized
-   */
+  /** Serializes this MM to a ByteBuffer. */
   public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
     return ENCODER.encode(this);
   }
 
-  /**
-   * Deserializes a MM from a ByteBuffer.
-   * @param b a byte buffer holding serialized data for an instance of this class
-   * @return a MM instance decoded from the given buffer
-   * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
-   */
+  /** Deserializes a MM from a ByteBuffer. */
   public static MM fromByteBuffer(
       java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
   }
 
-  private zdf.learn.com.commonUtils.data.avro.schema.can300.Point point;
-  private java.lang.Long rticLinkId;
+  @Deprecated public zdf.learn.com.commonUtils.data.avro.schema.can300.Point point;
+  @Deprecated public java.lang.Long rticLinkId;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -93,30 +71,23 @@ public class MM extends org.apache.avro.specific.SpecificRecordBase implements o
     this.rticLinkId = rticLinkId;
   }
 
-  @Override
-  public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
-
-  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
-
   // Used by DatumWriter.  Applications should not call.
-  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return point;
     case 1: return rticLinkId;
-    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
 
   // Used by DatumReader.  Applications should not call.
-  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: point = (zdf.learn.com.commonUtils.data.avro.schema.can300.Point)value$; break;
     case 1: rticLinkId = (java.lang.Long)value$; break;
-    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
 
@@ -127,7 +98,6 @@ public class MM extends org.apache.avro.specific.SpecificRecordBase implements o
   public zdf.learn.com.commonUtils.data.avro.schema.can300.Point getPoint() {
     return point;
   }
-
 
   /**
    * Sets the value of the 'point' field.
@@ -144,7 +114,6 @@ public class MM extends org.apache.avro.specific.SpecificRecordBase implements o
   public java.lang.Long getRticLinkId() {
     return rticLinkId;
   }
-
 
   /**
    * Sets the value of the 'rticLinkId' field.
@@ -168,11 +137,7 @@ public class MM extends org.apache.avro.specific.SpecificRecordBase implements o
    * @return A new MM RecordBuilder
    */
   public static zdf.learn.com.commonUtils.data.avro.schema.can300.MM.Builder newBuilder(zdf.learn.com.commonUtils.data.avro.schema.can300.MM.Builder other) {
-    if (other == null) {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.MM.Builder();
-    } else {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.MM.Builder(other);
-    }
+    return new zdf.learn.com.commonUtils.data.avro.schema.can300.MM.Builder(other);
   }
 
   /**
@@ -181,17 +146,12 @@ public class MM extends org.apache.avro.specific.SpecificRecordBase implements o
    * @return A new MM RecordBuilder
    */
   public static zdf.learn.com.commonUtils.data.avro.schema.can300.MM.Builder newBuilder(zdf.learn.com.commonUtils.data.avro.schema.can300.MM other) {
-    if (other == null) {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.MM.Builder();
-    } else {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.MM.Builder(other);
-    }
+    return new zdf.learn.com.commonUtils.data.avro.schema.can300.MM.Builder(other);
   }
 
   /**
    * RecordBuilder for MM instances.
    */
-  @org.apache.avro.specific.AvroGenerated
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<MM>
     implements org.apache.avro.data.RecordBuilder<MM> {
 
@@ -201,7 +161,7 @@ public class MM extends org.apache.avro.specific.SpecificRecordBase implements o
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$, MODEL$);
+      super(SCHEMA$);
     }
 
     /**
@@ -212,14 +172,14 @@ public class MM extends org.apache.avro.specific.SpecificRecordBase implements o
       super(other);
       if (isValidValue(fields()[0], other.point)) {
         this.point = data().deepCopy(fields()[0].schema(), other.point);
-        fieldSetFlags()[0] = other.fieldSetFlags()[0];
+        fieldSetFlags()[0] = true;
       }
       if (other.hasPointBuilder()) {
         this.pointBuilder = zdf.learn.com.commonUtils.data.avro.schema.can300.Point.newBuilder(other.getPointBuilder());
       }
       if (isValidValue(fields()[1], other.rticLinkId)) {
         this.rticLinkId = data().deepCopy(fields()[1].schema(), other.rticLinkId);
-        fieldSetFlags()[1] = other.fieldSetFlags()[1];
+        fieldSetFlags()[1] = true;
       }
     }
 
@@ -228,7 +188,7 @@ public class MM extends org.apache.avro.specific.SpecificRecordBase implements o
      * @param other The existing instance to copy.
      */
     private Builder(zdf.learn.com.commonUtils.data.avro.schema.can300.MM other) {
-      super(SCHEMA$, MODEL$);
+            super(SCHEMA$);
       if (isValidValue(fields()[0], other.point)) {
         this.point = data().deepCopy(fields()[0].schema(), other.point);
         fieldSetFlags()[0] = true;
@@ -247,7 +207,6 @@ public class MM extends org.apache.avro.specific.SpecificRecordBase implements o
     public zdf.learn.com.commonUtils.data.avro.schema.can300.Point getPoint() {
       return point;
     }
-
 
     /**
       * Sets the value of the 'point' field.
@@ -290,7 +249,6 @@ public class MM extends org.apache.avro.specific.SpecificRecordBase implements o
      * @param value The builder instance that must be set.
      * @return This builder.
      */
-
     public zdf.learn.com.commonUtils.data.avro.schema.can300.MM.Builder setPointBuilder(zdf.learn.com.commonUtils.data.avro.schema.can300.Point.Builder value) {
       clearPoint();
       pointBuilder = value;
@@ -323,7 +281,6 @@ public class MM extends org.apache.avro.specific.SpecificRecordBase implements o
     public java.lang.Long getRticLinkId() {
       return rticLinkId;
     }
-
 
     /**
       * Sets the value of the 'rticLinkId' field.
@@ -362,19 +319,12 @@ public class MM extends org.apache.avro.specific.SpecificRecordBase implements o
       try {
         MM record = new MM();
         if (pointBuilder != null) {
-          try {
-            record.point = this.pointBuilder.build();
-          } catch (org.apache.avro.AvroMissingFieldException e) {
-            e.addParentField(record.getSchema().getField("point"));
-            throw e;
-          }
+          record.point = this.pointBuilder.build();
         } else {
           record.point = fieldSetFlags()[0] ? this.point : (zdf.learn.com.commonUtils.data.avro.schema.can300.Point) defaultValue(fields()[0]);
         }
         record.rticLinkId = fieldSetFlags()[1] ? this.rticLinkId : (java.lang.Long) defaultValue(fields()[1]);
         return record;
-      } catch (org.apache.avro.AvroMissingFieldException e) {
-        throw e;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
@@ -399,89 +349,4 @@ public class MM extends org.apache.avro.specific.SpecificRecordBase implements o
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
-  @Override protected boolean hasCustomCoders() { return true; }
-
-  @Override public void customEncode(org.apache.avro.io.Encoder out)
-    throws java.io.IOException
-  {
-    if (this.point == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      this.point.customEncode(out);
-    }
-
-    if (this.rticLinkId == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeLong(this.rticLinkId);
-    }
-
-  }
-
-  @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
-    throws java.io.IOException
-  {
-    org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
-    if (fieldOrder == null) {
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.point = null;
-      } else {
-        if (this.point == null) {
-          this.point = new zdf.learn.com.commonUtils.data.avro.schema.can300.Point();
-        }
-        this.point.customDecode(in);
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.rticLinkId = null;
-      } else {
-        this.rticLinkId = in.readLong();
-      }
-
-    } else {
-      for (int i = 0; i < 2; i++) {
-        switch (fieldOrder[i].pos()) {
-        case 0:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.point = null;
-          } else {
-            if (this.point == null) {
-              this.point = new zdf.learn.com.commonUtils.data.avro.schema.can300.Point();
-            }
-            this.point.customDecode(in);
-          }
-          break;
-
-        case 1:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.rticLinkId = null;
-          } else {
-            this.rticLinkId = in.readLong();
-          }
-          break;
-
-        default:
-          throw new java.io.IOException("Corrupt ResolvingDecoder.");
-        }
-      }
-    }
-  }
 }
-
-
-
-
-
-
-
-
-
-

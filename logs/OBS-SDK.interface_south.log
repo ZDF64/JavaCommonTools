@@ -1,0 +1,4 @@
+2023-06-02 17:55:44 956|main|WARN |Request failed, Response code: 403; Request ID: 000001887B88D564ED87A9A221B8E9F0; Request path: https://g-tbdccm-gtmc-r.obs.cn-north-4.myhuaweicloud.com/dataApp%2FvinlistforAvroAll1.csv
+2023-06-04 10:24:02 988|main|WARN |Request failed, Response code: 403; Request ID: 000001888438004FB0848D6D28D560B1; Request path: https://g-tbdccm-gtmc-r.obs.cn-north-4.myhuaweicloud.com/dataApp%2FvinlistforAvroAll0.csv
+2023-06-04 10:26:39 143|main|WARN |Encountered 1 Internal Server error(s), will retry in 100ms
+2023-06-04 10:26:39 258|main|WARN |Retrying connection that failed with error, attempt number 1 of 3

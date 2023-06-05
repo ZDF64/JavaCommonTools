@@ -5,40 +5,28 @@
  */
 package zdf.learn.com.commonUtils.data.avro.schema.can300;
 
-import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
-import org.apache.avro.util.Utf8;
 import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.SchemaStore;
 
+@SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class UpdCondition extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = -4100710729222958332L;
-
-
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"UpdCondition\",\"namespace\":\"zdf.learn.com.commonUtils.data.avro.schema.can300\",\"fields\":[{\"name\":\"updConditionId\",\"type\":[\"null\",\"long\"],\"default\":null}],\"default\":null}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
-  private static final SpecificData MODEL$ = new SpecificData();
+  private static SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<UpdCondition> ENCODER =
-      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<UpdCondition>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<UpdCondition> DECODER =
-      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
-
-  /**
-   * Return the BinaryMessageEncoder instance used by this class.
-   * @return the message encoder used by this class
-   */
-  public static BinaryMessageEncoder<UpdCondition> getEncoder() {
-    return ENCODER;
-  }
+      new BinaryMessageDecoder<UpdCondition>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageDecoder instance used by this class.
-   * @return the message decoder used by this class
    */
   public static BinaryMessageDecoder<UpdCondition> getDecoder() {
     return DECODER;
@@ -47,33 +35,23 @@ public class UpdCondition extends org.apache.avro.specific.SpecificRecordBase im
   /**
    * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
    * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
-   * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<UpdCondition> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<UpdCondition>(MODEL$, SCHEMA$, resolver);
   }
 
-  /**
-   * Serializes this UpdCondition to a ByteBuffer.
-   * @return a buffer holding the serialized data for this instance
-   * @throws java.io.IOException if this instance could not be serialized
-   */
+  /** Serializes this UpdCondition to a ByteBuffer. */
   public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
     return ENCODER.encode(this);
   }
 
-  /**
-   * Deserializes a UpdCondition from a ByteBuffer.
-   * @param b a byte buffer holding serialized data for an instance of this class
-   * @return a UpdCondition instance decoded from the given buffer
-   * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
-   */
+  /** Deserializes a UpdCondition from a ByteBuffer. */
   public static UpdCondition fromByteBuffer(
       java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
   }
 
-  private java.lang.Long updConditionId;
+  @Deprecated public java.lang.Long updConditionId;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -90,28 +68,21 @@ public class UpdCondition extends org.apache.avro.specific.SpecificRecordBase im
     this.updConditionId = updConditionId;
   }
 
-  @Override
-  public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
-
-  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
-
   // Used by DatumWriter.  Applications should not call.
-  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return updConditionId;
-    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
 
   // Used by DatumReader.  Applications should not call.
-  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: updConditionId = (java.lang.Long)value$; break;
-    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
 
@@ -122,7 +93,6 @@ public class UpdCondition extends org.apache.avro.specific.SpecificRecordBase im
   public java.lang.Long getUpdConditionId() {
     return updConditionId;
   }
-
 
   /**
    * Sets the value of the 'updConditionId' field.
@@ -146,11 +116,7 @@ public class UpdCondition extends org.apache.avro.specific.SpecificRecordBase im
    * @return A new UpdCondition RecordBuilder
    */
   public static zdf.learn.com.commonUtils.data.avro.schema.can300.UpdCondition.Builder newBuilder(zdf.learn.com.commonUtils.data.avro.schema.can300.UpdCondition.Builder other) {
-    if (other == null) {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.UpdCondition.Builder();
-    } else {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.UpdCondition.Builder(other);
-    }
+    return new zdf.learn.com.commonUtils.data.avro.schema.can300.UpdCondition.Builder(other);
   }
 
   /**
@@ -159,17 +125,12 @@ public class UpdCondition extends org.apache.avro.specific.SpecificRecordBase im
    * @return A new UpdCondition RecordBuilder
    */
   public static zdf.learn.com.commonUtils.data.avro.schema.can300.UpdCondition.Builder newBuilder(zdf.learn.com.commonUtils.data.avro.schema.can300.UpdCondition other) {
-    if (other == null) {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.UpdCondition.Builder();
-    } else {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.UpdCondition.Builder(other);
-    }
+    return new zdf.learn.com.commonUtils.data.avro.schema.can300.UpdCondition.Builder(other);
   }
 
   /**
    * RecordBuilder for UpdCondition instances.
    */
-  @org.apache.avro.specific.AvroGenerated
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<UpdCondition>
     implements org.apache.avro.data.RecordBuilder<UpdCondition> {
 
@@ -177,7 +138,7 @@ public class UpdCondition extends org.apache.avro.specific.SpecificRecordBase im
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$, MODEL$);
+      super(SCHEMA$);
     }
 
     /**
@@ -188,7 +149,7 @@ public class UpdCondition extends org.apache.avro.specific.SpecificRecordBase im
       super(other);
       if (isValidValue(fields()[0], other.updConditionId)) {
         this.updConditionId = data().deepCopy(fields()[0].schema(), other.updConditionId);
-        fieldSetFlags()[0] = other.fieldSetFlags()[0];
+        fieldSetFlags()[0] = true;
       }
     }
 
@@ -197,7 +158,7 @@ public class UpdCondition extends org.apache.avro.specific.SpecificRecordBase im
      * @param other The existing instance to copy.
      */
     private Builder(zdf.learn.com.commonUtils.data.avro.schema.can300.UpdCondition other) {
-      super(SCHEMA$, MODEL$);
+            super(SCHEMA$);
       if (isValidValue(fields()[0], other.updConditionId)) {
         this.updConditionId = data().deepCopy(fields()[0].schema(), other.updConditionId);
         fieldSetFlags()[0] = true;
@@ -211,7 +172,6 @@ public class UpdCondition extends org.apache.avro.specific.SpecificRecordBase im
     public java.lang.Long getUpdConditionId() {
       return updConditionId;
     }
-
 
     /**
       * Sets the value of the 'updConditionId' field.
@@ -251,8 +211,6 @@ public class UpdCondition extends org.apache.avro.specific.SpecificRecordBase im
         UpdCondition record = new UpdCondition();
         record.updConditionId = fieldSetFlags()[0] ? this.updConditionId : (java.lang.Long) defaultValue(fields()[0]);
         return record;
-      } catch (org.apache.avro.AvroMissingFieldException e) {
-        throw e;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
@@ -277,59 +235,4 @@ public class UpdCondition extends org.apache.avro.specific.SpecificRecordBase im
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
-  @Override protected boolean hasCustomCoders() { return true; }
-
-  @Override public void customEncode(org.apache.avro.io.Encoder out)
-    throws java.io.IOException
-  {
-    if (this.updConditionId == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeLong(this.updConditionId);
-    }
-
-  }
-
-  @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
-    throws java.io.IOException
-  {
-    org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
-    if (fieldOrder == null) {
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.updConditionId = null;
-      } else {
-        this.updConditionId = in.readLong();
-      }
-
-    } else {
-      for (int i = 0; i < 1; i++) {
-        switch (fieldOrder[i].pos()) {
-        case 0:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.updConditionId = null;
-          } else {
-            this.updConditionId = in.readLong();
-          }
-          break;
-
-        default:
-          throw new java.io.IOException("Corrupt ResolvingDecoder.");
-        }
-      }
-    }
-  }
 }
-
-
-
-
-
-
-
-
-
-

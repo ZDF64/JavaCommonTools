@@ -5,40 +5,28 @@
  */
 package zdf.learn.com.commonUtils.data.avro.schema.can300;
 
-import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
-import org.apache.avro.util.Utf8;
 import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.SchemaStore;
 
+@SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class CanFrameNumber extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = 1370490058970844372L;
-
-
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"CanFrameNumber\",\"namespace\":\"zdf.learn.com.commonUtils.data.avro.schema.can300\",\"fields\":[{\"name\":\"dataCapacityType\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"dataCapacityNumber\",\"type\":[\"null\",\"long\"],\"default\":null}],\"default\":null}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
-  private static final SpecificData MODEL$ = new SpecificData();
+  private static SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<CanFrameNumber> ENCODER =
-      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<CanFrameNumber>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<CanFrameNumber> DECODER =
-      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
-
-  /**
-   * Return the BinaryMessageEncoder instance used by this class.
-   * @return the message encoder used by this class
-   */
-  public static BinaryMessageEncoder<CanFrameNumber> getEncoder() {
-    return ENCODER;
-  }
+      new BinaryMessageDecoder<CanFrameNumber>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageDecoder instance used by this class.
-   * @return the message decoder used by this class
    */
   public static BinaryMessageDecoder<CanFrameNumber> getDecoder() {
     return DECODER;
@@ -47,34 +35,24 @@ public class CanFrameNumber extends org.apache.avro.specific.SpecificRecordBase 
   /**
    * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
    * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
-   * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<CanFrameNumber> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<CanFrameNumber>(MODEL$, SCHEMA$, resolver);
   }
 
-  /**
-   * Serializes this CanFrameNumber to a ByteBuffer.
-   * @return a buffer holding the serialized data for this instance
-   * @throws java.io.IOException if this instance could not be serialized
-   */
+  /** Serializes this CanFrameNumber to a ByteBuffer. */
   public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
     return ENCODER.encode(this);
   }
 
-  /**
-   * Deserializes a CanFrameNumber from a ByteBuffer.
-   * @param b a byte buffer holding serialized data for an instance of this class
-   * @return a CanFrameNumber instance decoded from the given buffer
-   * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
-   */
+  /** Deserializes a CanFrameNumber from a ByteBuffer. */
   public static CanFrameNumber fromByteBuffer(
       java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
   }
 
-  private java.lang.Long dataCapacityType;
-  private java.lang.Long dataCapacityNumber;
+  @Deprecated public java.lang.Long dataCapacityType;
+  @Deprecated public java.lang.Long dataCapacityNumber;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -93,30 +71,23 @@ public class CanFrameNumber extends org.apache.avro.specific.SpecificRecordBase 
     this.dataCapacityNumber = dataCapacityNumber;
   }
 
-  @Override
-  public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
-
-  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
-
   // Used by DatumWriter.  Applications should not call.
-  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return dataCapacityType;
     case 1: return dataCapacityNumber;
-    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
 
   // Used by DatumReader.  Applications should not call.
-  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: dataCapacityType = (java.lang.Long)value$; break;
     case 1: dataCapacityNumber = (java.lang.Long)value$; break;
-    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
 
@@ -127,7 +98,6 @@ public class CanFrameNumber extends org.apache.avro.specific.SpecificRecordBase 
   public java.lang.Long getDataCapacityType() {
     return dataCapacityType;
   }
-
 
   /**
    * Sets the value of the 'dataCapacityType' field.
@@ -144,7 +114,6 @@ public class CanFrameNumber extends org.apache.avro.specific.SpecificRecordBase 
   public java.lang.Long getDataCapacityNumber() {
     return dataCapacityNumber;
   }
-
 
   /**
    * Sets the value of the 'dataCapacityNumber' field.
@@ -168,11 +137,7 @@ public class CanFrameNumber extends org.apache.avro.specific.SpecificRecordBase 
    * @return A new CanFrameNumber RecordBuilder
    */
   public static zdf.learn.com.commonUtils.data.avro.schema.can300.CanFrameNumber.Builder newBuilder(zdf.learn.com.commonUtils.data.avro.schema.can300.CanFrameNumber.Builder other) {
-    if (other == null) {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.CanFrameNumber.Builder();
-    } else {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.CanFrameNumber.Builder(other);
-    }
+    return new zdf.learn.com.commonUtils.data.avro.schema.can300.CanFrameNumber.Builder(other);
   }
 
   /**
@@ -181,17 +146,12 @@ public class CanFrameNumber extends org.apache.avro.specific.SpecificRecordBase 
    * @return A new CanFrameNumber RecordBuilder
    */
   public static zdf.learn.com.commonUtils.data.avro.schema.can300.CanFrameNumber.Builder newBuilder(zdf.learn.com.commonUtils.data.avro.schema.can300.CanFrameNumber other) {
-    if (other == null) {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.CanFrameNumber.Builder();
-    } else {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.CanFrameNumber.Builder(other);
-    }
+    return new zdf.learn.com.commonUtils.data.avro.schema.can300.CanFrameNumber.Builder(other);
   }
 
   /**
    * RecordBuilder for CanFrameNumber instances.
    */
-  @org.apache.avro.specific.AvroGenerated
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<CanFrameNumber>
     implements org.apache.avro.data.RecordBuilder<CanFrameNumber> {
 
@@ -200,7 +160,7 @@ public class CanFrameNumber extends org.apache.avro.specific.SpecificRecordBase 
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$, MODEL$);
+      super(SCHEMA$);
     }
 
     /**
@@ -211,11 +171,11 @@ public class CanFrameNumber extends org.apache.avro.specific.SpecificRecordBase 
       super(other);
       if (isValidValue(fields()[0], other.dataCapacityType)) {
         this.dataCapacityType = data().deepCopy(fields()[0].schema(), other.dataCapacityType);
-        fieldSetFlags()[0] = other.fieldSetFlags()[0];
+        fieldSetFlags()[0] = true;
       }
       if (isValidValue(fields()[1], other.dataCapacityNumber)) {
         this.dataCapacityNumber = data().deepCopy(fields()[1].schema(), other.dataCapacityNumber);
-        fieldSetFlags()[1] = other.fieldSetFlags()[1];
+        fieldSetFlags()[1] = true;
       }
     }
 
@@ -224,7 +184,7 @@ public class CanFrameNumber extends org.apache.avro.specific.SpecificRecordBase 
      * @param other The existing instance to copy.
      */
     private Builder(zdf.learn.com.commonUtils.data.avro.schema.can300.CanFrameNumber other) {
-      super(SCHEMA$, MODEL$);
+            super(SCHEMA$);
       if (isValidValue(fields()[0], other.dataCapacityType)) {
         this.dataCapacityType = data().deepCopy(fields()[0].schema(), other.dataCapacityType);
         fieldSetFlags()[0] = true;
@@ -242,7 +202,6 @@ public class CanFrameNumber extends org.apache.avro.specific.SpecificRecordBase 
     public java.lang.Long getDataCapacityType() {
       return dataCapacityType;
     }
-
 
     /**
       * Sets the value of the 'dataCapacityType' field.
@@ -283,7 +242,6 @@ public class CanFrameNumber extends org.apache.avro.specific.SpecificRecordBase 
       return dataCapacityNumber;
     }
 
-
     /**
       * Sets the value of the 'dataCapacityNumber' field.
       * @param value The value of 'dataCapacityNumber'.
@@ -323,8 +281,6 @@ public class CanFrameNumber extends org.apache.avro.specific.SpecificRecordBase 
         record.dataCapacityType = fieldSetFlags()[0] ? this.dataCapacityType : (java.lang.Long) defaultValue(fields()[0]);
         record.dataCapacityNumber = fieldSetFlags()[1] ? this.dataCapacityNumber : (java.lang.Long) defaultValue(fields()[1]);
         return record;
-      } catch (org.apache.avro.AvroMissingFieldException e) {
-        throw e;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
@@ -349,83 +305,4 @@ public class CanFrameNumber extends org.apache.avro.specific.SpecificRecordBase 
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
-  @Override protected boolean hasCustomCoders() { return true; }
-
-  @Override public void customEncode(org.apache.avro.io.Encoder out)
-    throws java.io.IOException
-  {
-    if (this.dataCapacityType == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeLong(this.dataCapacityType);
-    }
-
-    if (this.dataCapacityNumber == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeLong(this.dataCapacityNumber);
-    }
-
-  }
-
-  @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
-    throws java.io.IOException
-  {
-    org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
-    if (fieldOrder == null) {
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.dataCapacityType = null;
-      } else {
-        this.dataCapacityType = in.readLong();
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.dataCapacityNumber = null;
-      } else {
-        this.dataCapacityNumber = in.readLong();
-      }
-
-    } else {
-      for (int i = 0; i < 2; i++) {
-        switch (fieldOrder[i].pos()) {
-        case 0:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.dataCapacityType = null;
-          } else {
-            this.dataCapacityType = in.readLong();
-          }
-          break;
-
-        case 1:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.dataCapacityNumber = null;
-          } else {
-            this.dataCapacityNumber = in.readLong();
-          }
-          break;
-
-        default:
-          throw new java.io.IOException("Corrupt ResolvingDecoder.");
-        }
-      }
-    }
-  }
 }
-
-
-
-
-
-
-
-
-
-

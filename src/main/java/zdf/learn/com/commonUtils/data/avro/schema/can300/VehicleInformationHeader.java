@@ -5,40 +5,28 @@
  */
 package zdf.learn.com.commonUtils.data.avro.schema.can300;
 
-import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
-import org.apache.avro.util.Utf8;
 import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.SchemaStore;
 
+@SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class VehicleInformationHeader extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = 1435747580665461684L;
-
-
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"VehicleInformationHeader\",\"namespace\":\"zdf.learn.com.commonUtils.data.avro.schema.can300\",\"fields\":[{\"name\":\"dataCapacityNumber\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"timeZoneOffset\",\"type\":[\"null\",\"int\"],\"default\":null}],\"default\":null}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
-  private static final SpecificData MODEL$ = new SpecificData();
+  private static SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<VehicleInformationHeader> ENCODER =
-      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<VehicleInformationHeader>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<VehicleInformationHeader> DECODER =
-      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
-
-  /**
-   * Return the BinaryMessageEncoder instance used by this class.
-   * @return the message encoder used by this class
-   */
-  public static BinaryMessageEncoder<VehicleInformationHeader> getEncoder() {
-    return ENCODER;
-  }
+      new BinaryMessageDecoder<VehicleInformationHeader>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageDecoder instance used by this class.
-   * @return the message decoder used by this class
    */
   public static BinaryMessageDecoder<VehicleInformationHeader> getDecoder() {
     return DECODER;
@@ -47,34 +35,24 @@ public class VehicleInformationHeader extends org.apache.avro.specific.SpecificR
   /**
    * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
    * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
-   * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<VehicleInformationHeader> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<VehicleInformationHeader>(MODEL$, SCHEMA$, resolver);
   }
 
-  /**
-   * Serializes this VehicleInformationHeader to a ByteBuffer.
-   * @return a buffer holding the serialized data for this instance
-   * @throws java.io.IOException if this instance could not be serialized
-   */
+  /** Serializes this VehicleInformationHeader to a ByteBuffer. */
   public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
     return ENCODER.encode(this);
   }
 
-  /**
-   * Deserializes a VehicleInformationHeader from a ByteBuffer.
-   * @param b a byte buffer holding serialized data for an instance of this class
-   * @return a VehicleInformationHeader instance decoded from the given buffer
-   * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
-   */
+  /** Deserializes a VehicleInformationHeader from a ByteBuffer. */
   public static VehicleInformationHeader fromByteBuffer(
       java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
   }
 
-  private java.lang.Integer dataCapacityNumber;
-  private java.lang.Integer timeZoneOffset;
+  @Deprecated public java.lang.Integer dataCapacityNumber;
+  @Deprecated public java.lang.Integer timeZoneOffset;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -93,30 +71,23 @@ public class VehicleInformationHeader extends org.apache.avro.specific.SpecificR
     this.timeZoneOffset = timeZoneOffset;
   }
 
-  @Override
-  public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
-
-  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
-
   // Used by DatumWriter.  Applications should not call.
-  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return dataCapacityNumber;
     case 1: return timeZoneOffset;
-    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
 
   // Used by DatumReader.  Applications should not call.
-  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: dataCapacityNumber = (java.lang.Integer)value$; break;
     case 1: timeZoneOffset = (java.lang.Integer)value$; break;
-    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
 
@@ -127,7 +98,6 @@ public class VehicleInformationHeader extends org.apache.avro.specific.SpecificR
   public java.lang.Integer getDataCapacityNumber() {
     return dataCapacityNumber;
   }
-
 
   /**
    * Sets the value of the 'dataCapacityNumber' field.
@@ -144,7 +114,6 @@ public class VehicleInformationHeader extends org.apache.avro.specific.SpecificR
   public java.lang.Integer getTimeZoneOffset() {
     return timeZoneOffset;
   }
-
 
   /**
    * Sets the value of the 'timeZoneOffset' field.
@@ -168,11 +137,7 @@ public class VehicleInformationHeader extends org.apache.avro.specific.SpecificR
    * @return A new VehicleInformationHeader RecordBuilder
    */
   public static zdf.learn.com.commonUtils.data.avro.schema.can300.VehicleInformationHeader.Builder newBuilder(zdf.learn.com.commonUtils.data.avro.schema.can300.VehicleInformationHeader.Builder other) {
-    if (other == null) {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.VehicleInformationHeader.Builder();
-    } else {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.VehicleInformationHeader.Builder(other);
-    }
+    return new zdf.learn.com.commonUtils.data.avro.schema.can300.VehicleInformationHeader.Builder(other);
   }
 
   /**
@@ -181,17 +146,12 @@ public class VehicleInformationHeader extends org.apache.avro.specific.SpecificR
    * @return A new VehicleInformationHeader RecordBuilder
    */
   public static zdf.learn.com.commonUtils.data.avro.schema.can300.VehicleInformationHeader.Builder newBuilder(zdf.learn.com.commonUtils.data.avro.schema.can300.VehicleInformationHeader other) {
-    if (other == null) {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.VehicleInformationHeader.Builder();
-    } else {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.VehicleInformationHeader.Builder(other);
-    }
+    return new zdf.learn.com.commonUtils.data.avro.schema.can300.VehicleInformationHeader.Builder(other);
   }
 
   /**
    * RecordBuilder for VehicleInformationHeader instances.
    */
-  @org.apache.avro.specific.AvroGenerated
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<VehicleInformationHeader>
     implements org.apache.avro.data.RecordBuilder<VehicleInformationHeader> {
 
@@ -200,7 +160,7 @@ public class VehicleInformationHeader extends org.apache.avro.specific.SpecificR
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$, MODEL$);
+      super(SCHEMA$);
     }
 
     /**
@@ -211,11 +171,11 @@ public class VehicleInformationHeader extends org.apache.avro.specific.SpecificR
       super(other);
       if (isValidValue(fields()[0], other.dataCapacityNumber)) {
         this.dataCapacityNumber = data().deepCopy(fields()[0].schema(), other.dataCapacityNumber);
-        fieldSetFlags()[0] = other.fieldSetFlags()[0];
+        fieldSetFlags()[0] = true;
       }
       if (isValidValue(fields()[1], other.timeZoneOffset)) {
         this.timeZoneOffset = data().deepCopy(fields()[1].schema(), other.timeZoneOffset);
-        fieldSetFlags()[1] = other.fieldSetFlags()[1];
+        fieldSetFlags()[1] = true;
       }
     }
 
@@ -224,7 +184,7 @@ public class VehicleInformationHeader extends org.apache.avro.specific.SpecificR
      * @param other The existing instance to copy.
      */
     private Builder(zdf.learn.com.commonUtils.data.avro.schema.can300.VehicleInformationHeader other) {
-      super(SCHEMA$, MODEL$);
+            super(SCHEMA$);
       if (isValidValue(fields()[0], other.dataCapacityNumber)) {
         this.dataCapacityNumber = data().deepCopy(fields()[0].schema(), other.dataCapacityNumber);
         fieldSetFlags()[0] = true;
@@ -242,7 +202,6 @@ public class VehicleInformationHeader extends org.apache.avro.specific.SpecificR
     public java.lang.Integer getDataCapacityNumber() {
       return dataCapacityNumber;
     }
-
 
     /**
       * Sets the value of the 'dataCapacityNumber' field.
@@ -283,7 +242,6 @@ public class VehicleInformationHeader extends org.apache.avro.specific.SpecificR
       return timeZoneOffset;
     }
 
-
     /**
       * Sets the value of the 'timeZoneOffset' field.
       * @param value The value of 'timeZoneOffset'.
@@ -323,8 +281,6 @@ public class VehicleInformationHeader extends org.apache.avro.specific.SpecificR
         record.dataCapacityNumber = fieldSetFlags()[0] ? this.dataCapacityNumber : (java.lang.Integer) defaultValue(fields()[0]);
         record.timeZoneOffset = fieldSetFlags()[1] ? this.timeZoneOffset : (java.lang.Integer) defaultValue(fields()[1]);
         return record;
-      } catch (org.apache.avro.AvroMissingFieldException e) {
-        throw e;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
@@ -349,83 +305,4 @@ public class VehicleInformationHeader extends org.apache.avro.specific.SpecificR
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
-  @Override protected boolean hasCustomCoders() { return true; }
-
-  @Override public void customEncode(org.apache.avro.io.Encoder out)
-    throws java.io.IOException
-  {
-    if (this.dataCapacityNumber == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeInt(this.dataCapacityNumber);
-    }
-
-    if (this.timeZoneOffset == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeInt(this.timeZoneOffset);
-    }
-
-  }
-
-  @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
-    throws java.io.IOException
-  {
-    org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
-    if (fieldOrder == null) {
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.dataCapacityNumber = null;
-      } else {
-        this.dataCapacityNumber = in.readInt();
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.timeZoneOffset = null;
-      } else {
-        this.timeZoneOffset = in.readInt();
-      }
-
-    } else {
-      for (int i = 0; i < 2; i++) {
-        switch (fieldOrder[i].pos()) {
-        case 0:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.dataCapacityNumber = null;
-          } else {
-            this.dataCapacityNumber = in.readInt();
-          }
-          break;
-
-        case 1:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.timeZoneOffset = null;
-          } else {
-            this.timeZoneOffset = in.readInt();
-          }
-          break;
-
-        default:
-          throw new java.io.IOException("Corrupt ResolvingDecoder.");
-        }
-      }
-    }
-  }
 }
-
-
-
-
-
-
-
-
-
-

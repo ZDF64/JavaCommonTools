@@ -16,27 +16,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+import java.util.function.Predicate;
 import java.util.zip.GZIPInputStream;
-
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson2.JSONObject;
 
 import lombok.extern.slf4j.Slf4j;
-import zdf.learn.com.commonUtils.AppConfig;
-import zdf.learn.com.commonUtils.tags.RetryCovery;
-import zdf.learn.com.commonUtils.tags.TimerCut;
-import zdf.learn.com.commonUtils.tags.enums.MonitorType;
+import zdf.learn.com.commonUtils.data.avro.schema.MaTripPojo;
+import zdf.learn.com.commonUtils.tools.ComputeTools;
 
 @Slf4j
-@Component
-@EnableAutoConfiguration
-@EnableAspectJAutoProxy
 public class DefangFileHandle {
 
 	public String WirteUrl;
@@ -44,18 +33,17 @@ public class DefangFileHandle {
 	public String fileType;
 	public String fileName;
 
-	
 	/**
 	 * 读取指定文件内容 tips:按行读取
 	 * 
 	 * @param FileUrl 传入文件地址
 	 * @return
 	 */
-	@TimerCut(name="readToLine",type = MonitorType.TIMER)
 	public List<String> readToLine(String FileUrl) {
 		File file = new File(FileUrl);
 		return readToLine(file);
 	}
+
 	/**
 	 * 传入文件类
 	 * 
@@ -91,6 +79,7 @@ public class DefangFileHandle {
 		}
 		return returnList;
 	}
+
 	public List<String> readToLine(InputStream fis) {
 		List<String> returnList = new ArrayList<String>();
 		BufferedReader reader = null;
@@ -118,7 +107,8 @@ public class DefangFileHandle {
 		}
 		return returnList;
 	}
-	public void readToLine(File file,Consumer<String> consumer) {
+
+	public void readToLine(File file, Consumer<String> consumer) {
 		FileInputStream in = null;
 		BufferedReader reader = null;
 		try {
@@ -145,30 +135,30 @@ public class DefangFileHandle {
 		}
 	}
 
-	@TimerCut(name="readJsonToMap",type = MonitorType.TIMER)
 	public JSONObject readJsonToMap(String url) throws Exception {
 		File f = new File("D:\\home\\apuser\\toyata-hcr-devOpsTool\\dbmanager\\querySql.json");
-		if(!f.exists()) {
+		if (!f.exists()) {
 			throw new FileNotFoundException("sql json file is unreachable");
 		}
 		try (FileInputStream filesIn = new FileInputStream(f)) {
 			DefangFileHandle df = new DefangFileHandle();
 			byte[] rb = new byte[8];
 			StringBuilder sbuilder = new StringBuilder();
-			while(filesIn.read(rb)>=0) {
+			while (filesIn.read(rb) >= 0) {
 				sbuilder.append(new String(rb));
 				rb = new byte[16];
 			}
-			
+
 			filesIn.close();
 			return JSONObject.parse(sbuilder.toString());
-		}catch (Exception e) {
+		} catch (Exception e) {
 			throw e;
 		}
 	}
-	
+
 	/**
 	 * TODO
+	 * 
 	 * @return
 	 */
 	public String readToString(String url) {
@@ -176,12 +166,12 @@ public class DefangFileHandle {
 		File file = new File(url);
 		StringBuilder sbuilder = new StringBuilder();
 		InputStream in = null;
-		try (FileInputStream filesIn = new FileInputStream(file)){
+		try (FileInputStream filesIn = new FileInputStream(file)) {
 			byte[] rb = new byte[8];
 			/**
 			 * 循环，每次抓取8bit数据
 			 */
-			while(filesIn.read(rb)>=0) {
+			while (filesIn.read(rb) >= 0) {
 				sbuilder.append(new String(rb));
 				rb = new byte[8];
 			}
@@ -191,7 +181,6 @@ public class DefangFileHandle {
 			e.printStackTrace();
 			return "";
 		}
-		
 
 		return sbuilder.toString();
 	}
@@ -203,52 +192,53 @@ public class DefangFileHandle {
 	 * @param lineSplite
 	 * @return
 	 */
-	public String toWrite(List<String> outPutStrList, String lineSplite,boolean isContinue) {
+	public String toWrite(List<String> outPutStrList, String lineSplite, boolean isContinue) {
 		try {
 			if (WirteUrl == null || WirteUrl.isEmpty()) {
 				log.error("dfTool-error-009, 文件路径为空");
 				return "";
 			}
 			File makeFile = new File(WirteUrl);
-			if(!makeFile.isDirectory()) {
+			if (!makeFile.isDirectory()) {
 				makeFile.mkdirs();
 			}
-			String tagetUrl = WirteUrl  + fileName + "." + fileType;
-			log.info("tagetUrl:::{}",tagetUrl);
-			
+			String tagetUrl = WirteUrl + fileName + "." + fileType;
+			log.info("tagetUrl:::{}", tagetUrl);
+
 			toWrite(outPutStrList, tagetUrl, lineSplite, isContinue);
 		} catch (Exception e) {
-			log.error("dfTool-error-010, toWrite异常,{}",e.getMessage());
+			log.error("dfTool-error-010, toWrite异常,{}", e.getMessage());
 			e.printStackTrace();
-		} 
-		
+		}
+
 		return "";
 	}
-	@RetryCovery(name = "testCut")
-	public String testCut(String a,String b,String c) throws Exception {
-		int flg = (int)(Math.random()*20%7);
-		System.out.println(String.format("a:%s,b:%s,c:%s", a,b,c));
-		System.out.println("flg:::"+  flg);
-		if( flg == 1) {
+
+	public String testCut(String a, String b, String c) throws Exception {
+		int flg = (int) (Math.random() * 20 % 7);
+		System.out.println(String.format("a:%s,b:%s,c:%s", a, b, c));
+		System.out.println("flg:::" + flg);
+		if (flg == 1) {
 			System.out.println("success");
 			return "success";
-		}else {
+		} else {
 			System.out.println("error");
 			throw new Exception("失败了");
 		}
-		
+
 	}
-	public String toWrite(String outPutStr,String url,boolean isContinue) {
+
+	public String toWrite(String outPutStr, String url, boolean isContinue) {
 		BufferedWriter out = null;
 		try {
 			if (url == null || url.isEmpty()) {
 				url = "/home/apuser/defults.log";
 			}
 			File fs = new File(url);
-			if(fs.isDirectory()) {
+			if (fs.isDirectory()) {
 				url = url + "defult.log";
 				fs = new File(url);
-			}else if(!fs.exists()) {
+			} else if (!fs.exists()) {
 				fs.createNewFile();
 			}
 			out = new BufferedWriter(new FileWriter(url, isContinue));
@@ -256,7 +246,7 @@ public class DefangFileHandle {
 			out.newLine();
 			out.close();
 		} catch (IOException e) {
-			log.error("dfTool-error-1010, toWrite异常,{}" , e.getMessage());
+			log.error("dfTool-error-1010, toWrite异常,{}", e.getMessage());
 			e.printStackTrace();
 		} finally {
 			if (out != null) {
@@ -268,8 +258,9 @@ public class DefangFileHandle {
 			}
 		}
 		return outPutStr;
-		
+
 	}
+
 	/**
 	 * 输出长多行模式
 	 * 
@@ -277,13 +268,13 @@ public class DefangFileHandle {
 	 * @param lineSplite
 	 * @return
 	 */
-	public String toWrite(List<String> outPutStrList,String url, String lineSplite,boolean isContinue) {
+	public String toWrite(List<String> outPutStrList, String url, String lineSplite, boolean isContinue) {
 		BufferedWriter out = null;
 		try {
 			if (url == null || url.isEmpty()) {
 				log.error("dfTool-error-1009, 文件路径为空");
 				return "";
-			}			
+			}
 			out = new BufferedWriter(new FileWriter(url, isContinue));
 			out.write(lineSplite);
 			out.newLine();
@@ -293,7 +284,7 @@ public class DefangFileHandle {
 			}
 			out.close();
 		} catch (IOException e) {
-			log.error("dfTool-error-1010, toWrite异常,{}" , e.getMessage());
+			log.error("dfTool-error-1010, toWrite异常,{}", e.getMessage());
 			e.printStackTrace();
 		} finally {
 			if (out != null) {
@@ -306,6 +297,7 @@ public class DefangFileHandle {
 		}
 		return "";
 	}
+
 	/**
 	 * 输出成表格形式
 	 * 
@@ -313,20 +305,20 @@ public class DefangFileHandle {
 	 * @param outPutMap
 	 * @return
 	 */
-	public String toWriteAsTable(List<String> titleList, Map<String, List<String>> outPutMap,String baseName) {
+	public String toWriteAsTable(List<String> titleList, Map<String, List<String>> outPutMap, String baseName) {
 		BufferedWriter out = null;
 		try {
 			if (WirteUrl == null || WirteUrl.isEmpty()) {
 				return "";
 			}
 			File makeFile = new File(WirteUrl);
-			if(!makeFile.isDirectory()) {
+			if (!makeFile.isDirectory()) {
 				makeFile.mkdirs();
 			}
-			String tagetUrl = WirteUrl  + fileName + "." + fileType;
+			String tagetUrl = WirteUrl + fileName + "." + fileType;
 			out = new BufferedWriter(new FileWriter(tagetUrl, true));
 
-			String rsStrTitle = baseName+",";
+			String rsStrTitle = baseName + ",";
 			for (String str : titleList) {
 				rsStrTitle = rsStrTitle + str + ",";
 			}
@@ -391,8 +383,10 @@ public class DefangFileHandle {
 
 		return returnList;
 	}
+
 	/**
 	 * 清除文件内容
+	 * 
 	 * @return
 	 */
 	public String clearTextFile() {
@@ -403,10 +397,10 @@ public class DefangFileHandle {
 				return "";
 			}
 			File makeFile = new File(WirteUrl);
-			if(!makeFile.isDirectory()) {
+			if (!makeFile.isDirectory()) {
 				makeFile.mkdirs();
 			}
-			String tagetUrl = WirteUrl  + fileName + "." + fileType;
+			String tagetUrl = WirteUrl + fileName + "." + fileType;
 			out = new BufferedWriter(new FileWriter(tagetUrl, false));
 			out.write("");
 			out.newLine();
@@ -425,73 +419,133 @@ public class DefangFileHandle {
 		}
 		return "";
 	}
+
+	/**
+	 * 删除文件
+	 * 
+	 * @return
+	 */
 	public boolean deleteFile() {
 		if (WirteUrl == null || WirteUrl.isEmpty()) {
 			log.error("dfTool-error-018, 文件路径为空");
 			return false;
 		}
-		String tagetUrl = WirteUrl  + fileName + "." + fileType;
+		String tagetUrl = WirteUrl + fileName + "." + fileType;
 		File delFile = new File(tagetUrl);
 		try {
 			delFile.deleteOnExit();
 		} catch (Exception e) {
-			log.error("dfTool-error-019, 文件删除失败{}",e);
+			log.error("dfTool-error-019, 文件删除失败{}", e);
 			return false;
 		}
 		return true;
-		
+
 	}
+
 	/**
-	 * 行数统计
+	 * 分割文件
+	 * 
 	 * @param url
-	 * @param baseType
+	 * @param size "D:\\home\\apuser\\datamake\\vinlistforAvroAll.csv"
 	 */
-	public static void fileNumberCount(String url,String baseType) {
-		File dirFiles = new File(url);
-		AtomicLong lines = new AtomicLong(0);
+	public void splitFile(String url, int size) {
 		try {
-			if(dirFiles.isDirectory()) {
-				File[] files = dirFiles.listFiles();
-				for(File f : files) {
-					lines.getAndAdd(Files.lines(f.toPath()).count())  ;
+			FileInputStream ins = new FileInputStream(new File(url));
+			byte[] b = new byte[4];
+			BufferedReader reader = new BufferedReader(new InputStreamReader(ins));
+			String tempStr;
+			int part = 0;
+			int sizeInner = 0;
+			int lines = 0;
+			while ((tempStr = reader.readLine()) != null) {
+				try {
+					if (sizeInner < size) {
+						if(lines>13500000) {
+							toWrite(tempStr, url.substring(0, url.lastIndexOf(".")) + part + url.substring(url.lastIndexOf("."), url.length()), true);
+						}
+						sizeInner++;
+					} else {
+						part++;
+						if(lines>13500000) {
+							toWrite(tempStr, url.substring(0, url.lastIndexOf(".")) + part + url.substring(url.lastIndexOf("."), url.length()), true);
+						}
+						sizeInner = 0;
+					}
+					lines ++;
+				} catch (Exception e) {
+					System.out.println("error line:" + tempStr);
 				}
-				
 			}
-			System.out.println(baseType+"行数:::"+lines);
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		
-	}
-	
-	
-	public static void main(String[] args) {
-//		
-//		file.WirteUrl = "D:\\home\\apuser\\logDir\\";
-//		file.fileName = "HCR_20200617012216";
-//		file.fileType = "csv";
-//		List<String> inputStr = new ArrayList<String>();
-//		inputStr.add("I,10101,JTHBT1B19K2045956,2020-06-17 17:22:14");
-//		inputStr.add("I,10101,JTHBT1B19K2045956,2020-06-17 17:22:14");
-//		inputStr.add("I,10101,JTHBT1B19K2045956,2020-06-17 17:22:14");
-//		inputStr.add("I,10101,JTHBT1B19K2045956,2020-06-17 17:22:14");
-//		
-		
-		System.out.println("=======START=======");
-		
-		try {
-			AnnotationConfigApplicationContext  application = new AnnotationConfigApplicationContext(AppConfig.class);
-			DefangFileHandle file = (DefangFileHandle) application.getBean("dfTools");
-			List<String> rsList = file.readToLine("E:\\console\\HCR\\TMCI-QA\\gtmc_vinlist_20230506.csv");
-			System.out.println(rsList.size());
-			rsList.parallelStream().map(str->{
-				return str.split(",")[1];
-				}).forEach(s->{
-				file.toWrite(s, "E:\\console\\HCR\\TMCI-QA\\gtmc_vinlist_after.csv", true);
-			});
+//			List<String> allData = new ArrayList<>();
+//			while ((tempStr = reader.readLine()) != null) {
+//				allData.add(tempStr);
+//			}
+//			List<List<String>>  matrixList = ComputeTools.SplitList(100, allData);
+//			for(List<String> child : matrixList){
+//				int partcnt = part;
+//				new Thread(()->{
+//					for(String tempString : child) {
+//						toWrite(tempString, "D:\\home\\apuser\\data\\splits\\vinList"+partcnt+url.substring( url.lastIndexOf("."),url.length()), true);
+//					}
+//					
+//				}).start();
+//				part ++;
+//			}
+//			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * 行数统计
+	 * 
+	 * @param url
+	 * @param baseType
+	 */
+	public static void fileNumberCount(String url, String baseType) {
+		File dirFiles = new File(url);
+		AtomicLong lines = new AtomicLong(0);
+		try {
+			if (dirFiles.isDirectory()) {
+				File[] files = dirFiles.listFiles();
+				for (File f : files) {
+					lines.getAndAdd(Files.lines(f.toPath()).count());
+				}
+
+			}
+			System.out.println(baseType + "行数:::" + lines);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+	}
+	public static void findAllFiles(String rootPath, Predicate<String> typeCheck) {
+		File rootFs = new File(rootPath);
+		if(rootFs.isDirectory()) {
+			File[] childFs = rootFs.listFiles();
+			for(File fs : childFs) {
+				if(fs.isDirectory()) {
+					findAllFiles(fs.getPath(),typeCheck);
+				}else {
+					if(typeCheck.test(fs.getPath())) {
+						System.out.println(fs.getPath());
+					}
+					
+				}
+			}
+		}else {
+			System.out.println(rootFs.getPath() +""+rootFs.getName());
+		}
+	}
+	
+	public static void main(String[] args) {
+		System.out.println("=======START=======");
+		DefangFileHandle deTools = new DefangFileHandle();
+		DefangFileHandle.findAllFiles("E:\\console\\can-a\\data\\outside\\",fileUrl->{
+			return fileUrl.endsWith(".parquet");
+		});
 		System.out.println("========FIN========");
 	}
 }

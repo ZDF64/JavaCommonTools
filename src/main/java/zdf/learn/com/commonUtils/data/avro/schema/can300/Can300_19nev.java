@@ -5,40 +5,28 @@
  */
 package zdf.learn.com.commonUtils.data.avro.schema.can300;
 
-import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
-import org.apache.avro.util.Utf8;
 import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.SchemaStore;
 
+@SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class Can300_19nev extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = -8379525874928332180L;
-
-
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Can300_19nev\",\"namespace\":\"zdf.learn.com.commonUtils.data.avro.schema.can300\",\"fields\":[{\"name\":\"headers\",\"type\":[\"null\",{\"type\":\"map\",\"values\":\"string\"}],\"default\":null},{\"name\":\"correlationId\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"dispatchModelType\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"groupNumber\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"vehicleName\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"body\",\"type\":{\"type\":\"record\",\"name\":\"Dcm19Message\",\"fields\":[{\"name\":\"commonHeader\",\"type\":{\"type\":\"record\",\"name\":\"CommonHeader\",\"fields\":[{\"name\":\"dataVersion\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"commandType\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"destinationInformation\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"formatInformation\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"dcuOrDcuMeuClassification\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"dcu\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"meu\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"communicationModeFlag\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"electricPfInformation\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"geodeticSystemInformation\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"mapBasedVersion\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"size\",\"type\":[\"null\",\"long\"],\"default\":null}]}},{\"name\":\"updCondition\",\"type\":{\"type\":\"record\",\"name\":\"UpdCondition\",\"fields\":[{\"name\":\"updConditionId\",\"type\":[\"null\",\"long\"],\"default\":null}],\"default\":null}},{\"name\":\"vehicleInformationHeader\",\"type\":{\"type\":\"record\",\"name\":\"VehicleInformationHeader\",\"fields\":[{\"name\":\"dataCapacityNumber\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"timeZoneOffset\",\"type\":[\"null\",\"int\"],\"default\":null}],\"default\":null}},{\"name\":\"dataCapacityList\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"DataCapacity\",\"fields\":[{\"name\":\"timeAndCoordinate\",\"type\":{\"type\":\"record\",\"name\":\"TimeAndCoordinate\",\"fields\":[{\"name\":\"gps\",\"type\":{\"type\":\"record\",\"name\":\"GPS\",\"fields\":[{\"name\":\"gpsDate\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"point\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"Point\",\"fields\":[{\"name\":\"latitude\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"longitude\",\"type\":[\"null\",\"double\"],\"default\":null}]}]},{\"name\":\"pdop\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"hdop\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"vdop\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"measureCount\",\"type\":[\"null\",\"long\"],\"default\":null}],\"default\":null}},{\"name\":\"mm\",\"type\":{\"type\":\"record\",\"name\":\"MM\",\"fields\":[{\"name\":\"point\",\"type\":[\"null\",\"Point\"],\"default\":null},{\"name\":\"rticLinkId\",\"type\":[\"null\",\"long\"],\"default\":null}],\"default\":null}}],\"default\":null}},{\"name\":\"canFrameNumber\",\"type\":{\"type\":\"record\",\"name\":\"CanFrameNumber\",\"fields\":[{\"name\":\"dataCapacityType\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"dataCapacityNumber\",\"type\":[\"null\",\"long\"],\"default\":null}],\"default\":null}},{\"name\":\"canInformationList\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"CanInformationList\",\"fields\":[{\"name\":\"canId\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"dataLengthAfterCompression\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"collectType\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"canType\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"time\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"outsideUseDataMap\",\"type\":[\"null\",{\"type\":\"map\",\"values\":{\"type\":\"map\",\"values\":\"string\"}}],\"default\":null}],\"default\":null},\"java-class\":\"java.util.List\"}},{\"name\":\"type3OutsideUseData\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"Type3OutsideUseData\",\"fields\":[{\"name\":\"dateTime\",\"type\":\"string\"},{\"name\":\"label\",\"type\":\"string\"},{\"name\":\"value\",\"type\":\"string\"},{\"name\":\"unit\",\"type\":\"string\"}],\"default\":null},\"java-class\":\"java.util.List\"}}],\"default\":null},\"java-class\":\"java.util.List\"}}],\"default\":null}},{\"name\":\"decoderWarningList\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"DecoderWarningList\",\"namespace\":\"zdf.learn.com.commonUtils.data.avro.schema.can300_19nev\",\"fields\":[{\"name\":\"message\",\"type\":\"string\"},{\"name\":\"type\",\"type\":[\"null\",{\"type\":\"enum\",\"name\":\"DecodeWarningStatus\",\"symbols\":[\"OUT_OF_RANGE\",\"ABNORMAL\",\"INVALID\",\"UNSETTLED\",\"INDETERMINATE\",\"UNIT_ERROR\",\"NULL_OR_INVALID\",\"VERSION_ERROR\",\"UNCORRECTION\",\"ABNORMAL_INVALID\",\"DEFAULT_NOT_SET\",\"CALCULATE_ERROR\"]}]}],\"default\":null},\"java-class\":\"java.util.List\"}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
-  private static final SpecificData MODEL$ = new SpecificData();
+  private static SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<Can300_19nev> ENCODER =
-      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<Can300_19nev>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<Can300_19nev> DECODER =
-      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
-
-  /**
-   * Return the BinaryMessageEncoder instance used by this class.
-   * @return the message encoder used by this class
-   */
-  public static BinaryMessageEncoder<Can300_19nev> getEncoder() {
-    return ENCODER;
-  }
+      new BinaryMessageDecoder<Can300_19nev>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageDecoder instance used by this class.
-   * @return the message decoder used by this class
    */
   public static BinaryMessageDecoder<Can300_19nev> getDecoder() {
     return DECODER;
@@ -47,39 +35,29 @@ public class Can300_19nev extends org.apache.avro.specific.SpecificRecordBase im
   /**
    * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
    * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
-   * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<Can300_19nev> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<Can300_19nev>(MODEL$, SCHEMA$, resolver);
   }
 
-  /**
-   * Serializes this Can300_19nev to a ByteBuffer.
-   * @return a buffer holding the serialized data for this instance
-   * @throws java.io.IOException if this instance could not be serialized
-   */
+  /** Serializes this Can300_19nev to a ByteBuffer. */
   public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
     return ENCODER.encode(this);
   }
 
-  /**
-   * Deserializes a Can300_19nev from a ByteBuffer.
-   * @param b a byte buffer holding serialized data for an instance of this class
-   * @return a Can300_19nev instance decoded from the given buffer
-   * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
-   */
+  /** Deserializes a Can300_19nev from a ByteBuffer. */
   public static Can300_19nev fromByteBuffer(
       java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
   }
 
-  private java.util.Map<java.lang.CharSequence,java.lang.CharSequence> headers;
-  private java.lang.CharSequence correlationId;
-  private java.lang.CharSequence dispatchModelType;
-  private java.lang.CharSequence groupNumber;
-  private java.lang.CharSequence vehicleName;
-  private zdf.learn.com.commonUtils.data.avro.schema.can300.Dcm19Message body;
-  private java.util.List<zdf.learn.com.commonUtils.data.avro.schema.can300_19nev.DecoderWarningList> decoderWarningList;
+  @Deprecated public java.util.Map<java.lang.CharSequence,java.lang.CharSequence> headers;
+  @Deprecated public java.lang.CharSequence correlationId;
+  @Deprecated public java.lang.CharSequence dispatchModelType;
+  @Deprecated public java.lang.CharSequence groupNumber;
+  @Deprecated public java.lang.CharSequence vehicleName;
+  @Deprecated public zdf.learn.com.commonUtils.data.avro.schema.can300.Dcm19Message body;
+  @Deprecated public java.util.List<zdf.learn.com.commonUtils.data.avro.schema.can300_19nev.DecoderWarningList> decoderWarningList;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -108,14 +86,8 @@ public class Can300_19nev extends org.apache.avro.specific.SpecificRecordBase im
     this.decoderWarningList = decoderWarningList;
   }
 
-  @Override
-  public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
-
-  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
-
   // Used by DatumWriter.  Applications should not call.
-  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return headers;
@@ -125,12 +97,11 @@ public class Can300_19nev extends org.apache.avro.specific.SpecificRecordBase im
     case 4: return vehicleName;
     case 5: return body;
     case 6: return decoderWarningList;
-    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
 
   // Used by DatumReader.  Applications should not call.
-  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
@@ -141,7 +112,7 @@ public class Can300_19nev extends org.apache.avro.specific.SpecificRecordBase im
     case 4: vehicleName = (java.lang.CharSequence)value$; break;
     case 5: body = (zdf.learn.com.commonUtils.data.avro.schema.can300.Dcm19Message)value$; break;
     case 6: decoderWarningList = (java.util.List<zdf.learn.com.commonUtils.data.avro.schema.can300_19nev.DecoderWarningList>)value$; break;
-    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
 
@@ -152,7 +123,6 @@ public class Can300_19nev extends org.apache.avro.specific.SpecificRecordBase im
   public java.util.Map<java.lang.CharSequence,java.lang.CharSequence> getHeaders() {
     return headers;
   }
-
 
   /**
    * Sets the value of the 'headers' field.
@@ -170,7 +140,6 @@ public class Can300_19nev extends org.apache.avro.specific.SpecificRecordBase im
     return correlationId;
   }
 
-
   /**
    * Sets the value of the 'correlationId' field.
    * @param value the value to set.
@@ -186,7 +155,6 @@ public class Can300_19nev extends org.apache.avro.specific.SpecificRecordBase im
   public java.lang.CharSequence getDispatchModelType() {
     return dispatchModelType;
   }
-
 
   /**
    * Sets the value of the 'dispatchModelType' field.
@@ -204,7 +172,6 @@ public class Can300_19nev extends org.apache.avro.specific.SpecificRecordBase im
     return groupNumber;
   }
 
-
   /**
    * Sets the value of the 'groupNumber' field.
    * @param value the value to set.
@@ -220,7 +187,6 @@ public class Can300_19nev extends org.apache.avro.specific.SpecificRecordBase im
   public java.lang.CharSequence getVehicleName() {
     return vehicleName;
   }
-
 
   /**
    * Sets the value of the 'vehicleName' field.
@@ -238,7 +204,6 @@ public class Can300_19nev extends org.apache.avro.specific.SpecificRecordBase im
     return body;
   }
 
-
   /**
    * Sets the value of the 'body' field.
    * @param value the value to set.
@@ -254,7 +219,6 @@ public class Can300_19nev extends org.apache.avro.specific.SpecificRecordBase im
   public java.util.List<zdf.learn.com.commonUtils.data.avro.schema.can300_19nev.DecoderWarningList> getDecoderWarningList() {
     return decoderWarningList;
   }
-
 
   /**
    * Sets the value of the 'decoderWarningList' field.
@@ -278,11 +242,7 @@ public class Can300_19nev extends org.apache.avro.specific.SpecificRecordBase im
    * @return A new Can300_19nev RecordBuilder
    */
   public static zdf.learn.com.commonUtils.data.avro.schema.can300.Can300_19nev.Builder newBuilder(zdf.learn.com.commonUtils.data.avro.schema.can300.Can300_19nev.Builder other) {
-    if (other == null) {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.Can300_19nev.Builder();
-    } else {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.Can300_19nev.Builder(other);
-    }
+    return new zdf.learn.com.commonUtils.data.avro.schema.can300.Can300_19nev.Builder(other);
   }
 
   /**
@@ -291,17 +251,12 @@ public class Can300_19nev extends org.apache.avro.specific.SpecificRecordBase im
    * @return A new Can300_19nev RecordBuilder
    */
   public static zdf.learn.com.commonUtils.data.avro.schema.can300.Can300_19nev.Builder newBuilder(zdf.learn.com.commonUtils.data.avro.schema.can300.Can300_19nev other) {
-    if (other == null) {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.Can300_19nev.Builder();
-    } else {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.Can300_19nev.Builder(other);
-    }
+    return new zdf.learn.com.commonUtils.data.avro.schema.can300.Can300_19nev.Builder(other);
   }
 
   /**
    * RecordBuilder for Can300_19nev instances.
    */
-  @org.apache.avro.specific.AvroGenerated
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<Can300_19nev>
     implements org.apache.avro.data.RecordBuilder<Can300_19nev> {
 
@@ -316,7 +271,7 @@ public class Can300_19nev extends org.apache.avro.specific.SpecificRecordBase im
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$, MODEL$);
+      super(SCHEMA$);
     }
 
     /**
@@ -327,34 +282,34 @@ public class Can300_19nev extends org.apache.avro.specific.SpecificRecordBase im
       super(other);
       if (isValidValue(fields()[0], other.headers)) {
         this.headers = data().deepCopy(fields()[0].schema(), other.headers);
-        fieldSetFlags()[0] = other.fieldSetFlags()[0];
+        fieldSetFlags()[0] = true;
       }
       if (isValidValue(fields()[1], other.correlationId)) {
         this.correlationId = data().deepCopy(fields()[1].schema(), other.correlationId);
-        fieldSetFlags()[1] = other.fieldSetFlags()[1];
+        fieldSetFlags()[1] = true;
       }
       if (isValidValue(fields()[2], other.dispatchModelType)) {
         this.dispatchModelType = data().deepCopy(fields()[2].schema(), other.dispatchModelType);
-        fieldSetFlags()[2] = other.fieldSetFlags()[2];
+        fieldSetFlags()[2] = true;
       }
       if (isValidValue(fields()[3], other.groupNumber)) {
         this.groupNumber = data().deepCopy(fields()[3].schema(), other.groupNumber);
-        fieldSetFlags()[3] = other.fieldSetFlags()[3];
+        fieldSetFlags()[3] = true;
       }
       if (isValidValue(fields()[4], other.vehicleName)) {
         this.vehicleName = data().deepCopy(fields()[4].schema(), other.vehicleName);
-        fieldSetFlags()[4] = other.fieldSetFlags()[4];
+        fieldSetFlags()[4] = true;
       }
       if (isValidValue(fields()[5], other.body)) {
         this.body = data().deepCopy(fields()[5].schema(), other.body);
-        fieldSetFlags()[5] = other.fieldSetFlags()[5];
+        fieldSetFlags()[5] = true;
       }
       if (other.hasBodyBuilder()) {
         this.bodyBuilder = zdf.learn.com.commonUtils.data.avro.schema.can300.Dcm19Message.newBuilder(other.getBodyBuilder());
       }
       if (isValidValue(fields()[6], other.decoderWarningList)) {
         this.decoderWarningList = data().deepCopy(fields()[6].schema(), other.decoderWarningList);
-        fieldSetFlags()[6] = other.fieldSetFlags()[6];
+        fieldSetFlags()[6] = true;
       }
     }
 
@@ -363,7 +318,7 @@ public class Can300_19nev extends org.apache.avro.specific.SpecificRecordBase im
      * @param other The existing instance to copy.
      */
     private Builder(zdf.learn.com.commonUtils.data.avro.schema.can300.Can300_19nev other) {
-      super(SCHEMA$, MODEL$);
+            super(SCHEMA$);
       if (isValidValue(fields()[0], other.headers)) {
         this.headers = data().deepCopy(fields()[0].schema(), other.headers);
         fieldSetFlags()[0] = true;
@@ -402,7 +357,6 @@ public class Can300_19nev extends org.apache.avro.specific.SpecificRecordBase im
     public java.util.Map<java.lang.CharSequence,java.lang.CharSequence> getHeaders() {
       return headers;
     }
-
 
     /**
       * Sets the value of the 'headers' field.
@@ -443,7 +397,6 @@ public class Can300_19nev extends org.apache.avro.specific.SpecificRecordBase im
       return correlationId;
     }
 
-
     /**
       * Sets the value of the 'correlationId' field.
       * @param value The value of 'correlationId'.
@@ -482,7 +435,6 @@ public class Can300_19nev extends org.apache.avro.specific.SpecificRecordBase im
     public java.lang.CharSequence getDispatchModelType() {
       return dispatchModelType;
     }
-
 
     /**
       * Sets the value of the 'dispatchModelType' field.
@@ -523,7 +475,6 @@ public class Can300_19nev extends org.apache.avro.specific.SpecificRecordBase im
       return groupNumber;
     }
 
-
     /**
       * Sets the value of the 'groupNumber' field.
       * @param value The value of 'groupNumber'.
@@ -563,7 +514,6 @@ public class Can300_19nev extends org.apache.avro.specific.SpecificRecordBase im
       return vehicleName;
     }
 
-
     /**
       * Sets the value of the 'vehicleName' field.
       * @param value The value of 'vehicleName'.
@@ -602,7 +552,6 @@ public class Can300_19nev extends org.apache.avro.specific.SpecificRecordBase im
     public zdf.learn.com.commonUtils.data.avro.schema.can300.Dcm19Message getBody() {
       return body;
     }
-
 
     /**
       * Sets the value of the 'body' field.
@@ -645,7 +594,6 @@ public class Can300_19nev extends org.apache.avro.specific.SpecificRecordBase im
      * @param value The builder instance that must be set.
      * @return This builder.
      */
-
     public zdf.learn.com.commonUtils.data.avro.schema.can300.Can300_19nev.Builder setBodyBuilder(zdf.learn.com.commonUtils.data.avro.schema.can300.Dcm19Message.Builder value) {
       clearBody();
       bodyBuilder = value;
@@ -678,7 +626,6 @@ public class Can300_19nev extends org.apache.avro.specific.SpecificRecordBase im
     public java.util.List<zdf.learn.com.commonUtils.data.avro.schema.can300_19nev.DecoderWarningList> getDecoderWarningList() {
       return decoderWarningList;
     }
-
 
     /**
       * Sets the value of the 'decoderWarningList' field.
@@ -722,19 +669,12 @@ public class Can300_19nev extends org.apache.avro.specific.SpecificRecordBase im
         record.groupNumber = fieldSetFlags()[3] ? this.groupNumber : (java.lang.CharSequence) defaultValue(fields()[3]);
         record.vehicleName = fieldSetFlags()[4] ? this.vehicleName : (java.lang.CharSequence) defaultValue(fields()[4]);
         if (bodyBuilder != null) {
-          try {
-            record.body = this.bodyBuilder.build();
-          } catch (org.apache.avro.AvroMissingFieldException e) {
-            e.addParentField(record.getSchema().getField("body"));
-            throw e;
-          }
+          record.body = this.bodyBuilder.build();
         } else {
           record.body = fieldSetFlags()[5] ? this.body : (zdf.learn.com.commonUtils.data.avro.schema.can300.Dcm19Message) defaultValue(fields()[5]);
         }
         record.decoderWarningList = fieldSetFlags()[6] ? this.decoderWarningList : (java.util.List<zdf.learn.com.commonUtils.data.avro.schema.can300_19nev.DecoderWarningList>) defaultValue(fields()[6]);
         return record;
-      } catch (org.apache.avro.AvroMissingFieldException e) {
-        throw e;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
@@ -759,261 +699,4 @@ public class Can300_19nev extends org.apache.avro.specific.SpecificRecordBase im
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
-  @Override protected boolean hasCustomCoders() { return true; }
-
-  @Override public void customEncode(org.apache.avro.io.Encoder out)
-    throws java.io.IOException
-  {
-    if (this.headers == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      long size0 = this.headers.size();
-      out.writeMapStart();
-      out.setItemCount(size0);
-      long actualSize0 = 0;
-      for (java.util.Map.Entry<java.lang.CharSequence, java.lang.CharSequence> e0: this.headers.entrySet()) {
-        actualSize0++;
-        out.startItem();
-        out.writeString(e0.getKey());
-        java.lang.CharSequence v0 = e0.getValue();
-        out.writeString(v0);
-      }
-      out.writeMapEnd();
-      if (actualSize0 != size0)
-      throw new java.util.ConcurrentModificationException("Map-size written was " + size0 + ", but element count was " + actualSize0 + ".");
-    }
-
-    if (this.correlationId == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeString(this.correlationId);
-    }
-
-    if (this.dispatchModelType == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeString(this.dispatchModelType);
-    }
-
-    if (this.groupNumber == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeString(this.groupNumber);
-    }
-
-    if (this.vehicleName == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeString(this.vehicleName);
-    }
-
-    this.body.customEncode(out);
-
-    long size1 = this.decoderWarningList.size();
-    out.writeArrayStart();
-    out.setItemCount(size1);
-    long actualSize1 = 0;
-    for (zdf.learn.com.commonUtils.data.avro.schema.can300_19nev.DecoderWarningList e1: this.decoderWarningList) {
-      actualSize1++;
-      out.startItem();
-      e1.customEncode(out);
-    }
-    out.writeArrayEnd();
-    if (actualSize1 != size1)
-      throw new java.util.ConcurrentModificationException("Array-size written was " + size1 + ", but element count was " + actualSize1 + ".");
-
-  }
-
-  @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
-    throws java.io.IOException
-  {
-    org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
-    if (fieldOrder == null) {
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.headers = null;
-      } else {
-        long size0 = in.readMapStart();
-        java.util.Map<java.lang.CharSequence,java.lang.CharSequence> m0 = this.headers; // Need fresh name due to limitation of macro system
-        if (m0 == null) {
-          m0 = new java.util.HashMap<java.lang.CharSequence,java.lang.CharSequence>((int)size0);
-          this.headers = m0;
-        } else m0.clear();
-        for ( ; 0 < size0; size0 = in.mapNext()) {
-          for ( ; size0 != 0; size0--) {
-            java.lang.CharSequence k0 = null;
-            k0 = in.readString(k0 instanceof Utf8 ? (Utf8)k0 : null);
-            java.lang.CharSequence v0 = null;
-            v0 = in.readString(v0 instanceof Utf8 ? (Utf8)v0 : null);
-            m0.put(k0, v0);
-          }
-        }
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.correlationId = null;
-      } else {
-        this.correlationId = in.readString(this.correlationId instanceof Utf8 ? (Utf8)this.correlationId : null);
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.dispatchModelType = null;
-      } else {
-        this.dispatchModelType = in.readString(this.dispatchModelType instanceof Utf8 ? (Utf8)this.dispatchModelType : null);
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.groupNumber = null;
-      } else {
-        this.groupNumber = in.readString(this.groupNumber instanceof Utf8 ? (Utf8)this.groupNumber : null);
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.vehicleName = null;
-      } else {
-        this.vehicleName = in.readString(this.vehicleName instanceof Utf8 ? (Utf8)this.vehicleName : null);
-      }
-
-      if (this.body == null) {
-        this.body = new zdf.learn.com.commonUtils.data.avro.schema.can300.Dcm19Message();
-      }
-      this.body.customDecode(in);
-
-      long size1 = in.readArrayStart();
-      java.util.List<zdf.learn.com.commonUtils.data.avro.schema.can300_19nev.DecoderWarningList> a1 = this.decoderWarningList;
-      if (a1 == null) {
-        a1 = new SpecificData.Array<zdf.learn.com.commonUtils.data.avro.schema.can300_19nev.DecoderWarningList>((int)size1, SCHEMA$.getField("decoderWarningList").schema());
-        this.decoderWarningList = a1;
-      } else a1.clear();
-      SpecificData.Array<zdf.learn.com.commonUtils.data.avro.schema.can300_19nev.DecoderWarningList> ga1 = (a1 instanceof SpecificData.Array ? (SpecificData.Array<zdf.learn.com.commonUtils.data.avro.schema.can300_19nev.DecoderWarningList>)a1 : null);
-      for ( ; 0 < size1; size1 = in.arrayNext()) {
-        for ( ; size1 != 0; size1--) {
-          zdf.learn.com.commonUtils.data.avro.schema.can300_19nev.DecoderWarningList e1 = (ga1 != null ? ga1.peek() : null);
-          if (e1 == null) {
-            e1 = new zdf.learn.com.commonUtils.data.avro.schema.can300_19nev.DecoderWarningList();
-          }
-          e1.customDecode(in);
-          a1.add(e1);
-        }
-      }
-
-    } else {
-      for (int i = 0; i < 7; i++) {
-        switch (fieldOrder[i].pos()) {
-        case 0:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.headers = null;
-          } else {
-            long size0 = in.readMapStart();
-            java.util.Map<java.lang.CharSequence,java.lang.CharSequence> m0 = this.headers; // Need fresh name due to limitation of macro system
-            if (m0 == null) {
-              m0 = new java.util.HashMap<java.lang.CharSequence,java.lang.CharSequence>((int)size0);
-              this.headers = m0;
-            } else m0.clear();
-            for ( ; 0 < size0; size0 = in.mapNext()) {
-              for ( ; size0 != 0; size0--) {
-                java.lang.CharSequence k0 = null;
-                k0 = in.readString(k0 instanceof Utf8 ? (Utf8)k0 : null);
-                java.lang.CharSequence v0 = null;
-                v0 = in.readString(v0 instanceof Utf8 ? (Utf8)v0 : null);
-                m0.put(k0, v0);
-              }
-            }
-          }
-          break;
-
-        case 1:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.correlationId = null;
-          } else {
-            this.correlationId = in.readString(this.correlationId instanceof Utf8 ? (Utf8)this.correlationId : null);
-          }
-          break;
-
-        case 2:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.dispatchModelType = null;
-          } else {
-            this.dispatchModelType = in.readString(this.dispatchModelType instanceof Utf8 ? (Utf8)this.dispatchModelType : null);
-          }
-          break;
-
-        case 3:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.groupNumber = null;
-          } else {
-            this.groupNumber = in.readString(this.groupNumber instanceof Utf8 ? (Utf8)this.groupNumber : null);
-          }
-          break;
-
-        case 4:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.vehicleName = null;
-          } else {
-            this.vehicleName = in.readString(this.vehicleName instanceof Utf8 ? (Utf8)this.vehicleName : null);
-          }
-          break;
-
-        case 5:
-          if (this.body == null) {
-            this.body = new zdf.learn.com.commonUtils.data.avro.schema.can300.Dcm19Message();
-          }
-          this.body.customDecode(in);
-          break;
-
-        case 6:
-          long size1 = in.readArrayStart();
-          java.util.List<zdf.learn.com.commonUtils.data.avro.schema.can300_19nev.DecoderWarningList> a1 = this.decoderWarningList;
-          if (a1 == null) {
-            a1 = new SpecificData.Array<zdf.learn.com.commonUtils.data.avro.schema.can300_19nev.DecoderWarningList>((int)size1, SCHEMA$.getField("decoderWarningList").schema());
-            this.decoderWarningList = a1;
-          } else a1.clear();
-          SpecificData.Array<zdf.learn.com.commonUtils.data.avro.schema.can300_19nev.DecoderWarningList> ga1 = (a1 instanceof SpecificData.Array ? (SpecificData.Array<zdf.learn.com.commonUtils.data.avro.schema.can300_19nev.DecoderWarningList>)a1 : null);
-          for ( ; 0 < size1; size1 = in.arrayNext()) {
-            for ( ; size1 != 0; size1--) {
-              zdf.learn.com.commonUtils.data.avro.schema.can300_19nev.DecoderWarningList e1 = (ga1 != null ? ga1.peek() : null);
-              if (e1 == null) {
-                e1 = new zdf.learn.com.commonUtils.data.avro.schema.can300_19nev.DecoderWarningList();
-              }
-              e1.customDecode(in);
-              a1.add(e1);
-            }
-          }
-          break;
-
-        default:
-          throw new java.io.IOException("Corrupt ResolvingDecoder.");
-        }
-      }
-    }
-  }
 }
-
-
-
-
-
-
-
-
-
-

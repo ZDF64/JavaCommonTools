@@ -7,6 +7,8 @@ import static zdf.learn.com.commonUtils.data.functions.datetime_to_long;
 import static zdf.learn.com.commonUtils.data.functions.toLongTime;
 import static zdf.learn.com.commonUtils.data.functions.toMapKeyOnly;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Map;
 
@@ -25,14 +27,13 @@ public class ParquetCombine {
 		/**
 		 * Spark集群模式
 		 */
-
 		try (SparkSession spark = SparkSession.builder()
 				.appName(MakeAvroData.class.getSimpleName() + " - " + new Date()).master("local[6]").getOrCreate();
 				JavaSparkContext jsc = JavaSparkContext.fromSparkContext(spark.sparkContext());
 				) {
 			// others
 			ParquetCombine combine = new ParquetCombine();
-			spark.read().format("avro").load("D:\\home\\apuser\\data\\S3avro\\hitachitest-tbdccm-a1-19mcnev-all\\procdata\\CN\\real\\can_External\\00\\2023\\05\\23\\16\\")
+			spark.read().format("avro").load("D:\\home\\apuser\\parquet\\a\\procdata\\CN\\real\\can_External\\13\\2023\\06\\01\\16")
 			.filter(col("headers").isNotNull())
             .filter((FilterFunction<Row>)r -> {
                 

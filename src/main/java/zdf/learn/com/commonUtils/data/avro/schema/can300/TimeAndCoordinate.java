@@ -5,40 +5,28 @@
  */
 package zdf.learn.com.commonUtils.data.avro.schema.can300;
 
-import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
-import org.apache.avro.util.Utf8;
 import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.SchemaStore;
 
+@SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class TimeAndCoordinate extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = -1469042969049917549L;
-
-
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"TimeAndCoordinate\",\"namespace\":\"zdf.learn.com.commonUtils.data.avro.schema.can300\",\"fields\":[{\"name\":\"gps\",\"type\":{\"type\":\"record\",\"name\":\"GPS\",\"fields\":[{\"name\":\"gpsDate\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"point\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"Point\",\"fields\":[{\"name\":\"latitude\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"longitude\",\"type\":[\"null\",\"double\"],\"default\":null}]}]},{\"name\":\"pdop\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"hdop\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"vdop\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"measureCount\",\"type\":[\"null\",\"long\"],\"default\":null}],\"default\":null}},{\"name\":\"mm\",\"type\":{\"type\":\"record\",\"name\":\"MM\",\"fields\":[{\"name\":\"point\",\"type\":[\"null\",\"Point\"],\"default\":null},{\"name\":\"rticLinkId\",\"type\":[\"null\",\"long\"],\"default\":null}],\"default\":null}}],\"default\":null}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
-  private static final SpecificData MODEL$ = new SpecificData();
+  private static SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<TimeAndCoordinate> ENCODER =
-      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<TimeAndCoordinate>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<TimeAndCoordinate> DECODER =
-      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
-
-  /**
-   * Return the BinaryMessageEncoder instance used by this class.
-   * @return the message encoder used by this class
-   */
-  public static BinaryMessageEncoder<TimeAndCoordinate> getEncoder() {
-    return ENCODER;
-  }
+      new BinaryMessageDecoder<TimeAndCoordinate>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageDecoder instance used by this class.
-   * @return the message decoder used by this class
    */
   public static BinaryMessageDecoder<TimeAndCoordinate> getDecoder() {
     return DECODER;
@@ -47,34 +35,24 @@ public class TimeAndCoordinate extends org.apache.avro.specific.SpecificRecordBa
   /**
    * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
    * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
-   * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<TimeAndCoordinate> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<TimeAndCoordinate>(MODEL$, SCHEMA$, resolver);
   }
 
-  /**
-   * Serializes this TimeAndCoordinate to a ByteBuffer.
-   * @return a buffer holding the serialized data for this instance
-   * @throws java.io.IOException if this instance could not be serialized
-   */
+  /** Serializes this TimeAndCoordinate to a ByteBuffer. */
   public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
     return ENCODER.encode(this);
   }
 
-  /**
-   * Deserializes a TimeAndCoordinate from a ByteBuffer.
-   * @param b a byte buffer holding serialized data for an instance of this class
-   * @return a TimeAndCoordinate instance decoded from the given buffer
-   * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
-   */
+  /** Deserializes a TimeAndCoordinate from a ByteBuffer. */
   public static TimeAndCoordinate fromByteBuffer(
       java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
   }
 
-  private zdf.learn.com.commonUtils.data.avro.schema.can300.GPS gps;
-  private zdf.learn.com.commonUtils.data.avro.schema.can300.MM mm;
+  @Deprecated public zdf.learn.com.commonUtils.data.avro.schema.can300.GPS gps;
+  @Deprecated public zdf.learn.com.commonUtils.data.avro.schema.can300.MM mm;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -93,30 +71,23 @@ public class TimeAndCoordinate extends org.apache.avro.specific.SpecificRecordBa
     this.mm = mm;
   }
 
-  @Override
-  public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
-
-  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
-
   // Used by DatumWriter.  Applications should not call.
-  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return gps;
     case 1: return mm;
-    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
 
   // Used by DatumReader.  Applications should not call.
-  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: gps = (zdf.learn.com.commonUtils.data.avro.schema.can300.GPS)value$; break;
     case 1: mm = (zdf.learn.com.commonUtils.data.avro.schema.can300.MM)value$; break;
-    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
 
@@ -127,7 +98,6 @@ public class TimeAndCoordinate extends org.apache.avro.specific.SpecificRecordBa
   public zdf.learn.com.commonUtils.data.avro.schema.can300.GPS getGps() {
     return gps;
   }
-
 
   /**
    * Sets the value of the 'gps' field.
@@ -144,7 +114,6 @@ public class TimeAndCoordinate extends org.apache.avro.specific.SpecificRecordBa
   public zdf.learn.com.commonUtils.data.avro.schema.can300.MM getMm() {
     return mm;
   }
-
 
   /**
    * Sets the value of the 'mm' field.
@@ -168,11 +137,7 @@ public class TimeAndCoordinate extends org.apache.avro.specific.SpecificRecordBa
    * @return A new TimeAndCoordinate RecordBuilder
    */
   public static zdf.learn.com.commonUtils.data.avro.schema.can300.TimeAndCoordinate.Builder newBuilder(zdf.learn.com.commonUtils.data.avro.schema.can300.TimeAndCoordinate.Builder other) {
-    if (other == null) {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.TimeAndCoordinate.Builder();
-    } else {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.TimeAndCoordinate.Builder(other);
-    }
+    return new zdf.learn.com.commonUtils.data.avro.schema.can300.TimeAndCoordinate.Builder(other);
   }
 
   /**
@@ -181,17 +146,12 @@ public class TimeAndCoordinate extends org.apache.avro.specific.SpecificRecordBa
    * @return A new TimeAndCoordinate RecordBuilder
    */
   public static zdf.learn.com.commonUtils.data.avro.schema.can300.TimeAndCoordinate.Builder newBuilder(zdf.learn.com.commonUtils.data.avro.schema.can300.TimeAndCoordinate other) {
-    if (other == null) {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.TimeAndCoordinate.Builder();
-    } else {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.TimeAndCoordinate.Builder(other);
-    }
+    return new zdf.learn.com.commonUtils.data.avro.schema.can300.TimeAndCoordinate.Builder(other);
   }
 
   /**
    * RecordBuilder for TimeAndCoordinate instances.
    */
-  @org.apache.avro.specific.AvroGenerated
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<TimeAndCoordinate>
     implements org.apache.avro.data.RecordBuilder<TimeAndCoordinate> {
 
@@ -202,7 +162,7 @@ public class TimeAndCoordinate extends org.apache.avro.specific.SpecificRecordBa
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$, MODEL$);
+      super(SCHEMA$);
     }
 
     /**
@@ -213,14 +173,14 @@ public class TimeAndCoordinate extends org.apache.avro.specific.SpecificRecordBa
       super(other);
       if (isValidValue(fields()[0], other.gps)) {
         this.gps = data().deepCopy(fields()[0].schema(), other.gps);
-        fieldSetFlags()[0] = other.fieldSetFlags()[0];
+        fieldSetFlags()[0] = true;
       }
       if (other.hasGpsBuilder()) {
         this.gpsBuilder = zdf.learn.com.commonUtils.data.avro.schema.can300.GPS.newBuilder(other.getGpsBuilder());
       }
       if (isValidValue(fields()[1], other.mm)) {
         this.mm = data().deepCopy(fields()[1].schema(), other.mm);
-        fieldSetFlags()[1] = other.fieldSetFlags()[1];
+        fieldSetFlags()[1] = true;
       }
       if (other.hasMmBuilder()) {
         this.mmBuilder = zdf.learn.com.commonUtils.data.avro.schema.can300.MM.newBuilder(other.getMmBuilder());
@@ -232,7 +192,7 @@ public class TimeAndCoordinate extends org.apache.avro.specific.SpecificRecordBa
      * @param other The existing instance to copy.
      */
     private Builder(zdf.learn.com.commonUtils.data.avro.schema.can300.TimeAndCoordinate other) {
-      super(SCHEMA$, MODEL$);
+            super(SCHEMA$);
       if (isValidValue(fields()[0], other.gps)) {
         this.gps = data().deepCopy(fields()[0].schema(), other.gps);
         fieldSetFlags()[0] = true;
@@ -252,7 +212,6 @@ public class TimeAndCoordinate extends org.apache.avro.specific.SpecificRecordBa
     public zdf.learn.com.commonUtils.data.avro.schema.can300.GPS getGps() {
       return gps;
     }
-
 
     /**
       * Sets the value of the 'gps' field.
@@ -295,7 +254,6 @@ public class TimeAndCoordinate extends org.apache.avro.specific.SpecificRecordBa
      * @param value The builder instance that must be set.
      * @return This builder.
      */
-
     public zdf.learn.com.commonUtils.data.avro.schema.can300.TimeAndCoordinate.Builder setGpsBuilder(zdf.learn.com.commonUtils.data.avro.schema.can300.GPS.Builder value) {
       clearGps();
       gpsBuilder = value;
@@ -328,7 +286,6 @@ public class TimeAndCoordinate extends org.apache.avro.specific.SpecificRecordBa
     public zdf.learn.com.commonUtils.data.avro.schema.can300.MM getMm() {
       return mm;
     }
-
 
     /**
       * Sets the value of the 'mm' field.
@@ -371,7 +328,6 @@ public class TimeAndCoordinate extends org.apache.avro.specific.SpecificRecordBa
      * @param value The builder instance that must be set.
      * @return This builder.
      */
-
     public zdf.learn.com.commonUtils.data.avro.schema.can300.TimeAndCoordinate.Builder setMmBuilder(zdf.learn.com.commonUtils.data.avro.schema.can300.MM.Builder value) {
       clearMm();
       mmBuilder = value;
@@ -403,28 +359,16 @@ public class TimeAndCoordinate extends org.apache.avro.specific.SpecificRecordBa
       try {
         TimeAndCoordinate record = new TimeAndCoordinate();
         if (gpsBuilder != null) {
-          try {
-            record.gps = this.gpsBuilder.build();
-          } catch (org.apache.avro.AvroMissingFieldException e) {
-            e.addParentField(record.getSchema().getField("gps"));
-            throw e;
-          }
+          record.gps = this.gpsBuilder.build();
         } else {
           record.gps = fieldSetFlags()[0] ? this.gps : (zdf.learn.com.commonUtils.data.avro.schema.can300.GPS) defaultValue(fields()[0]);
         }
         if (mmBuilder != null) {
-          try {
-            record.mm = this.mmBuilder.build();
-          } catch (org.apache.avro.AvroMissingFieldException e) {
-            e.addParentField(record.getSchema().getField("mm"));
-            throw e;
-          }
+          record.mm = this.mmBuilder.build();
         } else {
           record.mm = fieldSetFlags()[1] ? this.mm : (zdf.learn.com.commonUtils.data.avro.schema.can300.MM) defaultValue(fields()[1]);
         }
         return record;
-      } catch (org.apache.avro.AvroMissingFieldException e) {
-        throw e;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
@@ -449,63 +393,4 @@ public class TimeAndCoordinate extends org.apache.avro.specific.SpecificRecordBa
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
-  @Override protected boolean hasCustomCoders() { return true; }
-
-  @Override public void customEncode(org.apache.avro.io.Encoder out)
-    throws java.io.IOException
-  {
-    this.gps.customEncode(out);
-
-    this.mm.customEncode(out);
-
-  }
-
-  @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
-    throws java.io.IOException
-  {
-    org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
-    if (fieldOrder == null) {
-      if (this.gps == null) {
-        this.gps = new zdf.learn.com.commonUtils.data.avro.schema.can300.GPS();
-      }
-      this.gps.customDecode(in);
-
-      if (this.mm == null) {
-        this.mm = new zdf.learn.com.commonUtils.data.avro.schema.can300.MM();
-      }
-      this.mm.customDecode(in);
-
-    } else {
-      for (int i = 0; i < 2; i++) {
-        switch (fieldOrder[i].pos()) {
-        case 0:
-          if (this.gps == null) {
-            this.gps = new zdf.learn.com.commonUtils.data.avro.schema.can300.GPS();
-          }
-          this.gps.customDecode(in);
-          break;
-
-        case 1:
-          if (this.mm == null) {
-            this.mm = new zdf.learn.com.commonUtils.data.avro.schema.can300.MM();
-          }
-          this.mm.customDecode(in);
-          break;
-
-        default:
-          throw new java.io.IOException("Corrupt ResolvingDecoder.");
-        }
-      }
-    }
-  }
 }
-
-
-
-
-
-
-
-
-
-

@@ -5,40 +5,28 @@
  */
 package zdf.learn.com.commonUtils.data.avro.schema.can300;
 
-import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
-import org.apache.avro.util.Utf8;
 import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.SchemaStore;
 
+@SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class GPS extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = -4631689882084446337L;
-
-
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"GPS\",\"namespace\":\"zdf.learn.com.commonUtils.data.avro.schema.can300\",\"fields\":[{\"name\":\"gpsDate\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"point\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"Point\",\"fields\":[{\"name\":\"latitude\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"longitude\",\"type\":[\"null\",\"double\"],\"default\":null}]}]},{\"name\":\"pdop\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"hdop\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"vdop\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"measureCount\",\"type\":[\"null\",\"long\"],\"default\":null}],\"default\":null}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
-  private static final SpecificData MODEL$ = new SpecificData();
+  private static SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<GPS> ENCODER =
-      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<GPS>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<GPS> DECODER =
-      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
-
-  /**
-   * Return the BinaryMessageEncoder instance used by this class.
-   * @return the message encoder used by this class
-   */
-  public static BinaryMessageEncoder<GPS> getEncoder() {
-    return ENCODER;
-  }
+      new BinaryMessageDecoder<GPS>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageDecoder instance used by this class.
-   * @return the message decoder used by this class
    */
   public static BinaryMessageDecoder<GPS> getDecoder() {
     return DECODER;
@@ -47,38 +35,28 @@ public class GPS extends org.apache.avro.specific.SpecificRecordBase implements 
   /**
    * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
    * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
-   * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<GPS> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<GPS>(MODEL$, SCHEMA$, resolver);
   }
 
-  /**
-   * Serializes this GPS to a ByteBuffer.
-   * @return a buffer holding the serialized data for this instance
-   * @throws java.io.IOException if this instance could not be serialized
-   */
+  /** Serializes this GPS to a ByteBuffer. */
   public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
     return ENCODER.encode(this);
   }
 
-  /**
-   * Deserializes a GPS from a ByteBuffer.
-   * @param b a byte buffer holding serialized data for an instance of this class
-   * @return a GPS instance decoded from the given buffer
-   * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
-   */
+  /** Deserializes a GPS from a ByteBuffer. */
   public static GPS fromByteBuffer(
       java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
   }
 
-  private java.lang.CharSequence gpsDate;
-  private zdf.learn.com.commonUtils.data.avro.schema.can300.Point point;
-  private java.lang.Long pdop;
-  private java.lang.Long hdop;
-  private java.lang.Long vdop;
-  private java.lang.Long measureCount;
+  @Deprecated public java.lang.CharSequence gpsDate;
+  @Deprecated public zdf.learn.com.commonUtils.data.avro.schema.can300.Point point;
+  @Deprecated public java.lang.Long pdop;
+  @Deprecated public java.lang.Long hdop;
+  @Deprecated public java.lang.Long vdop;
+  @Deprecated public java.lang.Long measureCount;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -105,14 +83,8 @@ public class GPS extends org.apache.avro.specific.SpecificRecordBase implements 
     this.measureCount = measureCount;
   }
 
-  @Override
-  public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
-
-  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
-
   // Used by DatumWriter.  Applications should not call.
-  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return gpsDate;
@@ -121,12 +93,11 @@ public class GPS extends org.apache.avro.specific.SpecificRecordBase implements 
     case 3: return hdop;
     case 4: return vdop;
     case 5: return measureCount;
-    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
 
   // Used by DatumReader.  Applications should not call.
-  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
@@ -136,7 +107,7 @@ public class GPS extends org.apache.avro.specific.SpecificRecordBase implements 
     case 3: hdop = (java.lang.Long)value$; break;
     case 4: vdop = (java.lang.Long)value$; break;
     case 5: measureCount = (java.lang.Long)value$; break;
-    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
 
@@ -147,7 +118,6 @@ public class GPS extends org.apache.avro.specific.SpecificRecordBase implements 
   public java.lang.CharSequence getGpsDate() {
     return gpsDate;
   }
-
 
   /**
    * Sets the value of the 'gpsDate' field.
@@ -165,7 +135,6 @@ public class GPS extends org.apache.avro.specific.SpecificRecordBase implements 
     return point;
   }
 
-
   /**
    * Sets the value of the 'point' field.
    * @param value the value to set.
@@ -181,7 +150,6 @@ public class GPS extends org.apache.avro.specific.SpecificRecordBase implements 
   public java.lang.Long getPdop() {
     return pdop;
   }
-
 
   /**
    * Sets the value of the 'pdop' field.
@@ -199,7 +167,6 @@ public class GPS extends org.apache.avro.specific.SpecificRecordBase implements 
     return hdop;
   }
 
-
   /**
    * Sets the value of the 'hdop' field.
    * @param value the value to set.
@@ -216,7 +183,6 @@ public class GPS extends org.apache.avro.specific.SpecificRecordBase implements 
     return vdop;
   }
 
-
   /**
    * Sets the value of the 'vdop' field.
    * @param value the value to set.
@@ -232,7 +198,6 @@ public class GPS extends org.apache.avro.specific.SpecificRecordBase implements 
   public java.lang.Long getMeasureCount() {
     return measureCount;
   }
-
 
   /**
    * Sets the value of the 'measureCount' field.
@@ -256,11 +221,7 @@ public class GPS extends org.apache.avro.specific.SpecificRecordBase implements 
    * @return A new GPS RecordBuilder
    */
   public static zdf.learn.com.commonUtils.data.avro.schema.can300.GPS.Builder newBuilder(zdf.learn.com.commonUtils.data.avro.schema.can300.GPS.Builder other) {
-    if (other == null) {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.GPS.Builder();
-    } else {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.GPS.Builder(other);
-    }
+    return new zdf.learn.com.commonUtils.data.avro.schema.can300.GPS.Builder(other);
   }
 
   /**
@@ -269,17 +230,12 @@ public class GPS extends org.apache.avro.specific.SpecificRecordBase implements 
    * @return A new GPS RecordBuilder
    */
   public static zdf.learn.com.commonUtils.data.avro.schema.can300.GPS.Builder newBuilder(zdf.learn.com.commonUtils.data.avro.schema.can300.GPS other) {
-    if (other == null) {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.GPS.Builder();
-    } else {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.GPS.Builder(other);
-    }
+    return new zdf.learn.com.commonUtils.data.avro.schema.can300.GPS.Builder(other);
   }
 
   /**
    * RecordBuilder for GPS instances.
    */
-  @org.apache.avro.specific.AvroGenerated
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<GPS>
     implements org.apache.avro.data.RecordBuilder<GPS> {
 
@@ -293,7 +249,7 @@ public class GPS extends org.apache.avro.specific.SpecificRecordBase implements 
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$, MODEL$);
+      super(SCHEMA$);
     }
 
     /**
@@ -304,30 +260,30 @@ public class GPS extends org.apache.avro.specific.SpecificRecordBase implements 
       super(other);
       if (isValidValue(fields()[0], other.gpsDate)) {
         this.gpsDate = data().deepCopy(fields()[0].schema(), other.gpsDate);
-        fieldSetFlags()[0] = other.fieldSetFlags()[0];
+        fieldSetFlags()[0] = true;
       }
       if (isValidValue(fields()[1], other.point)) {
         this.point = data().deepCopy(fields()[1].schema(), other.point);
-        fieldSetFlags()[1] = other.fieldSetFlags()[1];
+        fieldSetFlags()[1] = true;
       }
       if (other.hasPointBuilder()) {
         this.pointBuilder = zdf.learn.com.commonUtils.data.avro.schema.can300.Point.newBuilder(other.getPointBuilder());
       }
       if (isValidValue(fields()[2], other.pdop)) {
         this.pdop = data().deepCopy(fields()[2].schema(), other.pdop);
-        fieldSetFlags()[2] = other.fieldSetFlags()[2];
+        fieldSetFlags()[2] = true;
       }
       if (isValidValue(fields()[3], other.hdop)) {
         this.hdop = data().deepCopy(fields()[3].schema(), other.hdop);
-        fieldSetFlags()[3] = other.fieldSetFlags()[3];
+        fieldSetFlags()[3] = true;
       }
       if (isValidValue(fields()[4], other.vdop)) {
         this.vdop = data().deepCopy(fields()[4].schema(), other.vdop);
-        fieldSetFlags()[4] = other.fieldSetFlags()[4];
+        fieldSetFlags()[4] = true;
       }
       if (isValidValue(fields()[5], other.measureCount)) {
         this.measureCount = data().deepCopy(fields()[5].schema(), other.measureCount);
-        fieldSetFlags()[5] = other.fieldSetFlags()[5];
+        fieldSetFlags()[5] = true;
       }
     }
 
@@ -336,7 +292,7 @@ public class GPS extends org.apache.avro.specific.SpecificRecordBase implements 
      * @param other The existing instance to copy.
      */
     private Builder(zdf.learn.com.commonUtils.data.avro.schema.can300.GPS other) {
-      super(SCHEMA$, MODEL$);
+            super(SCHEMA$);
       if (isValidValue(fields()[0], other.gpsDate)) {
         this.gpsDate = data().deepCopy(fields()[0].schema(), other.gpsDate);
         fieldSetFlags()[0] = true;
@@ -371,7 +327,6 @@ public class GPS extends org.apache.avro.specific.SpecificRecordBase implements 
     public java.lang.CharSequence getGpsDate() {
       return gpsDate;
     }
-
 
     /**
       * Sets the value of the 'gpsDate' field.
@@ -411,7 +366,6 @@ public class GPS extends org.apache.avro.specific.SpecificRecordBase implements 
     public zdf.learn.com.commonUtils.data.avro.schema.can300.Point getPoint() {
       return point;
     }
-
 
     /**
       * Sets the value of the 'point' field.
@@ -454,7 +408,6 @@ public class GPS extends org.apache.avro.specific.SpecificRecordBase implements 
      * @param value The builder instance that must be set.
      * @return This builder.
      */
-
     public zdf.learn.com.commonUtils.data.avro.schema.can300.GPS.Builder setPointBuilder(zdf.learn.com.commonUtils.data.avro.schema.can300.Point.Builder value) {
       clearPoint();
       pointBuilder = value;
@@ -487,7 +440,6 @@ public class GPS extends org.apache.avro.specific.SpecificRecordBase implements 
     public java.lang.Long getPdop() {
       return pdop;
     }
-
 
     /**
       * Sets the value of the 'pdop' field.
@@ -528,7 +480,6 @@ public class GPS extends org.apache.avro.specific.SpecificRecordBase implements 
       return hdop;
     }
 
-
     /**
       * Sets the value of the 'hdop' field.
       * @param value The value of 'hdop'.
@@ -567,7 +518,6 @@ public class GPS extends org.apache.avro.specific.SpecificRecordBase implements 
     public java.lang.Long getVdop() {
       return vdop;
     }
-
 
     /**
       * Sets the value of the 'vdop' field.
@@ -608,7 +558,6 @@ public class GPS extends org.apache.avro.specific.SpecificRecordBase implements 
       return measureCount;
     }
 
-
     /**
       * Sets the value of the 'measureCount' field.
       * @param value The value of 'measureCount'.
@@ -647,12 +596,7 @@ public class GPS extends org.apache.avro.specific.SpecificRecordBase implements 
         GPS record = new GPS();
         record.gpsDate = fieldSetFlags()[0] ? this.gpsDate : (java.lang.CharSequence) defaultValue(fields()[0]);
         if (pointBuilder != null) {
-          try {
-            record.point = this.pointBuilder.build();
-          } catch (org.apache.avro.AvroMissingFieldException e) {
-            e.addParentField(record.getSchema().getField("point"));
-            throw e;
-          }
+          record.point = this.pointBuilder.build();
         } else {
           record.point = fieldSetFlags()[1] ? this.point : (zdf.learn.com.commonUtils.data.avro.schema.can300.Point) defaultValue(fields()[1]);
         }
@@ -661,8 +605,6 @@ public class GPS extends org.apache.avro.specific.SpecificRecordBase implements 
         record.vdop = fieldSetFlags()[4] ? this.vdop : (java.lang.Long) defaultValue(fields()[4]);
         record.measureCount = fieldSetFlags()[5] ? this.measureCount : (java.lang.Long) defaultValue(fields()[5]);
         return record;
-      } catch (org.apache.avro.AvroMissingFieldException e) {
-        throw e;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
@@ -687,185 +629,4 @@ public class GPS extends org.apache.avro.specific.SpecificRecordBase implements 
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
-  @Override protected boolean hasCustomCoders() { return true; }
-
-  @Override public void customEncode(org.apache.avro.io.Encoder out)
-    throws java.io.IOException
-  {
-    if (this.gpsDate == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeString(this.gpsDate);
-    }
-
-    if (this.point == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      this.point.customEncode(out);
-    }
-
-    if (this.pdop == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeLong(this.pdop);
-    }
-
-    if (this.hdop == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeLong(this.hdop);
-    }
-
-    if (this.vdop == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeLong(this.vdop);
-    }
-
-    if (this.measureCount == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeLong(this.measureCount);
-    }
-
-  }
-
-  @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
-    throws java.io.IOException
-  {
-    org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
-    if (fieldOrder == null) {
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.gpsDate = null;
-      } else {
-        this.gpsDate = in.readString(this.gpsDate instanceof Utf8 ? (Utf8)this.gpsDate : null);
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.point = null;
-      } else {
-        if (this.point == null) {
-          this.point = new zdf.learn.com.commonUtils.data.avro.schema.can300.Point();
-        }
-        this.point.customDecode(in);
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.pdop = null;
-      } else {
-        this.pdop = in.readLong();
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.hdop = null;
-      } else {
-        this.hdop = in.readLong();
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.vdop = null;
-      } else {
-        this.vdop = in.readLong();
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.measureCount = null;
-      } else {
-        this.measureCount = in.readLong();
-      }
-
-    } else {
-      for (int i = 0; i < 6; i++) {
-        switch (fieldOrder[i].pos()) {
-        case 0:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.gpsDate = null;
-          } else {
-            this.gpsDate = in.readString(this.gpsDate instanceof Utf8 ? (Utf8)this.gpsDate : null);
-          }
-          break;
-
-        case 1:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.point = null;
-          } else {
-            if (this.point == null) {
-              this.point = new zdf.learn.com.commonUtils.data.avro.schema.can300.Point();
-            }
-            this.point.customDecode(in);
-          }
-          break;
-
-        case 2:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.pdop = null;
-          } else {
-            this.pdop = in.readLong();
-          }
-          break;
-
-        case 3:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.hdop = null;
-          } else {
-            this.hdop = in.readLong();
-          }
-          break;
-
-        case 4:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.vdop = null;
-          } else {
-            this.vdop = in.readLong();
-          }
-          break;
-
-        case 5:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.measureCount = null;
-          } else {
-            this.measureCount = in.readLong();
-          }
-          break;
-
-        default:
-          throw new java.io.IOException("Corrupt ResolvingDecoder.");
-        }
-      }
-    }
-  }
 }
-
-
-
-
-
-
-
-
-
-

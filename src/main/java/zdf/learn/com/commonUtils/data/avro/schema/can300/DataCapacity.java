@@ -5,40 +5,28 @@
  */
 package zdf.learn.com.commonUtils.data.avro.schema.can300;
 
-import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
-import org.apache.avro.util.Utf8;
 import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.SchemaStore;
 
+@SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class DataCapacity extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = -70619020114798833L;
-
-
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"DataCapacity\",\"namespace\":\"zdf.learn.com.commonUtils.data.avro.schema.can300\",\"fields\":[{\"name\":\"timeAndCoordinate\",\"type\":{\"type\":\"record\",\"name\":\"TimeAndCoordinate\",\"fields\":[{\"name\":\"gps\",\"type\":{\"type\":\"record\",\"name\":\"GPS\",\"fields\":[{\"name\":\"gpsDate\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"point\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"Point\",\"fields\":[{\"name\":\"latitude\",\"type\":[\"null\",\"double\"],\"default\":null},{\"name\":\"longitude\",\"type\":[\"null\",\"double\"],\"default\":null}]}]},{\"name\":\"pdop\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"hdop\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"vdop\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"measureCount\",\"type\":[\"null\",\"long\"],\"default\":null}],\"default\":null}},{\"name\":\"mm\",\"type\":{\"type\":\"record\",\"name\":\"MM\",\"fields\":[{\"name\":\"point\",\"type\":[\"null\",\"Point\"],\"default\":null},{\"name\":\"rticLinkId\",\"type\":[\"null\",\"long\"],\"default\":null}],\"default\":null}}],\"default\":null}},{\"name\":\"canFrameNumber\",\"type\":{\"type\":\"record\",\"name\":\"CanFrameNumber\",\"fields\":[{\"name\":\"dataCapacityType\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"dataCapacityNumber\",\"type\":[\"null\",\"long\"],\"default\":null}],\"default\":null}},{\"name\":\"canInformationList\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"CanInformationList\",\"fields\":[{\"name\":\"canId\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"dataLengthAfterCompression\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"collectType\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"canType\",\"type\":[\"null\",\"long\"],\"default\":null},{\"name\":\"time\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"outsideUseDataMap\",\"type\":[\"null\",{\"type\":\"map\",\"values\":{\"type\":\"map\",\"values\":\"string\"}}],\"default\":null}],\"default\":null},\"java-class\":\"java.util.List\"}},{\"name\":\"type3OutsideUseData\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"Type3OutsideUseData\",\"fields\":[{\"name\":\"dateTime\",\"type\":\"string\"},{\"name\":\"label\",\"type\":\"string\"},{\"name\":\"value\",\"type\":\"string\"},{\"name\":\"unit\",\"type\":\"string\"}],\"default\":null},\"java-class\":\"java.util.List\"}}],\"default\":null}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
-  private static final SpecificData MODEL$ = new SpecificData();
+  private static SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<DataCapacity> ENCODER =
-      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<DataCapacity>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<DataCapacity> DECODER =
-      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
-
-  /**
-   * Return the BinaryMessageEncoder instance used by this class.
-   * @return the message encoder used by this class
-   */
-  public static BinaryMessageEncoder<DataCapacity> getEncoder() {
-    return ENCODER;
-  }
+      new BinaryMessageDecoder<DataCapacity>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageDecoder instance used by this class.
-   * @return the message decoder used by this class
    */
   public static BinaryMessageDecoder<DataCapacity> getDecoder() {
     return DECODER;
@@ -47,36 +35,26 @@ public class DataCapacity extends org.apache.avro.specific.SpecificRecordBase im
   /**
    * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
    * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
-   * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<DataCapacity> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<DataCapacity>(MODEL$, SCHEMA$, resolver);
   }
 
-  /**
-   * Serializes this DataCapacity to a ByteBuffer.
-   * @return a buffer holding the serialized data for this instance
-   * @throws java.io.IOException if this instance could not be serialized
-   */
+  /** Serializes this DataCapacity to a ByteBuffer. */
   public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
     return ENCODER.encode(this);
   }
 
-  /**
-   * Deserializes a DataCapacity from a ByteBuffer.
-   * @param b a byte buffer holding serialized data for an instance of this class
-   * @return a DataCapacity instance decoded from the given buffer
-   * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
-   */
+  /** Deserializes a DataCapacity from a ByteBuffer. */
   public static DataCapacity fromByteBuffer(
       java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
   }
 
-  private zdf.learn.com.commonUtils.data.avro.schema.can300.TimeAndCoordinate timeAndCoordinate;
-  private zdf.learn.com.commonUtils.data.avro.schema.can300.CanFrameNumber canFrameNumber;
-  private java.util.List<zdf.learn.com.commonUtils.data.avro.schema.can300.CanInformationList> canInformationList;
-  private java.util.List<zdf.learn.com.commonUtils.data.avro.schema.can300.Type3OutsideUseData> type3OutsideUseData;
+  @Deprecated public zdf.learn.com.commonUtils.data.avro.schema.can300.TimeAndCoordinate timeAndCoordinate;
+  @Deprecated public zdf.learn.com.commonUtils.data.avro.schema.can300.CanFrameNumber canFrameNumber;
+  @Deprecated public java.util.List<zdf.learn.com.commonUtils.data.avro.schema.can300.CanInformationList> canInformationList;
+  @Deprecated public java.util.List<zdf.learn.com.commonUtils.data.avro.schema.can300.Type3OutsideUseData> type3OutsideUseData;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -99,26 +77,19 @@ public class DataCapacity extends org.apache.avro.specific.SpecificRecordBase im
     this.type3OutsideUseData = type3OutsideUseData;
   }
 
-  @Override
-  public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
-
-  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
-
   // Used by DatumWriter.  Applications should not call.
-  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return timeAndCoordinate;
     case 1: return canFrameNumber;
     case 2: return canInformationList;
     case 3: return type3OutsideUseData;
-    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
 
   // Used by DatumReader.  Applications should not call.
-  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
@@ -126,7 +97,7 @@ public class DataCapacity extends org.apache.avro.specific.SpecificRecordBase im
     case 1: canFrameNumber = (zdf.learn.com.commonUtils.data.avro.schema.can300.CanFrameNumber)value$; break;
     case 2: canInformationList = (java.util.List<zdf.learn.com.commonUtils.data.avro.schema.can300.CanInformationList>)value$; break;
     case 3: type3OutsideUseData = (java.util.List<zdf.learn.com.commonUtils.data.avro.schema.can300.Type3OutsideUseData>)value$; break;
-    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
 
@@ -137,7 +108,6 @@ public class DataCapacity extends org.apache.avro.specific.SpecificRecordBase im
   public zdf.learn.com.commonUtils.data.avro.schema.can300.TimeAndCoordinate getTimeAndCoordinate() {
     return timeAndCoordinate;
   }
-
 
   /**
    * Sets the value of the 'timeAndCoordinate' field.
@@ -155,7 +125,6 @@ public class DataCapacity extends org.apache.avro.specific.SpecificRecordBase im
     return canFrameNumber;
   }
 
-
   /**
    * Sets the value of the 'canFrameNumber' field.
    * @param value the value to set.
@@ -172,7 +141,6 @@ public class DataCapacity extends org.apache.avro.specific.SpecificRecordBase im
     return canInformationList;
   }
 
-
   /**
    * Sets the value of the 'canInformationList' field.
    * @param value the value to set.
@@ -188,7 +156,6 @@ public class DataCapacity extends org.apache.avro.specific.SpecificRecordBase im
   public java.util.List<zdf.learn.com.commonUtils.data.avro.schema.can300.Type3OutsideUseData> getType3OutsideUseData() {
     return type3OutsideUseData;
   }
-
 
   /**
    * Sets the value of the 'type3OutsideUseData' field.
@@ -212,11 +179,7 @@ public class DataCapacity extends org.apache.avro.specific.SpecificRecordBase im
    * @return A new DataCapacity RecordBuilder
    */
   public static zdf.learn.com.commonUtils.data.avro.schema.can300.DataCapacity.Builder newBuilder(zdf.learn.com.commonUtils.data.avro.schema.can300.DataCapacity.Builder other) {
-    if (other == null) {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.DataCapacity.Builder();
-    } else {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.DataCapacity.Builder(other);
-    }
+    return new zdf.learn.com.commonUtils.data.avro.schema.can300.DataCapacity.Builder(other);
   }
 
   /**
@@ -225,17 +188,12 @@ public class DataCapacity extends org.apache.avro.specific.SpecificRecordBase im
    * @return A new DataCapacity RecordBuilder
    */
   public static zdf.learn.com.commonUtils.data.avro.schema.can300.DataCapacity.Builder newBuilder(zdf.learn.com.commonUtils.data.avro.schema.can300.DataCapacity other) {
-    if (other == null) {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.DataCapacity.Builder();
-    } else {
-      return new zdf.learn.com.commonUtils.data.avro.schema.can300.DataCapacity.Builder(other);
-    }
+    return new zdf.learn.com.commonUtils.data.avro.schema.can300.DataCapacity.Builder(other);
   }
 
   /**
    * RecordBuilder for DataCapacity instances.
    */
-  @org.apache.avro.specific.AvroGenerated
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<DataCapacity>
     implements org.apache.avro.data.RecordBuilder<DataCapacity> {
 
@@ -248,7 +206,7 @@ public class DataCapacity extends org.apache.avro.specific.SpecificRecordBase im
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$, MODEL$);
+      super(SCHEMA$);
     }
 
     /**
@@ -259,25 +217,25 @@ public class DataCapacity extends org.apache.avro.specific.SpecificRecordBase im
       super(other);
       if (isValidValue(fields()[0], other.timeAndCoordinate)) {
         this.timeAndCoordinate = data().deepCopy(fields()[0].schema(), other.timeAndCoordinate);
-        fieldSetFlags()[0] = other.fieldSetFlags()[0];
+        fieldSetFlags()[0] = true;
       }
       if (other.hasTimeAndCoordinateBuilder()) {
         this.timeAndCoordinateBuilder = zdf.learn.com.commonUtils.data.avro.schema.can300.TimeAndCoordinate.newBuilder(other.getTimeAndCoordinateBuilder());
       }
       if (isValidValue(fields()[1], other.canFrameNumber)) {
         this.canFrameNumber = data().deepCopy(fields()[1].schema(), other.canFrameNumber);
-        fieldSetFlags()[1] = other.fieldSetFlags()[1];
+        fieldSetFlags()[1] = true;
       }
       if (other.hasCanFrameNumberBuilder()) {
         this.canFrameNumberBuilder = zdf.learn.com.commonUtils.data.avro.schema.can300.CanFrameNumber.newBuilder(other.getCanFrameNumberBuilder());
       }
       if (isValidValue(fields()[2], other.canInformationList)) {
         this.canInformationList = data().deepCopy(fields()[2].schema(), other.canInformationList);
-        fieldSetFlags()[2] = other.fieldSetFlags()[2];
+        fieldSetFlags()[2] = true;
       }
       if (isValidValue(fields()[3], other.type3OutsideUseData)) {
         this.type3OutsideUseData = data().deepCopy(fields()[3].schema(), other.type3OutsideUseData);
-        fieldSetFlags()[3] = other.fieldSetFlags()[3];
+        fieldSetFlags()[3] = true;
       }
     }
 
@@ -286,7 +244,7 @@ public class DataCapacity extends org.apache.avro.specific.SpecificRecordBase im
      * @param other The existing instance to copy.
      */
     private Builder(zdf.learn.com.commonUtils.data.avro.schema.can300.DataCapacity other) {
-      super(SCHEMA$, MODEL$);
+            super(SCHEMA$);
       if (isValidValue(fields()[0], other.timeAndCoordinate)) {
         this.timeAndCoordinate = data().deepCopy(fields()[0].schema(), other.timeAndCoordinate);
         fieldSetFlags()[0] = true;
@@ -314,7 +272,6 @@ public class DataCapacity extends org.apache.avro.specific.SpecificRecordBase im
     public zdf.learn.com.commonUtils.data.avro.schema.can300.TimeAndCoordinate getTimeAndCoordinate() {
       return timeAndCoordinate;
     }
-
 
     /**
       * Sets the value of the 'timeAndCoordinate' field.
@@ -357,7 +314,6 @@ public class DataCapacity extends org.apache.avro.specific.SpecificRecordBase im
      * @param value The builder instance that must be set.
      * @return This builder.
      */
-
     public zdf.learn.com.commonUtils.data.avro.schema.can300.DataCapacity.Builder setTimeAndCoordinateBuilder(zdf.learn.com.commonUtils.data.avro.schema.can300.TimeAndCoordinate.Builder value) {
       clearTimeAndCoordinate();
       timeAndCoordinateBuilder = value;
@@ -390,7 +346,6 @@ public class DataCapacity extends org.apache.avro.specific.SpecificRecordBase im
     public zdf.learn.com.commonUtils.data.avro.schema.can300.CanFrameNumber getCanFrameNumber() {
       return canFrameNumber;
     }
-
 
     /**
       * Sets the value of the 'canFrameNumber' field.
@@ -433,7 +388,6 @@ public class DataCapacity extends org.apache.avro.specific.SpecificRecordBase im
      * @param value The builder instance that must be set.
      * @return This builder.
      */
-
     public zdf.learn.com.commonUtils.data.avro.schema.can300.DataCapacity.Builder setCanFrameNumberBuilder(zdf.learn.com.commonUtils.data.avro.schema.can300.CanFrameNumber.Builder value) {
       clearCanFrameNumber();
       canFrameNumberBuilder = value;
@@ -466,7 +420,6 @@ public class DataCapacity extends org.apache.avro.specific.SpecificRecordBase im
     public java.util.List<zdf.learn.com.commonUtils.data.avro.schema.can300.CanInformationList> getCanInformationList() {
       return canInformationList;
     }
-
 
     /**
       * Sets the value of the 'canInformationList' field.
@@ -507,7 +460,6 @@ public class DataCapacity extends org.apache.avro.specific.SpecificRecordBase im
       return type3OutsideUseData;
     }
 
-
     /**
       * Sets the value of the 'type3OutsideUseData' field.
       * @param value The value of 'type3OutsideUseData'.
@@ -545,30 +497,18 @@ public class DataCapacity extends org.apache.avro.specific.SpecificRecordBase im
       try {
         DataCapacity record = new DataCapacity();
         if (timeAndCoordinateBuilder != null) {
-          try {
-            record.timeAndCoordinate = this.timeAndCoordinateBuilder.build();
-          } catch (org.apache.avro.AvroMissingFieldException e) {
-            e.addParentField(record.getSchema().getField("timeAndCoordinate"));
-            throw e;
-          }
+          record.timeAndCoordinate = this.timeAndCoordinateBuilder.build();
         } else {
           record.timeAndCoordinate = fieldSetFlags()[0] ? this.timeAndCoordinate : (zdf.learn.com.commonUtils.data.avro.schema.can300.TimeAndCoordinate) defaultValue(fields()[0]);
         }
         if (canFrameNumberBuilder != null) {
-          try {
-            record.canFrameNumber = this.canFrameNumberBuilder.build();
-          } catch (org.apache.avro.AvroMissingFieldException e) {
-            e.addParentField(record.getSchema().getField("canFrameNumber"));
-            throw e;
-          }
+          record.canFrameNumber = this.canFrameNumberBuilder.build();
         } else {
           record.canFrameNumber = fieldSetFlags()[1] ? this.canFrameNumber : (zdf.learn.com.commonUtils.data.avro.schema.can300.CanFrameNumber) defaultValue(fields()[1]);
         }
         record.canInformationList = fieldSetFlags()[2] ? this.canInformationList : (java.util.List<zdf.learn.com.commonUtils.data.avro.schema.can300.CanInformationList>) defaultValue(fields()[2]);
         record.type3OutsideUseData = fieldSetFlags()[3] ? this.type3OutsideUseData : (java.util.List<zdf.learn.com.commonUtils.data.avro.schema.can300.Type3OutsideUseData>) defaultValue(fields()[3]);
         return record;
-      } catch (org.apache.avro.AvroMissingFieldException e) {
-        throw e;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
@@ -593,165 +533,4 @@ public class DataCapacity extends org.apache.avro.specific.SpecificRecordBase im
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
-  @Override protected boolean hasCustomCoders() { return true; }
-
-  @Override public void customEncode(org.apache.avro.io.Encoder out)
-    throws java.io.IOException
-  {
-    this.timeAndCoordinate.customEncode(out);
-
-    this.canFrameNumber.customEncode(out);
-
-    long size0 = this.canInformationList.size();
-    out.writeArrayStart();
-    out.setItemCount(size0);
-    long actualSize0 = 0;
-    for (zdf.learn.com.commonUtils.data.avro.schema.can300.CanInformationList e0: this.canInformationList) {
-      actualSize0++;
-      out.startItem();
-      e0.customEncode(out);
-    }
-    out.writeArrayEnd();
-    if (actualSize0 != size0)
-      throw new java.util.ConcurrentModificationException("Array-size written was " + size0 + ", but element count was " + actualSize0 + ".");
-
-    long size1 = this.type3OutsideUseData.size();
-    out.writeArrayStart();
-    out.setItemCount(size1);
-    long actualSize1 = 0;
-    for (zdf.learn.com.commonUtils.data.avro.schema.can300.Type3OutsideUseData e1: this.type3OutsideUseData) {
-      actualSize1++;
-      out.startItem();
-      e1.customEncode(out);
-    }
-    out.writeArrayEnd();
-    if (actualSize1 != size1)
-      throw new java.util.ConcurrentModificationException("Array-size written was " + size1 + ", but element count was " + actualSize1 + ".");
-
-  }
-
-  @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
-    throws java.io.IOException
-  {
-    org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
-    if (fieldOrder == null) {
-      if (this.timeAndCoordinate == null) {
-        this.timeAndCoordinate = new zdf.learn.com.commonUtils.data.avro.schema.can300.TimeAndCoordinate();
-      }
-      this.timeAndCoordinate.customDecode(in);
-
-      if (this.canFrameNumber == null) {
-        this.canFrameNumber = new zdf.learn.com.commonUtils.data.avro.schema.can300.CanFrameNumber();
-      }
-      this.canFrameNumber.customDecode(in);
-
-      long size0 = in.readArrayStart();
-      java.util.List<zdf.learn.com.commonUtils.data.avro.schema.can300.CanInformationList> a0 = this.canInformationList;
-      if (a0 == null) {
-        a0 = new SpecificData.Array<zdf.learn.com.commonUtils.data.avro.schema.can300.CanInformationList>((int)size0, SCHEMA$.getField("canInformationList").schema());
-        this.canInformationList = a0;
-      } else a0.clear();
-      SpecificData.Array<zdf.learn.com.commonUtils.data.avro.schema.can300.CanInformationList> ga0 = (a0 instanceof SpecificData.Array ? (SpecificData.Array<zdf.learn.com.commonUtils.data.avro.schema.can300.CanInformationList>)a0 : null);
-      for ( ; 0 < size0; size0 = in.arrayNext()) {
-        for ( ; size0 != 0; size0--) {
-          zdf.learn.com.commonUtils.data.avro.schema.can300.CanInformationList e0 = (ga0 != null ? ga0.peek() : null);
-          if (e0 == null) {
-            e0 = new zdf.learn.com.commonUtils.data.avro.schema.can300.CanInformationList();
-          }
-          e0.customDecode(in);
-          a0.add(e0);
-        }
-      }
-
-      long size1 = in.readArrayStart();
-      java.util.List<zdf.learn.com.commonUtils.data.avro.schema.can300.Type3OutsideUseData> a1 = this.type3OutsideUseData;
-      if (a1 == null) {
-        a1 = new SpecificData.Array<zdf.learn.com.commonUtils.data.avro.schema.can300.Type3OutsideUseData>((int)size1, SCHEMA$.getField("type3OutsideUseData").schema());
-        this.type3OutsideUseData = a1;
-      } else a1.clear();
-      SpecificData.Array<zdf.learn.com.commonUtils.data.avro.schema.can300.Type3OutsideUseData> ga1 = (a1 instanceof SpecificData.Array ? (SpecificData.Array<zdf.learn.com.commonUtils.data.avro.schema.can300.Type3OutsideUseData>)a1 : null);
-      for ( ; 0 < size1; size1 = in.arrayNext()) {
-        for ( ; size1 != 0; size1--) {
-          zdf.learn.com.commonUtils.data.avro.schema.can300.Type3OutsideUseData e1 = (ga1 != null ? ga1.peek() : null);
-          if (e1 == null) {
-            e1 = new zdf.learn.com.commonUtils.data.avro.schema.can300.Type3OutsideUseData();
-          }
-          e1.customDecode(in);
-          a1.add(e1);
-        }
-      }
-
-    } else {
-      for (int i = 0; i < 4; i++) {
-        switch (fieldOrder[i].pos()) {
-        case 0:
-          if (this.timeAndCoordinate == null) {
-            this.timeAndCoordinate = new zdf.learn.com.commonUtils.data.avro.schema.can300.TimeAndCoordinate();
-          }
-          this.timeAndCoordinate.customDecode(in);
-          break;
-
-        case 1:
-          if (this.canFrameNumber == null) {
-            this.canFrameNumber = new zdf.learn.com.commonUtils.data.avro.schema.can300.CanFrameNumber();
-          }
-          this.canFrameNumber.customDecode(in);
-          break;
-
-        case 2:
-          long size0 = in.readArrayStart();
-          java.util.List<zdf.learn.com.commonUtils.data.avro.schema.can300.CanInformationList> a0 = this.canInformationList;
-          if (a0 == null) {
-            a0 = new SpecificData.Array<zdf.learn.com.commonUtils.data.avro.schema.can300.CanInformationList>((int)size0, SCHEMA$.getField("canInformationList").schema());
-            this.canInformationList = a0;
-          } else a0.clear();
-          SpecificData.Array<zdf.learn.com.commonUtils.data.avro.schema.can300.CanInformationList> ga0 = (a0 instanceof SpecificData.Array ? (SpecificData.Array<zdf.learn.com.commonUtils.data.avro.schema.can300.CanInformationList>)a0 : null);
-          for ( ; 0 < size0; size0 = in.arrayNext()) {
-            for ( ; size0 != 0; size0--) {
-              zdf.learn.com.commonUtils.data.avro.schema.can300.CanInformationList e0 = (ga0 != null ? ga0.peek() : null);
-              if (e0 == null) {
-                e0 = new zdf.learn.com.commonUtils.data.avro.schema.can300.CanInformationList();
-              }
-              e0.customDecode(in);
-              a0.add(e0);
-            }
-          }
-          break;
-
-        case 3:
-          long size1 = in.readArrayStart();
-          java.util.List<zdf.learn.com.commonUtils.data.avro.schema.can300.Type3OutsideUseData> a1 = this.type3OutsideUseData;
-          if (a1 == null) {
-            a1 = new SpecificData.Array<zdf.learn.com.commonUtils.data.avro.schema.can300.Type3OutsideUseData>((int)size1, SCHEMA$.getField("type3OutsideUseData").schema());
-            this.type3OutsideUseData = a1;
-          } else a1.clear();
-          SpecificData.Array<zdf.learn.com.commonUtils.data.avro.schema.can300.Type3OutsideUseData> ga1 = (a1 instanceof SpecificData.Array ? (SpecificData.Array<zdf.learn.com.commonUtils.data.avro.schema.can300.Type3OutsideUseData>)a1 : null);
-          for ( ; 0 < size1; size1 = in.arrayNext()) {
-            for ( ; size1 != 0; size1--) {
-              zdf.learn.com.commonUtils.data.avro.schema.can300.Type3OutsideUseData e1 = (ga1 != null ? ga1.peek() : null);
-              if (e1 == null) {
-                e1 = new zdf.learn.com.commonUtils.data.avro.schema.can300.Type3OutsideUseData();
-              }
-              e1.customDecode(in);
-              a1.add(e1);
-            }
-          }
-          break;
-
-        default:
-          throw new java.io.IOException("Corrupt ResolvingDecoder.");
-        }
-      }
-    }
-  }
 }
-
-
-
-
-
-
-
-
-
-

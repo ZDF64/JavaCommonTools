@@ -1,7 +1,6 @@
 package zdf.learn.com.commonUtils.data;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -19,27 +18,25 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 import org.apache.avro.Schema;
 import org.apache.avro.file.DataFileWriter;
 import org.apache.avro.io.DatumWriter;
 import org.apache.avro.specific.SpecificDatumWriter;
-import org.apache.catalina.filters.ExpiresFilter.XServletOutputStream;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
-import org.apache.spark.sql.SaveMode;
 import org.apache.spark.sql.SparkSession;
-import org.apache.spark.sql.types.StructType;
 
 import com.obs.services.OBSCredentialsProviderChain;
 import com.obs.services.ObsClient;
 import com.obs.services.ObsConfiguration;
 import com.obs.services.model.ObsObject;
 
+import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
 import zdf.learn.com.commonUtils.Files.DefangFileHandle;
 import zdf.learn.com.commonUtils.data.avro.schema.MaTripPojo;
@@ -60,6 +57,7 @@ import zdf.learn.com.commonUtils.data.avro.schema.can300_19nev.DecodeWarningStat
 import zdf.learn.com.commonUtils.data.avro.schema.can300_19nev.DecoderWarningList;
 import zdf.learn.com.commonUtils.tools.ComputeTools;
 import zdf.learn.com.commonUtils.tools.DataMakeUtils;
+@Slf4j
 public class MakeAvroData {
 //	private static Broadcast<String> broadcastSchema;
 //	public StructType structType ;
@@ -71,7 +69,10 @@ public class MakeAvroData {
 	 * 当前时间串
 	 */
 	Supplier<String> createDateString = ()->{
-		return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now(ZoneId.of("Asia/Shanghai")));
+		return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").format(LocalDateTime.now(ZoneId.of("Asia/Shanghai")));
+	};
+	Supplier<String> createJuneFirstString = ()->{
+		return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").format(LocalDateTime.parse("2023-06-01T16:20:00").atZone(ZoneId.of("Asia/Shanghai")));
 	};
 	/**
 	 * 
@@ -200,7 +201,8 @@ public class MakeAvroData {
 			innerDc.setCanType(10000L);
 			innerDc.setCollectType(100L);
 			innerDc.setDataLengthAfterCompression(10L);
-			innerDc.setTime(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now(ZoneId.of("Asia/Shanghai"))));
+//			innerDc.setTime(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").format(LocalDateTime.now(ZoneId.of("Asia/Shanghai"))));
+			innerDc.setTime(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").format(LocalDateTime.parse("2023-06-01T16:20:00").atZone(ZoneId.of("UTC"))));
 			innerDc.setOutsideUseDataMap(makeOutSideMap.get());
 			return innerDc;
 		}).collect(Collectors.toList());
@@ -221,7 +223,7 @@ public class MakeAvroData {
 				}
 				innerDc.setValue(String.format("%.02f", Math.random()*1000));
 				innerDc.setLabel(parts[0]);
-				innerDc.setDateTime(createDateString.get());
+				innerDc.setDateTime(createJuneFirstString.get());
 			}
 			return innerDc;
 		}).collect(Collectors.toList());
@@ -238,7 +240,7 @@ public class MakeAvroData {
 			innerDc.setCanInformationList(makeCanInformationList.apply(size));
 			TimeAndCoordinate tac = new TimeAndCoordinate();
 			GPS gps = new GPS();
-			gps.setGpsDate(createDateString.get());
+			gps.setGpsDate(createJuneFirstString.get());
 			gps.setHdop(100L);
 			gps.setMeasureCount(90L);
 			gps.setPdop(200L);
@@ -299,13 +301,33 @@ public class MakeAvroData {
 		map.put("NaviMaker", "DN");
 		return map;
 		};
-	
-	public List<MaTripPojo> makeVinByObsCsv(ObsClient obsClient) {
-		ObsObject obsJ = obsClient.getObject("g-tbdccm-gtmc-r", "dataApp/vinlistforAvroAll.csv");
+		
+		Function<MaTripPojo,Map<CharSequence, CharSequence>> makeHeaderMapByMaTrip =  maTrip -> {
+			DataMakeUtils dmu = new DataMakeUtils();
+			HashMap<CharSequence, CharSequence> map = new HashMap<CharSequence, CharSequence>();
+			map.put("Company", "FTMS");
+			map.put("Dest", "BJ");
+			map.put("TBDC-CorrelationId", "e9c4da3b-fa66-3a25-98e5-e135eea84c34");
+			map.put("NaviModel", "14");
+			map.put("ServiceDeviceId", "354301119051690");
+			map.put("Maker", "FTMS");
+			map.put("TBDC-APIM-UserName", "TSCPPcn-north-1");
+			map.put("RequestDateTime", maTrip.getIgOff()+".000");
+			map.put("CarDataVersion", "STEP001");
+			map.put("DispatchModelType", "KMA10L-AWDBSC");
+			map.put("CarType", "2");
+			map.put("VIN", maTrip.getVehicle_id());
+			map.put("NaviMaker", "DN");
+			return map;
+			};
+		
+	public List<MaTripPojo> makeVinByObsCsv(ObsClient obsClient,String objectKey) {
+		ObsObject obsJ = obsClient.getObject("g-tbdccm-gtmc-r", objectKey);
+//		ObsObject obsJ = obsClient.getObject("b-tbdccm-gtmc-r", objectKey);
 		InputStream ins = obsJ.getObjectContent();
 		List<MaTripPojo> returnList = new ArrayList<MaTripPojo>();
 		try {
-//			FileInputStream fis = new FileInputStream(new File("D:\\home\\apuser\\datamake\\vinlistforAvroAll.csv"));
+//			FileInputStream ins = new FileInputStream(new File("D:\\home\\apuser\\datamake\\vinlistforAvroAll.csv"));
 			byte[] b = new byte[4];
 			BufferedReader reader = new BufferedReader(new InputStreamReader(ins));
 			String tempStr;
@@ -313,16 +335,32 @@ public class MakeAvroData {
 				try {
 					returnList.add(MaTripPojo.builder()
 							.vehicle_id(tempStr.split(",")[0])
-							.target_date(tempStr.split(",")[1])
-							.igOff(tempStr.split(",")[2])
-							.igOn(tempStr.split(",")[3])
+							.target_date("2023-06-01")
+							.igOff("2023-06-01 16:30:01")
+							.igOn("2023-06-01 16:00:01")
 							.build());
 				} catch (Exception e) {
 					System.out.println("error line:"+tempStr);
 				}
-				if(returnList.size() >10000) {
-					return returnList;
-				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return returnList;
+	}
+	public List<MaTripPojo> makeVinByLimit(int limit) {
+		List<MaTripPojo> returnList = new ArrayList<MaTripPojo>();
+		DataMakeUtils dmu = new DataMakeUtils();
+		try {
+//			
+			for(int i = 0  ; i <limit ; i++) {
+				returnList.add(MaTripPojo.builder()
+							.vehicle_id(dmu.makeVin.get())
+							.target_date(dmu.createDateStringByFormat.apply("yyyyMMdd"))
+							.igOn(dmu.createDateAfterNowTime.get().toString())
+							.igOff(dmu.createDateAfterNowTime.get().toString())
+							.build());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -362,82 +400,126 @@ public class MakeAvroData {
 	
 	
 	public static void main(String[] args) {
-		/**
-		 * 普通模式
-		 */
-		MakeAvroData md = new MakeAvroData();
-		ObsClient obs = MakeAvroData.build("obs.cn-north-4.myhuaweicloud.com");
-		List<MaTripPojo> seed = md.makeVinByObsCsv(obs).stream().limit(100000).collect(Collectors.toList());
-//		md.makeAvroData(36L);
-		//md.makeFewEntity(0, 10).forEach(System.out::println);
-		/**
-		 * Spark集群模式
-		 */
-		List<List<MaTripPojo>> vinMatrix = ComputeTools.SplitList(64, seed);
+		int MaxSize = 18000000;
+		int parallelism = 72; 
+		int blockSize = 4000;
+		for (String arg : args) {
+            if (arg.startsWith("--MaxSize")) {
+            	MaxSize = Integer.parseInt(arg.split("=")[1]) ;
+            } else if (arg.startsWith("--parallelism")) {
+            	parallelism = Integer.parseInt(arg.split("=")[1]);
+            } else if(arg.startsWith("--blockSize")) {
+            	blockSize = Integer.parseInt(arg.split("=")[1]);
+            }
+            
+        }
+		MakeAvroData mdCsv = new MakeAvroData();
+//		ObsClient obsPartition = new ObsClient("CS4YAMGQPKECWFOS6XZO", "2QWVoB1dWfDwzaVXDL4txHHcQdFQZJaT6v0zu2Fy", "obs.cn-north-4.myhuaweicloud.com");
+//		ObsObject obsJ = obsPartition.getObject("g-tbdccm-gtmc-r", "dataApp/vinlistforAvroAll1.csv");
+//		byte[] b = new byte[4];
+//		BufferedReader reader = new BufferedReader(new InputStreamReader(obsJ.getObjectContent()));
+//		String tempStr;
+//		try {
+//			while ((tempStr = reader.readLine()) != null) {
+//				try {
+//					System.out.println(tempStr);
+//				} catch (Exception e) {
+//					System.out.println("error line:"+tempStr);
+//				}
+//			}
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//		}
 //		
+		System.out.println();
+
+		int crx = 0;
 		try(SparkSession spark = SparkSession.builder()
 				.appName(MakeAvroData.class.getSimpleName() + " - " + new Date())
+				
 				.getOrCreate(); 
-			
-			JavaSparkContext jsc = JavaSparkContext
-					.fromSparkContext(spark.sparkContext());
-			/**
-			 * 日立环境
-			 */
-//			ObsClient obsClient = new ObsClient("JH5P7FMV6YLBIAAZWDZY", "LrcacFcK5NhEL1b00YCUwetOMgJ66WIr0qOf5WYi", "obs.cn-north-4.myhuaweicloud.com")
-				)
-		{
-			JavaRDD<List<MaTripPojo>> rdd = jsc.parallelize(vinMatrix);
-			rdd.mapPartitions(m->{
-				List<Can300_19nev> listRsAll = new ArrayList<Can300_19nev>();
-                MakeAvroData mds = new MakeAvroData();
-                while(m.hasNext()) {
-                	
-                	List<Can300_19nev> listRs = m.next().stream().map(vin->{
-                        Can300_19nev can300 = new Can300_19nev();
-                        can300.setBody(mds.makeDcm19.apply(vin.getVehicle_id()));
-//						can300.setBody(new Dcm19Message());
-                        can300.setCorrelationId("Core001");		
-                        can300.setDecoderWarningList(mds.makeDecoderWarningList(10));
-                        can300.setDispatchModelType("TEST-HEV001");
-                        can300.setGroupNumber(String.format("TEST%05d", (int)Math.random()*10000));
-                        can300.setVehicleName("UX");
-                        can300.setHeaders(mds.makeHeaderMap.apply(vin.getVehicle_id()));
-                        return can300;
-                        }
-                    ).collect(Collectors.toList());
-                	listRsAll.addAll(listRs);
-                }
-                return listRsAll.iterator();
-            }).foreachPartition(fs->{
-            	ObsClient obsPartition = MakeAvroData.build("obs.cn-north-4.myhuaweicloud.com");
-//                ObsClient obsPartition = new ObsClient("KHTCNRDCRQGCAQGGMLQX", "wN9ePh0A3JayYMQSXE3xNRWnga5A19FS3Kpwen5q", "obs.cn-north-4.myhuaweicloud.com");
-                DatumWriter<Can300_19nev> userDatumWriter = new SpecificDatumWriter<Can300_19nev>(Can300_19nev.class);
-                List<File> upoadFile = new ArrayList<>();
-                DataFileWriter<Can300_19nev> dataFileWriter = new DataFileWriter<Can300_19nev>(userDatumWriter);
-            	fs.forEachRemaining(can300->{
-                    try {
-                    	File TempFile = File.createTempFile(can300.getHeaders().get("VIN")+"_"+can300.getHeaders().get("RequestDateTime")+"_"+Math.random()*1000000, ".avro");
-                        
-                        dataFileWriter.create(Can300_19nev.getClassSchema(),TempFile);
-                        dataFileWriter.append(can300);
-                        upoadFile.add(TempFile);
-                        dataFileWriter.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } 
-                });
-                upoadFile.forEach(fsAvro->{
-                	obsPartition.putObject("g-tbdccm-gtmc", "procdata/CN/real/can_External/00/2023/06/01/16/"+fsAvro.getName(), fsAvro);
-                });
-                obsPartition.close();
-                upoadFile.forEach(fsAvro->{
-                	fsAvro.delete();
-                });
-            });
+			JavaSparkContext jsc = JavaSparkContext.fromSparkContext(spark.sparkContext());){
+//			ObsClient obsCsv = new ObsClient("KHTCNRDCRQGCAQGGMLQX", "wN9ePh0A3JayYMQSXE3xNRWnga5A19FS3Kpwen5q", "obs.cn-north-4.myhuaweicloud.com");
+			ObsClient obsCsv = MakeAvroData.build("obs.cn-north-4.myhuaweicloud.com");
+			for(int i = 0 ; i <2 ; i ++) {
+				String objectKey = "dataApp/vinlistforAvroAll"+i+".csv";
+				List<MaTripPojo> subList = mdCsv.makeVinByObsCsv(obsCsv,objectKey).stream().limit(180).collect(Collectors.toList());
+				List<List<MaTripPojo>> subMatrix = ComputeTools.SplitList(parallelism, subList);
+				System.out.println("makeVinByObsCsv subMatrix Size: "+subMatrix.size());
+				Can300_19nev can300Seed = new Can300_19nev();
+				for(List<MaTripPojo> innerSubList : subMatrix) {
+					System.out.println("makeVinByObsCsv innerSubList Size: "+innerSubList.size());
+					List<List<MaTripPojo>> subVinMatrix = ComputeTools.SplitList(parallelism, innerSubList);
+					JavaRDD<List<MaTripPojo>> rdd = jsc.parallelize(subVinMatrix);
+					rdd.mapPartitions(m->{
+						MakeAvroData mds = new MakeAvroData();
+						List<Can300_19nev> listRsAll = new ArrayList<Can300_19nev>();
+			            while(m.hasNext()) {
+			            	List<Can300_19nev> listRs = m.next().stream().map(vin->{
+			                    Can300_19nev can300 = new Can300_19nev();
+			                    can300.setBody(mds.makeDcm19.apply(vin.getVehicle_id()));
+			                    can300.setCorrelationId("Core001");		
+			                    can300.setDecoderWarningList(mds.makeDecoderWarningList(10));
+			                    can300.setDispatchModelType("TEST-HEV001");
+			                    can300.setGroupNumber(String.format("TEST%05d", (int)Math.random()*10000));
+			                    can300.setVehicleName("UX");
+			                    can300.setHeaders(mds.makeHeaderMapByMaTrip.apply(vin));
+			                    return can300;
+			                    }
+			                ).collect(Collectors.toList());
+			            	 System.out.println("make data mapPartitions listRs: "+listRs.size());
+			            	listRsAll.addAll(listRs);
+			            }
+			           
+			            return listRsAll.iterator();
+			        }).foreachPartition(fs->{
+			        	ObsClient obsPartition = MakeAvroData.build("obs.cn-north-4.myhuaweicloud.com");
+//			            ObsClient obsPartition = new ObsClient("KHTCNRDCRQGCAQGGMLQX", "wN9ePh0A3JayYMQSXE3xNRWnga5A19FS3Kpwen5q", "obs.cn-north-4.myhuaweicloud.com");
+			            DatumWriter<Can300_19nev> userDatumWriter = new SpecificDatumWriter<Can300_19nev>(Can300_19nev.class);
+			            List<File> upoadFile = new ArrayList<>();
+			            DataFileWriter<Can300_19nev> dataFileWriter = new DataFileWriter<Can300_19nev>(userDatumWriter);
+			            DataMakeUtils mdu = new DataMakeUtils();
+			        	fs.forEachRemaining(can300->{
+			                try {
+			                	File TempFile = File.createTempFile(can300.getHeaders().get("VIN")+"_"+Math.random()*1000000, ".avro");
+			                    
+			                    dataFileWriter.create(Can300_19nev.getClassSchema(),TempFile);
+			                    dataFileWriter.append(can300);
+			                    upoadFile.add(TempFile);
+			                    dataFileWriter.flush();
+				            	obsPartition.putObject("g-tbdccm-gtmc", "procdata/CN/real/can_External/"+mdu.makeHexStrByMax.apply(255)+"/2023/06/01/16/"+TempFile.getName(), TempFile);
+//			                    obsPartition.putObject("b-tbdccm-gtmc", "procdata/CN/real/can_External/"+mdu.makeHexStrByMax.apply(255)+"/2023/06/01/16/"+TempFile.getName(), TempFile);
+			                    dataFileWriter.close();
+			                } catch (Exception e) {
+			                    e.printStackTrace();
+			                } 
+			            });
+			        	
+			        	System.out.println("foreachPartition make File finished");
+//			            upoadFile.forEach(fsAvro->{
+//			            	DataMakeUtils mdu = new DataMakeUtils();
+//			            	obsPartition.putObject("g-tbdccm-gtmc", "procdata/CN/real/can_External/"+mdu.makeHexStrByMax.apply(255)+"/2023/06/01/16/"+fsAvro.getName(), fsAvro);
+////			            	obsPartition.putObject("b-tbdccm-gtmc", "procdata/CN/real/can_External/"+mdu.makeHexStrByMax.apply(255)+"/2023/06/01/16/"+fsAvro.getName(), fsAvro);
+//			            });
+			        	
+			            obsPartition.close();
+			            upoadFile.forEach(fsAvro->{
+			            	fsAvro.delete();
+			            });
+			        });
+				}
+				System.out.println("make data group index: "+crx);
+				crx ++;
+			}
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private Can300_19nev updateAndCopy(Can300_19nev can300Seed,MaTripPojo vin) {
+		MakeAvroData mds = new MakeAvroData();
+		can300Seed.setHeaders(mds.makeHeaderMapByMaTrip.apply(vin));
+		return can300Seed;
 	}
 	/**
 	 * 
