@@ -14,7 +14,7 @@ public class ReadParquert {
 				JavaSparkContext jsc = JavaSparkContext.fromSparkContext(spark.sparkContext());
 				) {
 			
-			spark.read().option("basePath", "E:\\console\\can-a\\data\\outside").parquet("E:\\console\\can-a\\data\\outside").show();
+			spark.read().parquet("E:\\console\\can-a\\data\\outside\\hash=0a\\timeKey=2023060116\\vin=TESTVINFPJIQ00003597\\").show(500,false);
 			
 		}catch (Exception e) {
 			// TODO: handle exception

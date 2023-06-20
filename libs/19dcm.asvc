@@ -1,0 +1,296 @@
+{
+  "type" : "record",
+  "name" : "Can300_19dcm",
+  "namespace" : "cn.cbdc.canconvert.avro.schema.can300",
+  "fields" : [ {
+    "name" : "headers",
+    "type" : [ "null", {
+      "type" : "map",
+      "values" : "string"
+    } ],
+    "default" : null
+  }, {
+    "name" : "correlationId",
+    "type" : [ "null", "string" ],
+    "default" : null
+  }, {
+    "name" : "dispatchModelType",
+    "type" : [ "null", "string" ],
+    "default" : null
+  }, {
+    "name" : "groupNumber",
+    "type" : [ "null", "string" ],
+    "default" : null
+  }, {
+    "name" : "vehicleName",
+    "type" : [ "null", "string" ],
+    "default" : null
+  }, {
+    "name" : "body",
+    "type" : {
+      "type" : "record",
+      "name" : "Dcm19Message",
+      "fields" : [ {
+        "name" : "commonHeader",
+        "type" : {
+          "type" : "record",
+          "name" : "CommonHeader",
+          "fields" : [ {
+            "name" : "dataVersion",
+            "type" : [ "null", "string" ],
+            "default" : null
+          }, {
+            "name" : "commandType",
+            "type" : [ "null", "long" ],
+            "default" : null
+          }, {
+            "name" : "destinationInformation",
+            "type" : [ "null", "long" ],
+            "default" : null
+          }, {
+            "name" : "formatInformation",
+            "type" : [ "null", "long" ],
+            "default" : null
+          }, {
+            "name" : "dcuOrDcuMeuClassification",
+            "type" : [ "null", "long" ],
+            "default" : null
+          }, {
+            "name" : "dcu",
+            "type" : [ "null", "long" ],
+            "default" : null
+          }, {
+            "name" : "meu",
+            "type" : [ "null", "long" ],
+            "default" : null
+          }, {
+            "name" : "communicationModeFlag",
+            "type" : [ "null", "long" ],
+            "default" : null
+          }, {
+            "name" : "electricPfInformation",
+            "type" : [ "null", "long" ],
+            "default" : null
+          }, {
+            "name" : "geodeticSystemInformation",
+            "type" : [ "null", "long" ],
+            "default" : null
+          }, {
+            "name" : "mapBasedVersion",
+            "type" : [ "null", "long" ],
+            "default" : null
+          }, {
+            "name" : "size",
+            "type" : [ "null", "long" ],
+            "default" : null
+          } ]
+        }
+      }, {
+        "name" : "updCondition",
+        "type" : {
+          "type" : "record",
+          "name" : "UpdCondition",
+          "fields" : [ {
+            "name" : "updConditionId",
+            "type" : [ "null", "long" ],
+            "default" : null
+          } ],
+          "default" : null
+        }
+      }, {
+        "name" : "vehicleInformationHeader",
+        "type" : {
+          "type" : "record",
+          "name" : "VehicleInformationHeader",
+          "fields" : [ {
+            "name" : "dataCapacityNumber",
+            "type" : [ "null", "int" ],
+            "default" : null
+          }, {
+            "name" : "timeZoneOffset",
+            "type" : [ "null", "int" ],
+            "default" : null
+          } ],
+          "default" : null
+        }
+      }, {
+        "name" : "dataCapacityList",
+        "type" : {
+          "type" : "array",
+          "items" : {
+            "type" : "record",
+            "name" : "DataCapacity",
+            "fields" : [ {
+              "name" : "timeAndCoordinate",
+              "type" : {
+                "type" : "record",
+                "name" : "TimeAndCoordinate",
+                "fields" : [ {
+                  "name" : "gps",
+                  "type" : {
+                    "type" : "record",
+                    "name" : "GPS",
+                    "fields" : [ {
+                      "name" : "gpsDate",
+                      "type" : [ "null", "string" ],
+                      "default" : null
+                    }, {
+                      "name" : "point",
+                      "type" : [ "null", {
+                        "type" : "record",
+                        "name" : "Point",
+                        "fields" : [ {
+                          "name" : "latitude",
+                          "type" : [ "null", "double" ],
+                          "default" : null
+                        }, {
+                          "name" : "longitude",
+                          "type" : [ "null", "double" ],
+                          "default" : null
+                        } ]
+                      } ]
+                    }, {
+                      "name" : "pdop",
+                      "type" : [ "null", "long" ],
+                      "default" : null
+                    }, {
+                      "name" : "hdop",
+                      "type" : [ "null", "long" ],
+                      "default" : null
+                    }, {
+                      "name" : "vdop",
+                      "type" : [ "null", "long" ],
+                      "default" : null
+                    }, {
+                      "name" : "measureCount",
+                      "type" : [ "null", "long" ],
+                      "default" : null
+                    } ],
+                    "default" : null
+                  }
+                }, {
+                  "name" : "mm",
+                  "type" : {
+                    "type" : "record",
+                    "name" : "MM",
+                    "fields" : [ {
+                      "name" : "point",
+                      "type" : [ "null", "Point" ],
+                      "default" : null
+                    }, {
+                      "name" : "rticLinkId",
+                      "type" : [ "null", "long" ],
+                      "default" : null
+                    } ],
+                    "default" : null
+                  }
+                } ],
+                "default" : null
+              }
+            }, {
+              "name" : "canFrameNumber",
+              "type" : {
+                "type" : "record",
+                "name" : "CanFrameNumber",
+                "fields" : [ {
+                  "name" : "dataCapacityType",
+                  "type" : [ "null", "long" ],
+                  "default" : null
+                }, {
+                  "name" : "dataCapacityNumber",
+                  "type" : [ "null", "long" ],
+                  "default" : null
+                } ],
+                "default" : null
+              }
+            }, {
+              "name" : "canInformationList",
+              "type" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "record",
+                  "name" : "CanInformation",
+                  "fields" : [ {
+                    "name" : "canId",
+                    "type" : [ "null", "string" ],
+                    "default" : null
+                  }, {
+                    "name" : "dataLengthAfterCompression",
+                    "type" : [ "null", "long" ],
+                    "default" : null
+                  }, {
+                    "name" : "time",
+                    "type" : [ "null", "string" ],
+                    "default" : null
+                  }, {
+                    "name" : "outsideUseDataMap",
+                    "type" : [ "null", {
+                      "type" : "map",
+                      "values" : {
+                        "type" : "map",
+                        "values" : "string"
+                      }
+                    } ],
+                    "default" : null
+                  } ],
+                  "default" : null
+                },
+                "java-class" : "java.util.List"
+              }
+            }, {
+              "name" : "type3OutsideUseData",
+              "type" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "record",
+                  "name" : "Type3OutsideUseData",
+                  "fields" : [ {
+                    "name" : "dateTime",
+                    "type" : "string"
+                  }, {
+                    "name" : "label",
+                    "type" : "string"
+                  }, {
+                    "name" : "value",
+                    "type" : "string"
+                  }, {
+                    "name" : "unit",
+                    "type" : "string"
+                  } ],
+                  "default" : null
+                },
+                "java-class" : "java.util.List"
+              }
+            } ],
+            "default" : null
+          },
+          "java-class" : "java.util.List"
+        }
+      } ],
+      "default" : null
+    }
+  }, {
+    "name" : "decoderWarningList",
+    "type" : {
+      "type" : "array",
+      "items" : {
+        "type" : "record",
+        "name" : "DecoderWarningList",
+        "namespace" : "cn.cbdc.canconvert.avro.schema.can300_19nev",
+        "fields" : [ {
+          "name" : "message",
+          "type" : "string"
+        }, {
+          "name" : "type",
+          "type" : [ "null", {
+            "type" : "enum",
+            "name" : "DecodeWarningStatus",
+            "symbols" : [ "OUT_OF_RANGE", "ABNORMAL", "INVALID", "UNSETTLED", "INDETERMINATE", "UNIT_ERROR", "NULL_OR_INVALID", "VERSION_ERROR", "UNCORRECTION", "ABNORMAL_INVALID", "DEFAULT_NOT_SET", "CALCULATE_ERROR" ]
+          } ]
+        } ],
+        "default" : null
+      },
+      "java-class" : "java.util.List"
+    }
+  } ]
+}

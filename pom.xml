@@ -3,7 +3,7 @@
 
 	<groupId>zdf.learn.com</groupId>
 	<artifactId>commonUtils</artifactId>
-	<version>0.0.1</version>
+	<version>0.1.1</version>
 	<packaging>jar</packaging>
 
 	<name>commonUtils</name>
@@ -77,6 +77,19 @@
 			<version>31.1-jre</version>
 		</dependency>
 		<!--  ###大数据相关类### -->
+		<!-- https://mvnrepository.com/artifact/com.huawei.mrs/mrs-obs-provider -->
+		<dependency>
+		    <groupId>com.huawei</groupId>
+		    <artifactId>mrs</artifactId>
+		    <version>3.1.1.51.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-s3 -->
+		
+		<dependency>
+		    <groupId>com.amazonaws</groupId>
+		    <artifactId>aws-java-sdk-s3</artifactId>
+		    <version>1.12.274</version>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.spark</groupId>
 			<artifactId>spark-core_2.12</artifactId>

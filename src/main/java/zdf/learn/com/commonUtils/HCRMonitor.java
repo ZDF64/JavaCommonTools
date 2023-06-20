@@ -10,7 +10,7 @@ public class HCRMonitor {
 //		DefangFileHandle.fileNumberCount("E:\\console\\HCR\\csv\\T", "TMCI");
 //		DefangFileHandle.fileNumberCount("E:\\console\\HCR\\csv\\G", "GTMC");
 //		DefangFileHandle.fileNumberCount("E:\\console\\HCR\\csv\\F", "FTMS");
-		DefangFileHandle.fileNumberCount("D:\\home\\apuser\\datamake", "TMCI");
+		DefangFileHandle.fileNumberCount("D:\\home\\apuser\\datamake\\all", "TMCI");
 	}
 
 }

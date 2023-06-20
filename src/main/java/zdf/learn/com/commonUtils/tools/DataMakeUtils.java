@@ -1,5 +1,6 @@
 package zdf.learn.com.commonUtils.tools;
 
+import java.security.MessageDigest;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -35,6 +36,21 @@ public class DataMakeUtils {
 	};
 	public Supplier<String> makeVin = ()->{
 		return String.format("VINFEW%03dB00%04d",(int)(Math.random()*1000),(int)(Math.random()*10000));
+	};
+	public Function<String,String> makeVinByEncrypt = (vin)-> {
+		try {
+			MessageDigest m = MessageDigest.getInstance("MD5");
+			m.update(vin.getBytes("UTF8"));
+			byte s[] = m.digest();
+			String result = "";
+			for (int i = 0; i < s.length; i++) {
+				result += Integer.toHexString((0x000000FF & s[i]) | 0xFFFFFF00).substring(6);
+			}
+			return result.substring(0,5) + vin.substring(5);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
 	};
 	public Supplier<Integer> makeInt = ()->{
 		return (int)(Math.random()*1000);

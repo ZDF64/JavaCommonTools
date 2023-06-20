@@ -2,3 +2,4 @@
 2023-06-04 10:24:02 988|main|WARN |Request failed, Response code: 403; Request ID: 000001888438004FB0848D6D28D560B1; Request path: https://g-tbdccm-gtmc-r.obs.cn-north-4.myhuaweicloud.com/dataApp%2FvinlistforAvroAll0.csv
 2023-06-04 10:26:39 143|main|WARN |Encountered 1 Internal Server error(s), will retry in 100ms
 2023-06-04 10:26:39 258|main|WARN |Retrying connection that failed with error, attempt number 1 of 3
+2023-06-18 10:05:37 436|Executor task launch worker for task 2.0 in stage 0.0 (TID 2)|WARN |Request failed, Response code: 404; Request ID: 00000188CC402AE544C5C304A703FF9F; Request path: https://g-cb-canvp-19dcm-a-l.obs.cn-north-4.myhuaweicloud.com/?apiversion
