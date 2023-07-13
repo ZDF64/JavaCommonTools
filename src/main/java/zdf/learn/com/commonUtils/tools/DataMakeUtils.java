@@ -46,7 +46,7 @@ public class DataMakeUtils {
 			for (int i = 0; i < s.length; i++) {
 				result += Integer.toHexString((0x000000FF & s[i]) | 0xFFFFFF00).substring(6);
 			}
-			return result.substring(0,5) + vin.substring(5);
+			return result.substring(0,5).toUpperCase() + vin.substring(5);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

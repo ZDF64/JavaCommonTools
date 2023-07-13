@@ -12,8 +12,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -60,6 +62,8 @@ public class MakeAvroData {
 	public static String readBucketName = "g-cb-canvp-19dcm-a-g";
 	public static String awsAk="AKIASILNB7UB24JXU65F";
 	public static String awsSk="H9UCNuikAnXV7o2aubVsKYZhblZwwepFu4pAkHMG";
+//	public static String awsAk="AKIAXQAYCWGSWJZTPSJ5";
+//	public static String awsSk="BJLaSHpDPiqaQLS5P5BQpcDxtG9WTF839EuUfDNg";
 	public static String awsEndpoint="cn-north-1";
 	public static int MaxSize = 18000000;
 	public static int parallelism = 400; 
@@ -67,7 +71,7 @@ public class MakeAvroData {
 	public static String bucketName = "g-tbdccm-gtmc";
 	public static int indexCnt;
 	public static String prefixStartUrl = "procdata/CN/real/can_External/";
-	public static String suffixDate = "2023/06/16/09/";
+	public static String suffixDate = "2023/06/19/05/";
 	private AvroUtilTool avroTools = new AvroUtilTool();
 //	private static Broadcast<String> broadcastSchema;
 //	public StructType structType ;
@@ -279,8 +283,6 @@ public class MakeAvroData {
             }
             
         }
-		MakeAvroData mads = new MakeAvroData();
-		mads.fetchPrefix.apply(3);
 		System.out.println(String.format("MaxSize=%s,parallelism=%s,blockSize=%s", MaxSize,parallelism,blockSize));
 		System.out.println(String.format("readBucketName=%s,bucketName=%s,prefixStartUrl=%s", readBucketName,bucketName,prefixStartUrl));
 //		
@@ -406,34 +408,35 @@ public class MakeAvroData {
 		List<String> perfixList = new ArrayList<>();
 		List<String> submitList = new ArrayList<>();
 		MakeAvroData mads = new MakeAvroData();
+		DefangFileHandle dfTools = new DefangFileHandle();
 		AmazonS3 awsSrcS3Client = new AwsS3Client(awsAk, awsSk, awsEndpoint).getS3ClientDefault();
-//		awsSrcS3Client.listBuckets().forEach(buckets->{
-//			System.out.println(buckets.getName());
-//		});
-//		ListObjectsV2Request request = new ListObjectsV2Request()
-//                .withBucketName(bucket)
-//                .withPrefix(prefix).withDelimiter("/")
-//				;
-//		ListObjectsV2Result result = null;
+		awsSrcS3Client.listBuckets().forEach(buckets->{
+			System.out.println(buckets.getName());
+		});
+		ListObjectsV2Request requestPrefix = new ListObjectsV2Request()
+                .withBucketName(bucket)
+                .withPrefix(prefix)
+                .withDelimiter("/");
+		ListObjectsV2Result result = null;
 
-//		do {
-//            result = awsSrcS3Client.listObjectsV2(request);
-//            result.getCommonPrefixes().forEach(cp -> {
-//            	System.out.println(cp + suffixDate);
-//            	perfixList.add(cp + suffixDate);
-//            	});
-//            request.setContinuationToken(result.getNextContinuationToken());
-//        } while (result.isTruncated());
-		perfixList = mads.fetchPrefix.apply(indexCnt);
+		do {
+            result = awsSrcS3Client.listObjectsV2(requestPrefix);
+            result.getCommonPrefixes().forEach(cp -> {
+            	System.out.println(cp + suffixDate);
+            	perfixList.add(cp + suffixDate);
+            	});
+            requestPrefix.setContinuationToken(result.getNextContinuationToken());
+        } while (result.isTruncated());
+		
+		//===========================================================================================
+//		perfixList = mads.fetchPrefix.apply(indexCnt);
 		perfixList.stream().forEach(perfixIn->{
 			System.out.println("start to pares by prefix:"+perfixIn);
-			ListObjectsV2Request request = new ListObjectsV2Request()
-				      .withBucketName(bucket)
-				      .withPrefix(perfixIn).withDelimiter("/");
 			ListObjectsV2Result resultInner = null;
 			ListObjectsV2Request requestInner = new ListObjectsV2Request()
 	                .withBucketName(bucket)
 	                .withPrefix(perfixIn);
+//			requestInner.setMaxKeys(50);
 			do {
 				resultInner = awsSrcS3Client.listObjectsV2(requestInner);
 		        List<S3ObjectSummary> summary = resultInner.getObjectSummaries();
@@ -441,93 +444,56 @@ public class MakeAvroData {
 					submitList.add(objs.getKey());
 					if(batchSize<=submitList.size()) {
 //						开始执行
-						System.out.println("凑足Batch，开始执行,"+submitList.size());
+						System.out.println("凑足Batch，开始执行,"+perfixIn+","+submitList.size());
 						consumer.accept(bucket, submitList);
 						submitList.clear();
 					}
 				});
-				request.setContinuationToken(resultInner.getNextContinuationToken());
+				requestInner.setContinuationToken(resultInner.getNextContinuationToken());
 			}while(resultInner.isTruncated());
+			if(submitList.size()>0) {
+//				开始执行
+				System.out.println("剩余Batch，开始执行,"+perfixIn+","+submitList.size());
+				consumer.accept(bucket, submitList);
+			}
 		});
 		
 	}
 	
 	public void submitToTransfer(JavaSparkContext jsc,String bucket, List<String> keys ,int parallelism) {
 		Long start = System.currentTimeMillis();
-		ArrayList<ArrayList<String>> subKeyMatrix = ComputeTools.SplitList(parallelism, keys);
-		JavaRDD<ArrayList<String>> rdd = jsc.parallelize(subKeyMatrix);
-		rdd.foreachPartition(fp->{
-			HuaweiObsModule obsModule = new HuaweiObsModule();
-			AmazonS3 awsSrcS3Client = new AwsS3Client(awsAk, awsSk, awsEndpoint).getS3ClientDefault();
-			ObsClient obsClient = obsModule.buildMrsObs("obs.cn-north-4.myhuaweicloud.com");
-//			ObsClient obsClient = new ObsClient("KHTCNRDCRQGCAQGGMLQX", "wN9ePh0A3JayYMQSXE3xNRWnga5A19FS3Kpwen5q", "obs.cn-north-4.myhuaweicloud.com");
-			DataMakeUtils dmu = new DataMakeUtils();
-			List<File> upoadFile = new ArrayList<>();
-			System.out.println("foreachPartition start to send obs:"+bucketName);
-			while(fp.hasNext()) {
-				List<String> innerList = fp.next();
-				System.out.println("foreachPartition next innerList:"+innerList.size());
-				System.out.println("foreachPartition next innerList example:"+innerList.get(0));
-				for(String objKey : innerList) {
-					SpecificDatumReader<Can300_19dcm> datum = new SpecificDatumReader<Can300_19dcm>();
-					DatumWriter<Can300_19dcm> DatumWriter = new SpecificDatumWriter<Can300_19dcm>(Can300_19dcm.class);
-					try {
-						DataFileStream<Can300_19dcm> reader = null;
-						try {
-							reader = new DataFileStream<>(awsSrcS3Client.getObject(bucket, objKey).getObjectContent(), datum);
-							
-						} catch (Exception e) {
-							System.out.println("start ot retry,"+e.getMessage());
-							for(int i = 0 ; i < 3 ; i++) {
-								try {
-									reader = new DataFileStream<>(awsSrcS3Client.getObject(bucket, objKey).getObjectContent(), datum);
-									System.out.println("retry success:"+i);
-									break;
-								} catch (Exception e2) {
-									System.out.println("retry failed:"+i+","+e2.getMessage());
-									Thread.sleep(5000);
-								}
-							}
-						}
-						if(reader==null) {
-							System.out.println("retry failed, continue:"+objKey);
-							continue;
-						}
-						Can300_19dcm can300 = reader.next();
-						Map<CharSequence,CharSequence> header = can300.getHeaders();
-						String newVin = "";
-						String oldVin = "";
-						String newPath = "";
-						for(CharSequence key : header.keySet()) {
-							if(key.toString().equals("VIN")) {
-								oldVin = header.get(key).toString();
-								newVin = dmu.makeVinByEncrypt.apply(oldVin);
-								header.put(key, newVin);
-							}
-						}
-						newPath = objKey.replace(oldVin, newVin);
-						
-						DataFileWriter<Can300_19dcm> dataFileWriter = new DataFileWriter<Can300_19dcm>(DatumWriter);
-						File TempFile = File.createTempFile(can300.getHeaders().get("VIN")+"_"+can300.getHeaders().get("DispatchModelType")+"-"+Math.random()*1000000, ".avro");
-	                    dataFileWriter.create(Can300_19dcm.getClassSchema(),TempFile);
-	                    dataFileWriter.append(can300);
-	                    upoadFile.add(TempFile);
-	                    dataFileWriter.flush();
-						obsClient.putObject(bucketName, newPath, TempFile);
-						dataFileWriter.close();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-				System.out.println("foreachPartition upload Files finished:"+upoadFile.size());
-				upoadFile.forEach(fsAvro->{
-	            	fsAvro.delete();
-	            });
-			}
-			obsClient.close();
-		});
-		Long end = System.currentTimeMillis();
-		System.out.println("batch work time cost,"+(end-start)/1000);
+		System.out.println("keys::::::::::::::"+keys.size());
+		DataMakeUtils dmu = new DataMakeUtils();
+		DefangFileHandle dfTool = new DefangFileHandle();
+		Set<String> VinSet = new HashSet<String>();
+		for(String objKey: keys) {
+			String oldVin = objKey.substring(objKey.lastIndexOf("/")+1,objKey.indexOf("-"));
+			VinSet.add(dmu.makeVinByEncrypt.apply(oldVin));
+		}
+		for(String vin : VinSet) {
+			dfTool.toWrite(vin, "D:\\home\\apuser\\data\\vinList.csv", true);
+		}
+		
+//		ArrayList<ArrayList<String>> subKeyMatrix = ComputeTools.SplitList(parallelism, keys);
+//		JavaRDD<ArrayList<String>> rdd = jsc.parallelize(subKeyMatrix);
+//		rdd.foreachPartition(fp->{
+//			HuaweiObsModule obsModule = new HuaweiObsModule();
+//			AmazonS3 awsSrcS3Client = new AwsS3Client(awsAk, awsSk, awsEndpoint).getS3ClientDefault();
+////			ObsClient obsClient = obsModule.buildMrsObs("obs.cn-north-4.myhuaweicloud.com");
+////			ObsClient obsClient = new ObsClient("KHTCNRDCRQGCAQGGMLQX", "wN9ePh0A3JayYMQSXE3xNRWnga5A19FS3Kpwen5q", "obs.cn-north-4.myhuaweicloud.com");
+//			ObsFilesHandler obsTransfer = new ObsFilesHandler();
+//			
+//			System.out.println("foreachPartition start to send obs:"+bucketName);
+//			while(fp.hasNext()) {
+//				List<String> innerList = fp.next();
+//				//obsTransfer.parseS3ToObs(bucketName, innerList, awsSrcS3Client, obsClient);
+//				 
+//				
+//			}
+////			obsClient.close();
+//		});
+//		Long end = System.currentTimeMillis();
+//		System.out.println("batch work time cost,"+(end-start)/1000);
 	}
 	
 	

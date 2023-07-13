@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
 
 import com.alibaba.fastjson2.JSONObject;
@@ -383,7 +384,21 @@ public class DefangFileHandle {
 
 		return returnList;
 	}
-
+	/**
+	 * 文件去重
+	 * @param oldPath
+	 * @param newPath
+	 */
+	public void distinctToNew(String oldPath,String newPath) {
+		readToLine(oldPath)
+		.stream()
+		.distinct()
+		.collect(Collectors.toList())
+		.forEach(ls->{
+			toWrite(ls, newPath, true);
+		});
+	}
+	
 	/**
 	 * 清除文件内容
 	 * 
