@@ -69,7 +69,13 @@ public class BatchComputer implements BatchComputeImpl{
 	@Override
 	public void startCompute() {
 		cancelled = false;
-		int k =0;
+		new Thread(()->{
+			exec();
+		}).start();
+		
+	}
+	
+	public void exec() {
 		List<TaskBean> innerTask = new ArrayList<TaskBean>();
 		while(!cancelled) {
 			if(waitingForComputeQuere.peek()!=null) {
@@ -79,23 +85,12 @@ public class BatchComputer implements BatchComputeImpl{
 					TaskMultiSlot slot = new TaskMultiSlot(innerTask,PartitionSize);
 					multiPool.invoke(slot);
 					innerTask = new ArrayList<TaskBean>();
+					System.out.println("Running.....");
+					System.out.println("活跃线程数："+multiPool.getActiveThreadCount());
+					System.out.println("并行数："+multiPool.getParallelism());
+					System.out.println("running并行数："+multiPool.getRunningThreadCount());
+					System.out.println("窃取任务数："+multiPool.getStealCount());
 				}
-			}
-			try {
-				Thread.sleep(1000);
-				if(waitingForComputeQuere.peek() ==null) {
-					k++;
-					System.out.println("waiting:"+k);
-				}else {
-					k=0;
-				}
-				
-				
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			if(k>waitMax) {
-				cancelled = true;
 			}
 		}
 		if(innerTask.size()>0) {
@@ -104,8 +99,8 @@ public class BatchComputer implements BatchComputeImpl{
 			innerTask = new ArrayList<TaskBean>();
 		}
 		System.out.println("Finished");
-		
 	}
+	
 	@Override
 	public void stopCompute() {
 		// TODO Auto-generated method stub

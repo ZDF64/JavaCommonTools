@@ -1,0 +1,86 @@
+server:
+    port: 9070
+    tomcat:
+        remote-ip-header: x-forward-for
+        uri-encoding: UTF-8
+        max-threads: 20000
+        max-http-header-size: 102400
+        max-connections: 20000
+logging:
+    logging.config=classpath: logback.xml
+spring:
+    jpa:
+        hibernate:
+            naming:
+                physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    datasource:
+        query:
+            t:
+                url: jdbc:mysql://172.31.64.116:3306/cnhcrdb?useUnicode=true&characterEncoding=utf8&useSSL=true
+                driverClassName: com.mysql.cj.jdbc.Driver
+                username: root
+                password: jXuuHEMe84
+                type: com.zaxxer.hikari.HikariDataSource
+            f:
+                url: jdbc:mysql://172.31.64.114:3306/bjhcrdb?useUnicode=true&characterEncoding=utf8&useSSL=true
+                driverClassName: com.mysql.cj.jdbc.Driver
+                username: root
+                password: 3bQqPo4kEL
+                type: com.zaxxer.hikari.HikariDataSource
+            g:
+                url: jdbc:mysql://172.31.64.115:3306/gzhcrdb?useUnicode=true&characterEncoding=utf8&useSSL=true
+                driverClassName: com.mysql.cj.jdbc.Driver
+                username: root
+                password: f0qbLRxglO
+                type: com.zaxxer.hikari.HikariDataSource
+            btet:
+                url: jdbc:mysql://192.168.200.73:3306/HCR_DB?useUnicode=true&characterEncoding=utf8&useSSL=true
+                driverClassName: com.mysql.cj.jdbc.Driver
+                username: root
+                password: 123456
+                type: com.zaxxer.hikari.HikariDataSource
+        land:
+            t:
+                url: jdbc:mysql://tmcihcrqadbland01.mysql.database.chinacloudapi.cn:3306/cnhcrdbland?useUnicode=true&characterEncoding=utf8&useSSL=true
+                driverClassName: com.mysql.cj.jdbc.Driver
+                username: hitachiadmin@tmcihcrqadbland01
+                password: lUY2bdGPMQ
+                type: com.zaxxer.hikari.HikariDataSource
+            f:
+                url: jdbc:mysql://tmcihcrqadbland01.mysql.database.chinacloudapi.cn:3306/bjhcrdbland?useUnicode=true&characterEncoding=utf8&useSSL=true
+                driverClassName: com.mysql.cj.jdbc.Driver
+                username: hitachiadmin@tmcihcrqadbland01
+                password: lUY2bdGPMQ
+                type: com.zaxxer.hikari.HikariDataSource
+            g:
+                url: jdbc:mysql://tmcihcrqadbland01.mysql.database.chinacloudapi.cn:3306/gzhcrdbland?useUnicode=true&characterEncoding=utf8&useSSL=true
+                driverClassName: com.mysql.cj.jdbc.Driver
+                username: hitachiadmin@tmcihcrqadbland01
+                password: lUY2bdGPMQ
+                type: com.zaxxer.hikari.HikariDataSource
+            btet:
+                url: jdbc:mysql://172.31.64.119:3306/bthcrdbland?useUnicode=true&characterEncoding=utf8&useSSL=true
+                driverClassName: com.mysql.cj.jdbc.Driver
+                username: root
+                password: ta7q43ge7S
+                type: com.zaxxer.hikari.HikariDataSource
+Azure:
+    blob:
+        accountname: tmcihcrqastorage01
+        accountkey: AgEux0DrvzS4Roov6+xTAgKIDQWQaf1RyxoeTEBj5HxfJLGbkcVHtJkInNED6zEPnhXebA4wxcpJUr29MGDSVw==
+        endpoint: core.chinacloudapi.cn
+        protocol: https
+        containername: landdata
+        format: DefaultEndpointsProtocol={0};AccountName={1};AccountKey={2};EndpointSuffix={3}
+        blobDir: zipBlob/
+systemenv:
+    url: /data/tmciupload/kpiinfo/input
+    db-url: 
+    thread-f: 256
+    thread-g: 256
+    thread-t: 128
+    thread-b: 64
+    base-t: land-lexus
+    base-f: land-ftms
+    base-g: land-gtmc
+    base-b: land-btet
