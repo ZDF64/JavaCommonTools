@@ -12,8 +12,10 @@ import zdf.learn.com.commonUtils.tools.DataMakeUtils;
 public class TaskBeanCSVDataMaker implements TaskBean, Closeable {
 
 	private String baseName ="";
-	public TaskBeanCSVDataMaker(String baseName){
+	private String fileName ="data";
+	public TaskBeanCSVDataMaker(String baseName,String fileName){
 		this.baseName = baseName;
+		this.fileName = fileName;
 	}
 	@Override
 	public void close() throws IOException {
@@ -31,10 +33,12 @@ public class TaskBeanCSVDataMaker implements TaskBean, Closeable {
 		DataMakeUtils utils = new DataMakeUtils();
 		String logString = "\""+utils.makeVin.get()+"\""
 				+",\""+baseName+"\""
-				+",\""+utils.makeHexStr.get()+"\""
-				+",\""+utils.createDateTime.get().toInstant(ZoneOffset.ofHours(8)).toEpochMilli()+"\""
-				+",\""+utils.createDateAfterNowTime.get().toInstant(ZoneOffset.ofHours(8)).toEpochMilli()+"\"";
-		DfTool.toWrite(logString, "E:\\console\\can-a\\data\\"+baseName+"\\data.csv", true);
+//				+",\""+utils.makeHexStr.get()+"\""
+				+",\""+utils.createDateStringByFormat.apply("yyyyMMddHHmmss")+"\""
+//				+",\""+utils.createDateAfterNowTime.get().toInstant(ZoneOffset.ofHours(8)).toEpochMilli()+"\"";
+				+",\""+ utils.makeSettingId.get() +"\""
+				+",\""+ utils.makeSettingValue.get() +"\"";
+		DfTool.toWrite(logString, "E:\\console\\can-a\\ma\\"+baseName+"\\"+fileName+".csv", true);
 		return null;
 	}
 	

@@ -2,34 +2,42 @@ package zdf.learn.com.commonUtils.data;
 
 import java.io.File;
 import java.sql.ResultSet;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import zdf.learn.com.commonUtils.DataBase.JdbcEnegine;
 import zdf.learn.com.commonUtils.Files.DefangFileHandle;
 import zdf.learn.com.commonUtils.MultiTask.inf.BatchComputer;
-import zdf.learn.com.commonUtils.MultiTask.inf.TaskBeanFetchDbToCSV;
 import zdf.learn.com.commonUtils.MultiTask.inf.TaskBeanInsertDbFromCSV;
 
 @Service
 public class TransferDataFromFilesToProdQuery {
-	
+	List<String> sqls = new ArrayList<>();
 	public void insertToProd() {
 		BatchComputer batchCom = new BatchComputer(12,6);
 		batchCom.startCompute();
 		File allFiles = new File("E:\\console\\allData");
+		
 		if(allFiles.isDirectory()) {
 			File[] fileArray = allFiles.listFiles();
 			DefangFileHandle dfTool = new DefangFileHandle();
 			for(File fs : fileArray) {
 				System.out.println(fs.getName());
 				dfTool.readToLine(fs,sql->{
-					TaskBeanInsertDbFromCSV task = new TaskBeanInsertDbFromCSV(sql);
+					sqls.add(sql);
+					if(sqls.size()>20) {
+						TaskBeanInsertDbFromCSV task = new TaskBeanInsertDbFromCSV(sqls);
+						batchCom.addTask(task);
+						sqls.clear();
+					}
+				});
+				if(sqls.size()>0) {
+					TaskBeanInsertDbFromCSV task = new TaskBeanInsertDbFromCSV(sqls);
 					batchCom.addTask(task);
-				});				
+					sqls = new ArrayList<>();
+				}
 			}
 		}
 		
