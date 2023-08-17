@@ -82,6 +82,14 @@ public class BatchComputer implements BatchComputeImpl{
 				TaskBean task =  waitingForComputeQuere.poll();
 				innerTask.add(task);
 				if(innerTask.size()>=PartitionSize) {
+					TaskMultiSlot slot = new TaskMultiSlot(innerTask,PartitionSize);
+					multiPool.invoke(slot);
+					innerTask = new ArrayList<TaskBean>();
+					System.out.println("Running.....");
+					System.out.println("活跃线程数："+multiPool.getActiveThreadCount());
+					System.out.println("并行数："+multiPool.getParallelism());
+					System.out.println("running并行数："+multiPool.getRunningThreadCount());
+					System.out.println("窃取任务数："+multiPool.getStealCount());
 					batchMultiRunner(innerTask);
 					emptyRunning = 0;
 				}
@@ -110,7 +118,6 @@ public class BatchComputer implements BatchComputeImpl{
 		System.out.println("并行数："+multiPool.getParallelism());
 		System.out.println("窃取任务数："+multiPool.getStealCount());
 	}
-	
 	@Override
 	public void stopCompute() {
 		// TODO Auto-generated method stub
