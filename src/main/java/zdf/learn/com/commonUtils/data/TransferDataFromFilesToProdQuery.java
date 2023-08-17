@@ -5,14 +5,13 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Service;
 
 import zdf.learn.com.commonUtils.DataBase.JdbcEnegine;
 import zdf.learn.com.commonUtils.Files.DefangFileHandle;
 import zdf.learn.com.commonUtils.MultiTask.inf.BatchComputer;
 import zdf.learn.com.commonUtils.MultiTask.inf.TaskBeanInsertDbFromCSV;
 
-@Service
+
 public class TransferDataFromFilesToProdQuery {
 	List<String> sqls = new ArrayList<>();
 	public void insertToProd() {

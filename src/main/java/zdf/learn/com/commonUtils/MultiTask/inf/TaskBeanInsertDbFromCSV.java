@@ -7,11 +7,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import zdf.learn.com.commonUtils.DataBase.JdbcEnegine;
-<<<<<<< HEAD
 import zdf.learn.com.commonUtils.Files.DefangFileHandle;
-=======
-import zdf.learn.com.commonUtils.MultiTask.impl.TaskBean;
->>>>>>> branch 'master' of git@github.com:ZDF64/JavaCommonTools.git
 
 public class TaskBeanInsertDbFromCSV implements TaskBean, Closeable {
 
