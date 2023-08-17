@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.function.Consumer;
 
-import zdf.learn.com.commonUtils.MultiTask.impl.TaskBean;
-
 public class TaskBeanSqlDel implements TaskBean, Closeable {
 
 	private Connection con;

@@ -4,7 +4,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import zdf.learn.com.commonUtils.MultiTask.impl.TaskBean;
+import zdf.learn.com.commonUtils.MultiTask.inf.TaskBean;
 
 public class TaskMultiInvocationHandler implements InvocationHandler{
 

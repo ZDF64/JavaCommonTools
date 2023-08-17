@@ -1,4 +1,4 @@
-package zdf.learn.com.commonUtils.MultiTask.impl;
+package zdf.learn.com.commonUtils.MultiTask.inf;
 
 import java.util.ArrayList;
 import java.util.List;

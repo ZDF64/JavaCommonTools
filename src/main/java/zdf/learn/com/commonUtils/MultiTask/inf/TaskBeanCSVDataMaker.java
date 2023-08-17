@@ -6,7 +6,6 @@ import java.time.ZoneOffset;
 import java.util.function.Consumer;
 
 import zdf.learn.com.commonUtils.Files.DefangFileHandle;
-import zdf.learn.com.commonUtils.MultiTask.impl.TaskBean;
 import zdf.learn.com.commonUtils.tools.DataMakeUtils;
 
 public class TaskBeanCSVDataMaker implements TaskBean, Closeable {

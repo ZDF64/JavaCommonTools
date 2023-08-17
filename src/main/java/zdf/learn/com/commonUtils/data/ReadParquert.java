@@ -1,12 +1,6 @@
 package zdf.learn.com.commonUtils.data;
 
-import static org.apache.spark.sql.functions.col;
-import static org.apache.spark.sql.functions.count;
-import static org.apache.spark.sql.functions.max;
-import static org.apache.spark.sql.functions.sum;
-import static org.apache.spark.sql.functions.size;
-import static org.apache.spark.sql.functions.udf;
-import static org.apache.spark.sql.functions.when;
+import static org.apache.spark.sql.functions.*;
 
 import java.security.MessageDigest;
 import java.sql.Timestamp;
@@ -17,10 +11,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.api.java.function.FilterFunction;
 import org.apache.spark.api.java.function.ForeachPartitionFunction;
 import org.apache.spark.api.java.function.MapPartitionsFunction;
 import org.apache.spark.sql.Column;
@@ -29,92 +28,291 @@ import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SaveMode;
 import org.apache.spark.sql.SparkSession;
+import org.apache.spark.sql.catalyst.encoders.RowEncoder;
 import org.apache.spark.sql.expressions.UserDefinedFunction;
 import org.apache.spark.sql.types.DataType;
 import org.apache.spark.sql.types.DataTypes;
+import org.apache.spark.sql.types.StructType;
 
+import io.netty.handler.codec.http.websocketx.extensions.WebSocketExtensionUtil;
+import scala.Function1;
 import scala.annotation.meta.setter;
 import scala.collection.parallel.ParIterableLike.GroupBy;
+import scala.runtime.BoxedUnit;
+import zdf.learn.com.commonUtils.Files.DefangFileHandle;
+import zdf.learn.com.commonUtils.data.spark.SparkReadUtil;
+import zdf.learn.com.commonUtils.data.spark.SparkUdfs;
+import zdf.learn.com.commonUtils.pojo.AirConditioningUseTimeInf;
+import zdf.learn.com.commonUtils.pojo.CirculationDestributionInf;
+import zdf.learn.com.commonUtils.pojo.CustomerAppMonthInf;
+import zdf.learn.com.commonUtils.pojo.DrivingDayPerFrequencyInf;
+import zdf.learn.com.commonUtils.pojo.DrivingDayPerMilageInf;
+import zdf.learn.com.commonUtils.pojo.DrivingTimezoneInf;
+import zdf.learn.com.commonUtils.pojo.DrvDayPerDrivingTimeInf;
+import zdf.learn.com.commonUtils.pojo.MilageDayPerMonthInf;
 import zdf.learn.com.commonUtils.pojo.MonthTempData;
+import zdf.learn.com.commonUtils.pojo.PowerSportUseTimeInf;
+import zdf.learn.com.commonUtils.pojo.RmtSrvMilagePerMonthInf;
+import zdf.learn.com.commonUtils.pojo.SuddenBrakeTimesInf;
 import zdf.learn.com.commonUtils.pojo.TripCanStrPojo;
+import zdf.learn.com.commonUtils.pojo.WiperUseTimeInf;
+import zdf.learn.com.commonUtils.utils.HcrUtil;
+import zdf.learn.com.commonUtils.utils.SparkUtils;
 
 public class ReadParquert {
 
+	Dataset<Row> resultDataSet;
+	
 	public static void main(String[] args) {
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-		
+
 //		System.out.println(LocalDateTime.parse("20230619133001", format).toInstant(ZoneOffset.of("+8")).toEpochMilli());
 		Float fs = 12.9f;
 		System.out.println(fs.intValue());
 		// TODO Auto-generated method stub
 		try (SparkSession spark = SparkSession.builder()
 				.appName(MakeAvroData.class.getSimpleName() + " - " + new Date()).master("local[6]").getOrCreate();
-				JavaSparkContext jsc = JavaSparkContext.fromSparkContext(spark.sparkContext());
-				) {
-			spark.conf().set("spark.sql.session.timeZone", "UTC");
-//			 Dataset<Row> resultDataSet = spark.read().parquet("E:\\gtmc\\hcr\\weeklytripcan\\202306\\*\\");
-//			 resultDataSet
-//			 .filter(col("vehicle_id").equalTo("F9DA4B9E6KG005220")).show(2000, false);
-			String[] urlArray = new String[] {
-					"E:\\G\\land\\trip_can\\"
-			};
-			
-			Dataset<Row> vinDs = spark.read().option("header", "true")
-					.csv("E:\\compareResult\\vin.csv").withColumn("vin", col("vehicle_id")).drop(col("vehicle_id"));
-			
-			Dataset<Row> tripDs = readByTripCan(spark, urlArray);
-			tripDs.join(vinDs,tripDs.col("vehicle_id").equalTo(vinDs.col("vehicle_md5")))
-////			.filter(col("vehicle_id").equalTo("F9DA4B9E6KG005220"))
-			.drop(col("vehicle_id"))
-			.withColumn("vehicle_id", col("vin"))
-			.drop(col("vin"))
-			.repartition(1)
-			.write()
-			.partitionBy("targetdate","assist_data_time")
-			.mode(SaveMode.Append)
-			.parquet("E:\\gtmc2\\land\\");
+				JavaSparkContext jsc = JavaSparkContext.fromSparkContext(spark.sparkContext());) {
+//			spark.conf().set("spark.sql.session.timeZone", "UTC");
+			spark.sparkContext().conf().set("spark.driver.maxResultSize", "4G");
+
+//			makeAzureVelocityData(spark);
+//			makeAzureTripCanData(spark);
+			Dataset<Row> CanEDs = readCanETripCanData(spark).withColumn("tab", lit(1));
+			Dataset<Row> AzureBakDs =readAzureTripCanData(spark).withColumn("tab", lit(2));
+
+//			//LVGBPB9E8LG435565
+			Dataset<Row> allDs = CanEDs.union(AzureBakDs);
+			allDs
+//			Long allLong = allDs
+			.groupBy(col("vehicle_id"),col("target_date"), col("ig_on"), col("ig_off"), col("driving_time"),
+				col("fuel_efficiency"), col("max_throttle_open_degree"), col("total_throttle_open_degree"),
+				col("throttle_data_records"), col("sudden_brake_times"), col("eco_mode_time"),
+				col("normal_mode_time"), col("sport_mode_time"), col("power_mode_time"), col("snow_mode_time"),
+				col("inner_circulation_time"), col("outer_circulation_time"), col("wiper_use_time"),
+				col("odo_trip"), col("odo_latest"), col("type"), col("air_conditioning_use_time"), col("max_speed"),
+				col("assist_data_time").cast(DataTypes.IntegerType))
+			.agg(count(col("vehicle_id")).as("cnt"),sum(col("tab")).as("tables"))
+			.where(col("cnt").notEqual(2))
+			.orderBy(col("vehicle_id"),col("ig_on"),col("ig_off"))
+//			.count();
+//			System.out.println(allLong);
+			.repartition(col("vehicle_id"))
+			.collectAsList()
+			.forEach(f->{
+				DefangFileHandle dfTool = new DefangFileHandle();
+					Row r =f;
+					dfTool.toWrite(r.getString(0)+","+r.getDate(1)+","+r.getTimestamp(2)+","+r.getTimestamp(3)
+					+","+r.get(4)+","+r.get(5)+","+r.get(6)+","+r.get(7)+","+r.get(8)+","+r.get(9)+","+r.get(10)
+					+","+r.get(11)+","+r.get(12)+","+r.get(13)+","+r.get(14)+","+r.get(15)+","+r.get(16)+","+r.get(17)+","+r.get(18)+","+r.get(19)+","+r.get(20)
+					+","+r.get(21)+","+r.get(22)+","+r.get(23)+","+r.get(24)+","+r.get(25)
+					, "E:\\gtmc\\unBalanceOrder.csv", true);				
+			});
 //			.show(2000, false);
-			
-			}catch (Exception e) {
-			e.printStackTrace();
-			}
-		
-	}
-	
-	public static void readShow(String url) {
-		
-	}
-	public static Dataset<Row> readLastTripData(SparkSession spark,String OrgUrl,String NewUrl) {
-		Dataset<Row> lastTripDs = null;
-		try {
-			Dataset<Row> oldLastTrip =  spark.read().parquet(OrgUrl);
-			Dataset<Row> newLastTrip = spark.read().parquet(NewUrl)
-												.select(col("vehicle_id"),col("ig_off"))
-												.groupBy("vehicle_id")
-								                .agg(max("ig_off").as("last_trip_time"))
-								                .select("vehicle_id", "last_trip_time");
-			lastTripDs = oldLastTrip.union(newLastTrip).orderBy(col("last_trip_time").desc())
-										.groupBy("vehicle_id")
-							            .agg(max("last_trip_time").as("last_trip_time"))
-							            .select("vehicle_id", "last_trip_time").orderBy(col("last_trip_time").desc())
-							            .groupBy("vehicle_id")
-							            .agg(count(col("last_trip_time")).as("vinCnt"))
-							            .select("vehicle_id", "vinCnt");
 		} catch (Exception e) {
-			System.out.println("spark read older ver faild:"+e.getMessage());
+			e.printStackTrace();
 		}
-		return lastTripDs;
 	}
 	
-	public static Dataset<Row> readByTripCan(SparkSession spark,String[] OrgUrl) {
-		return spark.read().option("basePath","E:\\G\\land\\trip_can")
-				.parquet(OrgUrl)
-				.drop(col("target_date"))
-				.withColumn("target_date", toFullTargetDate.apply(col("targetdate")))
+	public void show(int numRows,boolean truncate) {
+		this.resultDataSet.show(numRows, truncate);
+	}
+	
+//	去重
+	public void duplicateTripcan(SparkSession spark,Dataset<Row> TripCan) {
+		HashSet<String> duplicateVins = new HashSet<String>();
+		DefangFileHandle dfTools = new DefangFileHandle();
+		dfTools.toWrite("trip can cnt org :"+TripCan.count(), "E:\\gtmc\\tripCanCntOrg.csv", true);
+		TripCan.groupBy(col("vehicle_id"),col("ig_on"))
+		.agg(count(col("vehicle_id")).as("cnt"))
+		.where(col("cnt").$greater(1))
+		.foreachPartition((ForeachPartitionFunction<Row>)f->{
+			DefangFileHandle dfTool = new DefangFileHandle();
+			while(f.hasNext()) {
+				Row r =f.next();
+				dfTool.toWrite(r.getString(0)+","+r.getTimestamp(1)+","+r.getLong(2), "E:\\gtmc\\distinctListBefore.csv", true);
+			}
+		});
+		dfTools.readToLine("E:\\gtmc\\distinctListBefore.csv").forEach(f->{
+			duplicateVins.add(f.split(",")[0]);
+		});
+		Dataset<Row> TripCanAfter = hcrTripCanDistinct(TripCan).cache();
+		dfTools.toWrite("trip can cnt After :"+TripCanAfter.count(), "E:\\gtmc\\tripCanCntAfter.csv", true);
+		TripCanAfter
+		.filter((FilterFunction<Row>)f->{
+			String vin = f.getString(23);
+			return duplicateVins.contains(vin);
+		})
+		.groupBy(col("vehicle_id"),col("ig_on"))
+		.agg(count(col("vehicle_id")).as("cnt"))
+		.where(col("cnt").$greater(1))
+		.foreachPartition((ForeachPartitionFunction<Row>)f->{
+			DefangFileHandle dfTool = new DefangFileHandle();
+			while(f.hasNext()) {
+				Row r =f.next();
+				dfTool.toWrite(r.getString(0)+","+r.getTimestamp(1)+","+r.getLong(2), "E:\\gtmc\\distinctListAfterByHash.csv", true);
+			}
+		});
+	}
+	
+	public static Dataset<Row> hcrTripCanDistinct(Dataset<Row> orgData){
+		Dataset<Row> dataSet = orgData.select(
+				col("target_date"), col("ig_on"), col("ig_off"), col("driving_time"),
+				col("fuel_efficiency"), col("max_throttle_open_degree"), col("total_throttle_open_degree"),
+				col("throttle_data_records"), col("sudden_brake_times"), col("eco_mode_time"),
+				col("normal_mode_time"), col("sport_mode_time"), col("power_mode_time"), col("snow_mode_time"),
+				col("inner_circulation_time"), col("outer_circulation_time"), col("wiper_use_time"),
+				col("odo_trip"), col("odo_latest"), col("type"), col("air_conditioning_use_time"), col("max_speed"),
+				col("assist_data_time").cast(DataTypes.IntegerType), col("vehicle_id"))
+		.dropDuplicates("vehicle_id","ig_on","ig_off")
+		.repartition(col("vehicle_id"));
+		StructType schema = dataSet.schema();
+		System.out.println(schema);
+		return dataSet.mapPartitions((MapPartitionsFunction<Row,Row>) m->{
+			Map<String,Row> partMap = new HashMap<String,Row>();
+			while(m.hasNext()) {
+				Row innerRow = m.next();
+				String disTinctKeys = innerRow.getString(23) + innerRow.getTimestamp(1).toString();
+				if(partMap.containsKey(disTinctKeys)) {
+					Row mapRow = partMap.get(disTinctKeys);
+					if(mapRow.getTimestamp(2).before(innerRow.getTimestamp(2))) {
+						partMap.put(disTinctKeys, innerRow);
+					}
+				}else {
+					partMap.put(disTinctKeys, innerRow);
+				}
+			}
+			return partMap.values().iterator();
+		}, RowEncoder.apply(schema));
+	}
+	
+	
+	
+	public static Dataset<Row> readAzureTripRemoteData(SparkSession spark,String ...vins) {
+		return spark.read()
+		.option("header", "true").option("basePath", "E:\\gtmc\\land\\remote\\trip_remote")
+		.csv("E:\\gtmc\\land\\remote\\trip_remote\\")
+		
+		;
+	}
+	
+
+
+	
+	public static Dataset<MonthTempData> hcrMonthFetch(Dataset<Row> tripCanDs,List<String> dataRange){
+		Set<String> dataRangeSet = dataRange.stream().collect(Collectors.toSet());
+		Dataset<MonthTempData> hcrComputeDS = tripCanDs
+			.select(
+				col("target_date"), col("ig_on"), col("ig_off"), col("driving_time"),
+				col("fuel_efficiency"), col("max_throttle_open_degree"), col("total_throttle_open_degree"),
+				col("throttle_data_records"), col("sudden_brake_times"), col("eco_mode_time"),
+				col("normal_mode_time"), col("sport_mode_time"), col("power_mode_time"), col("snow_mode_time"),
+				col("inner_circulation_time"), col("outer_circulation_time"), col("wiper_use_time"),
+				col("odo_trip"), col("odo_latest"), col("type"), col("air_conditioning_use_time"), col("max_speed"),
+				col("assist_data_time"), col("vehicle_id")
+			)
+			.repartition(col("vehicle_id"))
+			.mapPartitions((MapPartitionsFunction<Row,TripCanStrPojo>)ms->{
+				List<TripCanStrPojo> listIn = new ArrayList<>();
+				while (ms.hasNext()) {
+					try {
+						listIn.add(HcrUtil.rowParseTo(ms.next()));
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
+				}
+				return listIn.iterator();
+		}, Encoders.bean(TripCanStrPojo.class))
+		.mapPartitions((MapPartitionsFunction<TripCanStrPojo, MonthTempData>) m -> {
+			List<TripCanStrPojo> listTrip = new ArrayList<TripCanStrPojo>();
+			List<MonthTempData> weeklyTemp = new ArrayList<>();
+			while (m.hasNext()) {
+				listTrip.add(m.next());
+			}
+			if (listTrip.size() <= 0){
+				return weeklyTemp.iterator();
+			}
+			List<TripCanStrPojo> resumeList = listTrip.parallelStream().filter(f->{
+				return dataRangeSet.contains(f.getTargetDate().replaceAll("-", ""));
+			}).collect(Collectors.toList());
+			if(resumeList.size()>0) {
+				SparkUtils.processDataSaveTemp(resumeList, dataRange, 2, 202307, weeklyTemp);
+			}
+			return weeklyTemp.iterator();
+		}, Encoders.bean(MonthTempData.class));
+		
+		return hcrComputeDS;
+	}
+	
+	public static void readTripCanHw(SparkSession spark) {
+//		E:\dev_cache\tripcan0812
+		spark.read()
+				.parquet("E:\\dev_cache\\tripcan0812\\")
+				.select(col("vehicle_id"),col("target_date"),col("ig_on"),col("ig_off"))
+				.foreachPartition((ForeachPartitionFunction<Row>)f->{
+						DefangFileHandle dfTool = new DefangFileHandle();
+						while(f.hasNext()) {
+							Row r =f.next();
+							dfTool.toWrite(r.getString(0)+","+r.getDate(1)+","+r.getTimestamp(2)+","+r.getTimestamp(3), "E:\\dev_cache\\tripcan0812\\result.csv", true);
+						}
+					}
+				);
+	}
+	public static Dataset<Row> readCanETripCanData(SparkSession spark){
+		return spark.read().option("basePath", "E:\\dev_cache\\trip_can\\")
+				.parquet("E:\\dev_cache\\trip_can\\")
+				.where(col("target_date").equalTo("2023-07-28"))
+				.withColumn("target_date", SparkUdfs.toFullTargetDate.apply(col("targetdate")))
+				.withColumn("assist_data_time", lit(20230810))
 				.select(
-				col("targetdate"),
+						col("target_date"), 
+						col("vehicle_id"),
+						col("ig_on"), 
+						col("ig_off"), 
+						col("driving_time").cast(DataTypes.IntegerType),
+						col("fuel_efficiency"),
+						col("max_throttle_open_degree"), 
+						col("total_throttle_open_degree"),
+						col("throttle_data_records").cast(DataTypes.IntegerType), 
+						col("sudden_brake_times").cast(DataTypes.IntegerType), 
+						col("eco_mode_time").cast(DataTypes.IntegerType),
+						col("normal_mode_time").cast(DataTypes.IntegerType),
+						col("sport_mode_time").cast(DataTypes.IntegerType), 
+						col("power_mode_time").cast(DataTypes.IntegerType), 
+						col("snow_mode_time").cast(DataTypes.IntegerType),
+						col("inner_circulation_time").cast(DataTypes.IntegerType), 
+						col("outer_circulation_time").cast(DataTypes.IntegerType), 
+						col("wiper_use_time").cast(DataTypes.IntegerType),
+						col("odo_trip").cast(DataTypes.IntegerType), 
+						col("odo_latest").cast(DataTypes.IntegerType), 
+						col("type"), 
+						col("air_conditioning_use_time").cast(DataTypes.IntegerType), 
+						col("max_speed").cast(DataTypes.IntegerType),
+						col("assist_data_time"), 
+						col("targetdate")
+						)
+				.distinct();
+	}
+	
+	
+	public static Dataset<Row> readAzureTripCanData(SparkSession spark){
+		try {
+
+		return spark.read().option("basePath", "E:\\gtmc\\trip_can202307\\")
+				.parquet("E:\\gtmc\\trip_can202307\\targetdate=2023072*")
+				.distinct()
+		.where(col("target_date").equalTo("2023-07-28"))
+//		.filter(col("vehicle_id").isin(vins))//"LVGB1B0E0PG403116","JTNHS3DH0M8052455",
+//		.filter(col("type").isNotNull().and(col("type").notEqual("")))
+		.withColumn("target_date", SparkUdfs.toFullTargetDate.apply(col("targetdate")))
+		.withColumn("assist_data_time", lit(20230810))
+		.select(
 				col("target_date"), 
-				col("ig_on"), col("ig_off"), col("driving_time"),
+				col("vehicle_id"),
+				functions.dateSetOffByHour.apply(col("ig_on"),lit(8)).as("ig_on"),
+				functions.dateSetOffByHour.apply(col("ig_off"),lit(8)).as("ig_off"),
+				col("driving_time").cast(DataTypes.IntegerType),
 				col("fuel_efficiency"),
 				col("max_throttle_open_degree"), 
 				col("total_throttle_open_degree"),
@@ -134,133 +332,84 @@ public class ReadParquert {
 				col("air_conditioning_use_time").cast(DataTypes.IntegerType), 
 				col("max_speed").cast(DataTypes.IntegerType),
 				col("assist_data_time"), 
-				col("vehicle_id"))
-				
-				.repartition(col("vehicle_id"));
-    }
-	
-	public static UserDefinedFunction makeVin = udf((String vin) -> {
-		try {
-			MessageDigest m = MessageDigest.getInstance("MD5");
-			m.update(vin.getBytes("UTF8"));
-			byte s[] = m.digest();
-			String result = "";
-			for (int i = 0; i < s.length; i++) {
-				result += Integer.toHexString((0x000000FF & s[i]) | 0xFFFFFF00).substring(6);
-			}
-			return result.substring(0,5).toUpperCase() + vin.substring(5);
+				col("targetdate")
+				)
+		.distinct();
 		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		}
-		return "";
-	},DataTypes.StringType);
-	public static UserDefinedFunction dateToyyyyMMdd = udf((Date date) -> {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-		return simpleDateFormat.format(date);
-		} , DataTypes.StringType);
-	public static UserDefinedFunction long_to_date = udf((Long lng) -> new Date(lng), DataTypes.DateType);
-	public static UserDefinedFunction toFullTargetDate = udf((Integer tar) -> {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		String tarStr = tar+"";
-		String targetDate = tarStr.substring(0, 4)+"-"+tarStr.subSequence(4, 6)+"-"+tarStr.substring(6, 8);
-		return new java.sql.Date(simpleDateFormat.parse(targetDate).getTime());
-	}, DataTypes.DateType);
+	}
+	public static void makeAzureVelocityData(SparkSession spark){
+		Dataset<Row> velocityData = spark.read().parquet("E:\\gtmc\\azurebak\\202308*\\trip_can_velocity_time\\*\\")
+				.withColumn("targetdate", SparkUdfs.dateToyyyyMMdd.apply(col("target_date")))
+				.withColumn("assist_data_time", lit(20230718));
+		velocityData.show(20,false);
+		velocityData
+		.repartition(1)
+		.write()
+		.partitionBy("targetdate","assist_data_time")
+		.mode(SaveMode.Append)
+		.parquet("E:\\gtmc\\trip_velocity202308\\");
+	}
+	public static void makeAzureTripCanData(SparkSession spark){
+		Dataset<Row> TripCanData = spark.read().parquet("E:\\gtmc\\azurebak\\202307*\\trip_can\\*\\")
+				.withColumn("targetdate", SparkUdfs.dateToyyyyMMdd.apply(col("target_date")))
+				.withColumn("assist_data_time", lit(20230816));
+		TripCanData.show(200, false);
+		TripCanData
+		.repartition(1)
+		.write()
+		.partitionBy("targetdate","assist_data_time")
+		.mode(SaveMode.Append)
+		.parquet("E:\\gtmc\\trip_can202307\\");
+	}
 	
-	private static Column getNotEmptyListCol(Object[] labels) {
-//    	Speed,Speed_TypeA,Speed_TypeB
-        Column col = null;
-
-        for (int i = 0; i < labels.length; i++) {
-
-            String columnName = labels[i].toString();
-
-            if (i == 0) {
-                col = when(size(col(columnName)).gt(0), col(columnName));
-            } else if (i == labels.length - 1) {
-                col = col.otherwise(col(columnName));
-            } else {
-                col = col.when(size(col(columnName)).gt(0), col(columnName));
-            }
-
-        }
-
-        return col;
-
-    }
-	public static TripCanStrPojo rowParseTo(Row r) {
-		Timestamp igOn = r.getTimestamp(1);
-		Timestamp igOff = r.getTimestamp(2);
-		String type = r.getString(19);
-		TripCanStrPojo trip = new TripCanStrPojo();
-		trip.setTargetDate(r.getDate(0).toLocalDate().toString());
-		trip.setIgOn(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").format(ZonedDateTime.ofInstant(igOn.toInstant(), ZoneOffset.of("+08:00"))));
-		trip.setIgOff(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").format(ZonedDateTime.ofInstant(igOff.toInstant(), ZoneOffset.of("+08:00"))));
-		trip.setDrivingTime(r.getInt(3));
-		trip.setFuelEfficiency(r.getDouble(4));
-		trip.setMaxThrottleOpenDegree((float) r.getDouble(5));
-		trip.setTotalThrottleOpenDegree(r.getDouble(6));
-		trip.setThrottleDataRecords((int) r.getInt(7));
-		trip.setSuddenBrakeTimes(r.getInt(8));
-		trip.setEcoModeTime( r.getInt(9));
-		trip.setNormalModeTime(r.getInt(10));
-		trip.setSportModeTime( r.getInt(11));
-		trip.setPowerModeTime( r.getInt(12));
-		trip.setSnowModeTime( r.getInt(13));
-		trip.setInnerCirculationTime(r.getInt(14));
-		trip.setOuterCirculationTime(r.getInt(15));
-		trip.setWiperUseTime(r.getInt(16));
-		trip.setOdoTrip(r.getInt(17));
-		trip.setOdoLatest(r.getInt(18));
-		trip.setType(type);
-		trip.setAirConditioningUseTime(r.getInt(20));
-		trip.setMaxSpeed(r.getInt(21));
-		trip.setAssistDataTime(r.getInt(22)+"");
-		trip.setVehicleId(r.getString(23));
-		return trip;
+	
+	public static void computTripToHCRShow(SparkSession spark) {
+		SparkReadUtil sparkutils = new SparkReadUtil();
+		Dataset<Row> TripCan = sparkutils.readAzureBackFile(spark, "E:\\gtmc2\\Azure\\*\\trip_can\\*\\*", null);
+		TripCan = TripCan
+				.withColumn("targetdate", SparkUdfs.dateToyyyyMMdd.apply(col("target_date")))
+				.select(
+				col("target_date"), 
+				col("ig_on"),
+				col("ig_off"), 
+				col("driving_time").cast(DataTypes.IntegerType),
+				col("fuel_efficiency"),
+				col("max_throttle_open_degree"), 
+				col("total_throttle_open_degree"),
+				col("throttle_data_records").cast(DataTypes.IntegerType), 
+				col("sudden_brake_times").cast(DataTypes.IntegerType), 
+				col("eco_mode_time").cast(DataTypes.IntegerType),
+				col("normal_mode_time").cast(DataTypes.IntegerType),
+				col("sport_mode_time").cast(DataTypes.IntegerType), 
+				col("power_mode_time").cast(DataTypes.IntegerType), 
+				col("snow_mode_time").cast(DataTypes.IntegerType),
+				col("inner_circulation_time").cast(DataTypes.IntegerType), 
+				col("outer_circulation_time").cast(DataTypes.IntegerType), 
+				col("wiper_use_time").cast(DataTypes.IntegerType),
+				col("odo_trip").cast(DataTypes.IntegerType), 
+				col("odo_latest").cast(DataTypes.IntegerType), 
+				col("type"), 
+				col("air_conditioning_use_time").cast(DataTypes.IntegerType), 
+				col("max_speed").cast(DataTypes.IntegerType),
+//				col("assist_data_time"), 
+				col("vehicle_id"),
+				col("targetdate")
+				)
+				.withColumn("assist_data_time", lit(20230714))
+				.repartition(col("vehicle_id"));
+		TripCan.repartition(1)
+		.write()
+		.partitionBy("targetdate","assist_data_time")
+		.mode(SaveMode.Append)
+		.parquet("E:\\gtmc\\hcr");
+//		Dataset<Row> tempSaveDs = sparkutils.computeHcrData(spark, TripCan);
+//		.where(col("target_date").$less("2023-07-01"))
+//		tempSaveDs.repartition(1).write().mode(SaveMode.Overwrite).save("E:\\gtmc\\hcr\\weekly2");
 	}
-	public static MonthTempData rowToTempData(Row r) {
-		MonthTempData temp = new MonthTempData();
-		temp.setVehicle_id(r.getString(0));
-		temp.setAggregate_year_month(r.getInt(1));
-		temp.setAggregate_week(r.getInt(2));
-		temp.setVehcile_type(r.getString(3));
-		temp.setOdo_trip(r.getInt(4));
-		temp.setOdo_latest(r.getInt(5));
-		temp.setFuel_efficiency(r.getDouble(6));
-		temp.setTotal_milage(r.getInt(7));
-//		temp.setAvgFuleWeek(r.getDouble(8));
-		temp.setDriving_days(r.getInt(9));
-		temp.setDaily_driving_times(r.getList(10));
-		temp.setDaily_driving_milage(r.getList(11));
-		temp.setDaily_driving_duration(r.getList(12));
-		temp.setDriving_time(r.getInt(13));
-		temp.setEffective_driving_time(r.getInt(14));
-		temp.setWiper_use_time(r.getDecimal(15));
-		temp.setAir_conditioning_use_time(r.getDecimal(16));
-		temp.setInner_circulation_time(r.getInt(17));
-		temp.setOuter_circulation_time(r.getInt(18));
-		temp.setSport_mode_time(r.getInt(19));
-		temp.setDriving_period_duration(r.getList(20));
-		temp.setSudden_brake_times(r.getInt(21));
-		temp.setMax_speed(r.getInt(22));
-		temp.setMax_throttle_open_degree(r.getFloat(23));
-		temp.setAvg_throttle_open_degree(r.getFloat(24));
-		temp.setTotal_driving_times(r.getInt(25));
-		return temp;
-	}
-	 @SafeVarargs
-	    private static <T> T[] concatAll(T[] first, T[]... rest) {
-	        int totalLength = first.length;
-	        for (T[] array : rest) {
-	            totalLength += array.length;
-	        }
-	        T[] result = Arrays.copyOf(first, totalLength);
-	        int offset = first.length;
-	        for (T[] array : rest) {
-	            System.arraycopy(array, 0, result, offset, array.length);
-	            offset += array.length;
-	        }
-	        return result;
-	    }
+	
+		
+
 }
-

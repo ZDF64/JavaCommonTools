@@ -8,8 +8,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ForkJoinPool;
 
 import zdf.learn.com.commonUtils.MultiTask.impl.BatchComputeImpl;
-import zdf.learn.com.commonUtils.MultiTask.impl.TaskBean;
-import zdf.learn.com.commonUtils.MultiTask.impl.TaskMultiSlot;
 
 /**
  * 多线程任务分配核心

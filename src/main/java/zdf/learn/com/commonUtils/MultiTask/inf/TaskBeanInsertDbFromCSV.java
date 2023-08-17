@@ -11,7 +11,6 @@ import java.util.function.Consumer;
 
 import zdf.learn.com.commonUtils.DataBase.JdbcEnegine;
 import zdf.learn.com.commonUtils.Files.DefangFileHandle;
-import zdf.learn.com.commonUtils.MultiTask.impl.TaskBean;
 
 public class TaskBeanInsertDbFromCSV implements TaskBean, Closeable {
 

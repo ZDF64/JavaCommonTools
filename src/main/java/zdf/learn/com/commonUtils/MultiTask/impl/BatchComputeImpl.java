@@ -3,6 +3,8 @@ package zdf.learn.com.commonUtils.MultiTask.impl;
 import java.lang.reflect.InvocationHandler;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import zdf.learn.com.commonUtils.MultiTask.inf.TaskBean;
+
 public interface BatchComputeImpl {
 
 	

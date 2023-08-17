@@ -1,4 +1,4 @@
-package zdf.learn.com.commonUtils.MultiTask;
+package zdf.learn.com.commonUtils.MultiTask.inf;
 
 import zdf.learn.com.commonUtils.MultiTask.impl.BatchFactoryImpl;
 

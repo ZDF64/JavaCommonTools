@@ -7,6 +7,7 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
@@ -15,6 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import org.apache.spark.sql.expressions.UserDefinedFunction;
 import org.apache.spark.sql.types.DataTypes;
@@ -54,7 +56,13 @@ public class functions {
         fmtMap.put("outside", new DateTimeFormatter[] {dtf3, dtf5});
         fmtMap.put("type3", new DateTimeFormatter[] {dtf3, dtf5});
     }
+    public static BiFunction<Timestamp, Integer, Timestamp> dateSetOff = (inTime,hours)->{
+    	Timestamp times = Timestamp.from(inTime.toLocalDateTime().minusHours(hours).toInstant(ZoneOffset.of("+8")));
+    	return times;
+    };
+    public static UserDefinedFunction dateSetOffByHour = udf((Timestamp timeIn, Integer hours)-> dateSetOff.apply(timeIn, hours),DataTypes.TimestampType);
     
+
     public static final BiFunction<String, String, Long> toLongTime = (inTime, type) -> {
         
         Long result = null;

@@ -6,8 +6,6 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.function.Consumer;
 
-import zdf.learn.com.commonUtils.MultiTask.impl.TaskBean;
-
 public class TaskBeanSqlInsert implements TaskBean, Closeable{
 	
 	private Connection con;

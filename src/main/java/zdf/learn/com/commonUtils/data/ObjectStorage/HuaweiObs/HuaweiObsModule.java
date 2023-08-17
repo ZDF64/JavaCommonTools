@@ -11,7 +11,7 @@ import com.obs.services.ObsConfiguration;
 
 public class HuaweiObsModule {
 	
-	public ObsClient build(String ak, String sk,String endPoint) {
+	public static ObsClient build(String ak, String sk,String endPoint) {
 		ObsClient returnObs = new ObsClient(ak,sk, endPoint);
     	return returnObs;
 	}
